@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dreamjobs4u-angular": {
+    "sweetjobs-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dreamjobs4u-angular",
+            "outputPath": "dist/sweetjobs-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dreamjobs4u-angular:build:production"
+              "browserTarget": "sweetjobs-angular:build:production"
             },
             "development": {
-              "browserTarget": "dreamjobs4u-angular:build:development"
+              "browserTarget": "sweetjobs-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dreamjobs4u-angular:build"
+            "browserTarget": "sweetjobs-angular:build"
           }
         },
         "test": {
@@ -107,5 +107,5 @@
       }
     }
   },
-  "defaultProject": "dreamjobs4u-angular"
+  "defaultProject": "sweetjobs-angular"
 }

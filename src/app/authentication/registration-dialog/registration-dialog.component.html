@@ -1,7 +1,15 @@
-<div id="sweetjobs-registration">
+<div id="sweetjobs-registration" class="registration-container">
+    <div class="close-button" (click)="closeDialog()">X</div>
     <div class="registration-title">Regisztráció</div>
     <div class="registration-subtitle">Kérem töltse ki az adatokat</div>
-    <form [formGroup]="registrationForm" (ngSubmit)="register()">
-
+    <div class="role-selection-container">
+        <div class="role-element" [ngClass]="isEmployee ? 'role-active' : ''" (click)="setRoleActive('employee')">Munkavállaló</div>
+        <div class="role-element" [ngClass]="isEmployer ? 'role-active' : ''" (click)="setRoleActive('employer')">Munkáltató</div>
+    </div>
+    <form [formGroup]="registrationForm" (ngSubmit)="register()" class="registration-form">
+        <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'" *ngFor="let element of registrationFormElements">
+            <input id="firstName" [type]="element.type!" (focus)="element.focus = true" (focusout)="element.focus = false" [placeholder]="element.placeholder" [formControlName]="element.key" [ngClass]="element.focus ? 'registration-input-focused': 'registration-input'" class="registration-input">
+        </div>
+        <button class="submit-button">Submit</button>
     </form>
 </div>

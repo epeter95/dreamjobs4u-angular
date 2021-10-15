@@ -9,7 +9,6 @@ import { RegistrationDialogComponent } from '../authentication/registration-dial
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
   isRegistrationOpen: boolean = false;
   registrationDialogSubscription: Subscription = new Subscription();
   constructor(public dialog: MatDialog) { }
@@ -20,7 +19,7 @@ export class HeaderComponent implements OnInit {
   openRegistrationDialog(){
     this.isRegistrationOpen = true;
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent,{
-      backdropClass: 'general-dialog-background'
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel'
     });
     this.registrationDialogSubscription = registrationDialogRef.afterClosed().subscribe(()=>{
       this.isRegistrationOpen = false;

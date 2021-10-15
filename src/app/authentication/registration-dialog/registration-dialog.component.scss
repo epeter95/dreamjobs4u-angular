@@ -1,8 +1,49 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 
-.sweetjobs-registration{
-    padding: 40px 60px;
+.registration-container{
+    padding: 16px 36px;
+    position: relative;
+}
+
+.role-selection-container{
+    margin-top: 20px;
+    @include flex-container(center,center,20px);
+}
+
+.role-element{
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-family: $regular-font;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color, background-color 0.2s ease-in-out;
+}
+
+.role-element:hover{
+    border: 2px solid $hover-button-color;
+}
+
+.role-active{
+    background-color: $hover-button-color;
+    color: white;
+    border: 2px solid $hover-button-color;
+}
+
+.close-button{
+    position: absolute;
+    z-index: 50;
+    width: 50px;
+    height: 50px;
+    right: -42px;
+    top: -42px;
+    border-radius: 50%;
+    color: white;
+    font-family: $bold-font;
+    @include flex-container(center);
+    background-color: $hover-button-color;
+    cursor: pointer;
 }
 
 .registration-title{
@@ -10,6 +51,78 @@
     font-size: 30px;
     line-height: 34px;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     text-align: center;
+    color: $normal-color;
+}
+
+.registration-subtitle{
+    font-family: $regular-font;
+    color: $normal-color;
+    text-align: center;
+}
+
+.registration-form{
+    min-width: 400px;
+    padding: 30px 0;
+}
+
+.form-field,.form-field-focused {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 2px solid #e8ecec;
+    padding: 16px 40px 16px 16px;
+    transition: border 0.2s ease-in-out;
+}
+
+.form-field-focused{
+    border: 2px solid $highlighted-color;
+}
+
+.registration-input, .registration-input-focused{
+    border: none;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: $regular-font;
+    color: $normal-color;
+    font-size: 14px;
+    line-height: 17px;
+    transition: color 0.2s ease-in-out;
+}
+
+.registration-input-focused{
+    color: $highlighted-color;
+}
+
+.registration-input::placeholder{
+    font-family: $regular-font;
+    color: $normal-color;
+    transition: color 0.2s ease-in-out;
+}
+
+.registration-input-focused::placeholder{
+    color: $highlighted-color;
+    opacity: 1;
+    font-family: $bold-font;
+    transition: color 0.2s ease-in-out;
+}
+
+.submit-button{
+    @include flex-container(center);
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 16px;
+    background-color: $button-color;
+    border-radius: 8px;
+    margin-top: 50px;
+    cursor: pointer;
+    font-family: $bold-font;
+    transition: background-color 0.3s ease-in-out;
+    @include default-container(100%, 60px);
+}
+
+.submit-button:hover{
+    background-color: $hover-button-color;
 }

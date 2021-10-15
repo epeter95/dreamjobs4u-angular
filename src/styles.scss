@@ -20,3 +20,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .general-dialog-background{
     background: rgba(20,31,114,0.6);
 }
+
+.general-dialog-panel{
+    .mat-dialog-container{
+        overflow: visible;
+    }
+}

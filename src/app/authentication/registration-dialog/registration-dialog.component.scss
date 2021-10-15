@@ -1,0 +1,15 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+
+.sweetjobs-registration{
+    padding: 40px 60px;
+}
+
+.registration-title{
+    font-family: $bold-font;
+    font-size: 30px;
+    line-height: 34px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+}

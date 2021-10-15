@@ -1,0 +1,29 @@
+@mixin flex-container($justify,$align-items: center, $gap: 0) {
+    display: flex;
+    align-items: $align-items;
+    justify-content: $justify;
+    @if $gap != 0{
+        column-gap: $gap;
+    }
+}
+
+@mixin default-container($max-width,$height: auto, $padding: 0, $margin: 0) {
+    max-width: $max-width;
+    width: 100%;
+    @if $margin != auto{
+        height: $height;
+    }
+    @if $margin != 0 {
+        margin: $margin;
+    }
+    @if $padding != 0 {
+        padding: $padding;
+    }
+    box-sizing: border-box;
+}
+
+@mixin image-properties{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

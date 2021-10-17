@@ -1,15 +1,18 @@
 <div id="sweetjobs-registration" class="registration-container">
     <div class="close-button" (click)="closeDialog()">X</div>
-    <div class="registration-title">Regisztráció</div>
-    <div class="registration-subtitle">Kérem töltse ki az adatokat</div>
+    <div class="registration-title">{{regTitleText}}</div>
+    <div class="registration-subtitle">{{regSubtitleText}}</div>
     <div class="role-selection-container">
-        <div class="role-element" [ngClass]="isEmployee ? 'role-active' : ''" (click)="setRoleActive('employee')">Munkavállaló</div>
-        <div class="role-element" [ngClass]="isEmployer ? 'role-active' : ''" (click)="setRoleActive('employer')">Munkáltató</div>
+        <div class="role-element" *ngFor="let role of roles" [ngClass]="role.isRoleSelected ? 'role-active' : ''" (click)="setRoleActive(role)">{{role.selectedTranslation.name}}</div>
     </div>
     <form [formGroup]="registrationForm" (ngSubmit)="register()" class="registration-form">
-        <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'" *ngFor="let element of registrationFormElements">
-            <input id="firstName" [type]="element.type!" (focus)="element.focus = true" (focusout)="element.focus = false" [placeholder]="element.placeholder" [formControlName]="element.key" [ngClass]="element.focus ? 'registration-input-focused': 'registration-input'" class="registration-input">
+        <div class="form-field-wrapper" *ngFor="let element of registrationFormElements">
+            <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
+                <input [id]="element.key" [type]="element.type!" (focus)="element.focus = true" (focusout)="element.focus = false" [placeholder]="element.placeholder" [formControlName]="element.key" [ngClass]="element.focus ? 'registration-input-focused': 'registration-input'" class="registration-input">
+            </div>
+            <div class="required-error-message" *ngIf="isUserClicked && registrationForm.controls[element.key].hasError('required')">A mező kitöltése kötelező!</div>
+            <div class="required-error-message" *ngIf="isUserClicked && registrationForm.controls[element.key].hasError('email')">Hibás formátumú email cím!</div>
         </div>
-        <button class="submit-button">Submit</button>
+        <button class="submit-button">{{sendButtonText}}</button>
     </form>
 </div>

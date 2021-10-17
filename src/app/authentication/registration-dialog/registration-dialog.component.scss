@@ -68,7 +68,7 @@
 }
 
 .form-field,.form-field-focused {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     border-radius: 8px;
     border: 2px solid #e8ecec;
     padding: 16px 40px 16px 16px;
@@ -125,4 +125,15 @@
 
 .submit-button:hover{
     background-color: $hover-button-color;
+}
+
+.form-field-wrapper{
+    margin-bottom: 20px;
+}
+
+.required-error-message{
+    font-size: 12px;
+    font-family: $bold-font;
+    color: red;
+    margin-left: 5px;
 }

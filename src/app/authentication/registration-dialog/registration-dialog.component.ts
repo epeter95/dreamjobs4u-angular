@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { Role } from 'src/app/interfaces/role';
@@ -24,6 +24,17 @@ export class RegistrationDialogComponent implements OnInit {
   sendButtonText: string = '';
   regTitleText: string = '';
   regSubtitleText: string = '';
+  requiredFieldErrorText: string = '';
+  wrongEmailFormatErrorText: string = '';
+  emailAlreadyExistErrorText: string = '';
+  passwordMismatchErrorText: string = '';
+  missingRoleErrorText: string = '';
+
+  isRoleMissing: boolean = false;
+  isPasswordMismatch: boolean = false;
+  isEmailAlreadyExist: boolean = false;
+  isRegistrationSuccess: boolean = false;
+
 
   registrationFormElements: FormElement[] = [
     { key: 'regFirstName', placeholder: '', focus: false },
@@ -41,12 +52,15 @@ export class RegistrationDialogComponent implements OnInit {
     regPassword: new FormControl('', Validators.required)
   });
 
-  constructor(private dialogRef: MatDialogRef<RegistrationDialogComponent>, private dataService: DataService, private languageService: LanguageService) { }
+  constructor(private dialogRef: MatDialogRef<RegistrationDialogComponent>,
+    private dataService: DataService, private languageService: LanguageService) { }
 
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/roles/public'),
-      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public')
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public'),
+      this.dataService.getAllData('/api/generalMessages/public'),
+      this.dataService.getAllData('/api/errorMessages/public')
     ]).subscribe(res=>{
       this.roles = res[0];
       this.languageService.languageObservable$.subscribe(lang=>{
@@ -61,12 +75,23 @@ export class RegistrationDialogComponent implements OnInit {
         this.sendButtonText = this.languageService.getTranslationByKey(lang,res[1],'title','regSubmitButton','PublicContentTranslations');
         this.regTitleText = this.languageService.getTranslationByKey(lang,res[1],'title','regTitle','PublicContentTranslations');
         this.regSubtitleText = this.languageService.getTranslationByKey(lang,res[1],'title','regSubtitle','PublicContentTranslations');
+        this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
+        this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','wrongEmailFormat', 'ErrorMessageTranslations');
+        this.emailAlreadyExistErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','emailAddressAlreadyExist', 'ErrorMessageTranslations');
+        this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
+        this.missingRoleErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','missingRole', 'ErrorMessageTranslations');
       });
     });
   }
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  closeErrorMessage(){
+    this.isRoleMissing = false;
+    this.isPasswordMismatch = false;
+    this.isEmailAlreadyExist = false;
   }
 
   setRoleActive(role: Role) {
@@ -78,7 +103,37 @@ export class RegistrationDialogComponent implements OnInit {
   }
 
   register() {
-    console.log("submit");
+    this.isUserClicked = true;
+    if(this.registrationForm.valid){
+      this.isEmailAlreadyExist = false;
+      this.isPasswordMismatch = false;
+      this.isRoleMissing = false;
+      if(!this.selectedRole){
+        this.isRoleMissing = true;
+        return;
+      }
+      if( this.registrationForm.controls.regPassword.value != this.registrationForm.controls.regConfirmPassword.value){
+        this.isPasswordMismatch = true;
+        return;
+      }
+      let result = {
+        firstName: this.registrationForm.controls.regFirstName.value,
+        lastName: this.registrationForm.controls.regLastName.value,
+        email: this.registrationForm.controls.regEmail.value,
+        password: this.registrationForm.controls.regPassword.value,
+        roleId: this.selectedRole.id
+      }
+      this.dataService.httpPostMethod('/api/auth/register',result).subscribe(res=>{
+        if(res.error == 'SequelizeUniqueConstraintError'){
+          this.isEmailAlreadyExist = true;
+          return;
+        }else if(res.error){
+          this.dialogRef.close();
+        }
+        this.isRegistrationSuccess = true;
+        this.dialogRef.close();
+      });
+    }
   }
 
 }

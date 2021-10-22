@@ -20,8 +20,8 @@ export class DataService {
     });
   }
 
-  getOneData(url: string, id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get<any>(environment.apiDomain + url + '/' + id,{headers: headers? headers: new HttpHeaders});
+  getOneData(url: string, headers?: HttpHeaders): Observable<any> {
+    return this.http.get<any>(environment.apiDomain + url,{headers: headers? headers: new HttpHeaders});
   }
 
   httpPostMethod(url: string, data: any, headers?: HttpHeaders) {

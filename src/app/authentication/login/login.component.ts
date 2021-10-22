@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           return;
         }
         this.sessionService.setSession(res.token);
+        this.sessionService.nextUserData({monogram: res.monogram, profilePicture: res.profilePicture})
         this.dialogRef.close();
       }, error=>{
         if(error.status==401){

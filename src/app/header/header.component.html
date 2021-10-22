@@ -10,10 +10,18 @@
                         class="navigation-link-bottom-border"></span></a>
             </div>
             <div class="auth-navigation-container">
-                <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openLoginDialog()">Bejelentkezés<span
-                    class="navigation-link-bottom-border"></span></a>
-                <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openRegistrationDialog()">Regisztráció<span
+                <ng-container *ngIf="userLoggedIn; else loggedOut">
+                    <div *ngIf="userData" class="no-profile-picture-image" (click)="openProfileMenu()">
+                        {{userData.monogram}}
+                    </div>
+                    <button (click)="logout()">kijelentkezés</button>
+                </ng-container>
+                <ng-template #loggedOut>
+                    <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openLoginDialog()">Bejelentkezés<span
                         class="navigation-link-bottom-border"></span></a>
+                    <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openRegistrationDialog()">Regisztráció<span
+                            class="navigation-link-bottom-border"></span></a>
+                </ng-template>
             </div>
         </div>
     </div>

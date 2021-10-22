@@ -62,3 +62,15 @@
     font-family: $bold-font;
     border-bottom: 2px solid $highlighted-color;
 }
+
+.no-profile-picture-image{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: $highlighted-color;
+    color: white;
+    text-align:center;
+    font-family: $bold-font;
+    @include flex-container(center,center);
+    cursor: pointer;
+}

@@ -1,5 +1,6 @@
 @import 'variables.scss';
 @import 'mixins.scss';
+@import '../auth-form.scss';
 
 .registration-container{
     padding: 16px 36px;
@@ -45,101 +46,4 @@
     font-family: $regular-font;
     color: $normal-color;
     text-align: center;
-}
-
-.registration-form{
-    min-width: 400px;
-    padding: 30px 0;
-}
-
-.form-field,.form-field-focused {
-    margin-bottom: 5px;
-    border-radius: 8px;
-    border: 2px solid #e8ecec;
-    padding: 16px 40px 16px 16px;
-    transition: border 0.2s ease-in-out;
-}
-
-.form-field-focused{
-    border: 2px solid $highlighted-color;
-}
-
-.registration-input, .registration-input-focused{
-    border: none;
-    outline: none;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: $regular-font;
-    color: $normal-color;
-    font-size: 14px;
-    line-height: 17px;
-    transition: color 0.2s ease-in-out;
-}
-
-.registration-input-focused{
-    color: $highlighted-color;
-}
-
-.registration-input::placeholder{
-    font-family: $regular-font;
-    color: $normal-color;
-    transition: color 0.2s ease-in-out;
-}
-
-.registration-input-focused::placeholder{
-    color: $highlighted-color;
-    opacity: 1;
-    font-family: $bold-font;
-    transition: color 0.2s ease-in-out;
-}
-
-.submit-button{
-    @include flex-container(center);
-    border: none;
-    outline: none;
-    color: white;
-    font-size: 16px;
-    background-color: $button-color;
-    border-radius: 8px;
-    margin-top: 50px;
-    cursor: pointer;
-    font-family: $bold-font;
-    transition: background-color 0.3s ease-in-out;
-    @include default-container(100%, 60px);
-}
-
-.submit-button:hover{
-    background-color: $hover-button-color;
-}
-
-.form-field-wrapper{
-    margin-bottom: 20px;
-}
-
-.required-error-message{
-    font-size: 12px;
-    font-family: $bold-font;
-    color: red;
-    margin-left: 5px;
-}
-
-.response-error-message{
-    @include default-container(auto, auto, 10px 20px, 10px auto);
-    @include flex-container(center,center,20px);
-    border: 2px solid red;
-    border-radius: 8px;
-    color: red;
-    text-transform: uppercase;
-    font-family: 'MonsterRatBold';
-    text-align: center;
-}
-
-.close-error-message{
-    border: 2px solid red;
-    background-color: red;
-    color: white;
-    font-family: 'MonsterRatBold';
-    cursor: pointer;
-    padding: 3px 6px;
-    border-radius: 2px;
 }

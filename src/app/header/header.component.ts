@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { RegistrationDialogComponent } from '../authentication/registration-dialog/registration-dialog.component';
+import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -19,10 +20,17 @@ export class HeaderComponent implements OnInit {
   openRegistrationDialog(){
     this.isRegistrationOpen = true;
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent,{
-      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel'
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      disableClose: true
     });
     this.registrationDialogSubscription = registrationDialogRef.afterClosed().subscribe(()=>{
       this.isRegistrationOpen = false;
+      this.dialog.open(RegistrationDoneDialog,{
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
+      if(registrationDialogRef.componentInstance.isRegistrationSuccess){
+      }
     });
   }
 

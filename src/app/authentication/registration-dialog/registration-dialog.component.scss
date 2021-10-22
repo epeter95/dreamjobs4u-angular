@@ -31,21 +31,6 @@
     border: 2px solid $hover-button-color;
 }
 
-.close-button{
-    position: absolute;
-    z-index: 50;
-    width: 50px;
-    height: 50px;
-    right: -42px;
-    top: -42px;
-    border-radius: 50%;
-    color: white;
-    font-family: $bold-font;
-    @include flex-container(center);
-    background-color: $hover-button-color;
-    cursor: pointer;
-}
-
 .registration-title{
     font-family: $bold-font;
     font-size: 30px;

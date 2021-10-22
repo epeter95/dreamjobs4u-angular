@@ -13,6 +13,7 @@ import { RegistrationDialogComponent } from './authentication/registration-dialo
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationDoneDialog } from './authentication/registration-done-dialog/registration-done-dialog.component';
+import { LoginComponent } from './authentication/login/login.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RegistrationDoneDialog } from './authentication/registration-done-dialo
     HeaderComponent,
     HomeComponent,
     RegistrationDialogComponent,
-    RegistrationDoneDialog
+    RegistrationDoneDialog,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

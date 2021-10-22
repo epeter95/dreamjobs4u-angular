@@ -26,6 +26,12 @@
     @include flex-container(space-between,center,20px);
 }
 
+.auth-navigation-container{
+    display: flex;
+    align-items: center;
+    column-gap: 30px;
+}
+
 .navigation-link{
     color: $normal-color;
     text-decoration: none;

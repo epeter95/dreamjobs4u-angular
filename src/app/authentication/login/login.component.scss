@@ -1,0 +1,24 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import '../auth-form.scss';
+
+.login-container{
+    padding: 16px 36px;
+    position: relative;
+}
+
+.login-title{
+    font-family: $bold-font;
+    font-size: 30px;
+    line-height: 34px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: center;
+    color: $normal-color;
+}
+
+.login-subtitle{
+    font-family: $regular-font;
+    color: $normal-color;
+    text-align: center;
+}

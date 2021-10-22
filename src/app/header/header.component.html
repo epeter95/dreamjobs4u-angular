@@ -10,7 +10,9 @@
                         class="navigation-link-bottom-border"></span></a>
             </div>
             <div class="auth-navigation-container">
-                <a class="navigation-link" [ngClass]="isRegistrationOpen ? 'active-navigation-link' : ''" (click)="openRegistrationDialog()">Regisztráció<span
+                <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openLoginDialog()">Bejelentkezés<span
+                    class="navigation-link-bottom-border"></span></a>
+                <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openRegistrationDialog()">Regisztráció<span
                         class="navigation-link-bottom-border"></span></a>
             </div>
         </div>

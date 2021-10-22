@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 
@@ -16,12 +17,13 @@ export interface DialogData {
   templateUrl: './registration-done-dialog.component.html',
   styleUrls: ['./registration-done-dialog.component.scss']
 })
-export class RegistrationDoneDialog implements OnInit {
+export class RegistrationDoneDialog implements OnInit, OnDestroy {
 
   acceptance: boolean = false;
   openLoginNeeded: boolean = false;
   clickToLoginText: string = '';
   successfulRegistrationText: string = '';
+  languageSubscription: Subscription = new Subscription();
 
   constructor(public dialogRef: MatDialogRef<RegistrationDoneDialog>,
     private dataService: DataService,
@@ -29,11 +31,15 @@ export class RegistrationDoneDialog implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public').subscribe(res=>{
-      this.languageService.languageObservable$.subscribe(lang=>{
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         this.clickToLoginText = this.languageService.getTranslationByKey(lang,res,'title','clickToLoginLink','PublicContentTranslations');
         this.successfulRegistrationText = this.languageService.getTranslationByKey(lang,res,'title','successfulRegText','PublicContentTranslations');
       });
     });
+  }
+
+  ngOnDestroy(){
+    this.languageSubscription.unsubscribe();
   }
 
   openLogin(){

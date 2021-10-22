@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { Role } from 'src/app/interfaces/role';
 import { DataService } from 'src/app/services/data.service';
@@ -12,7 +12,7 @@ import { LanguageService } from 'src/app/services/language.service';
   templateUrl: './registration-dialog.component.html',
   styleUrls: ['./registration-dialog.component.scss']
 })
-export class RegistrationDialogComponent implements OnInit {
+export class RegistrationDialogComponent implements OnInit, OnDestroy {
 
   isEmployee: boolean = false;
   isEmployer: boolean = false;
@@ -34,6 +34,8 @@ export class RegistrationDialogComponent implements OnInit {
   isPasswordMismatch: boolean = false;
   isEmailAlreadyExist: boolean = false;
   isRegistrationSuccess: boolean = false;
+
+  languageSubscription: Subscription = new Subscription();
 
 
   registrationFormElements: FormElement[] = [
@@ -63,7 +65,7 @@ export class RegistrationDialogComponent implements OnInit {
       this.dataService.getAllData('/api/errorMessages/public')
     ]).subscribe(res=>{
       this.roles = res[0];
-      this.languageService.languageObservable$.subscribe(lang=>{
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         this.roles = this.roles.map(element=>{
           element.selectedTranslation = this.languageService.getTranslation(lang,element.RoleTranslations);
           return element;
@@ -82,6 +84,10 @@ export class RegistrationDialogComponent implements OnInit {
         this.missingRoleErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','missingRole', 'ErrorMessageTranslations');
       });
     });
+  }
+
+  ngOnDestroy(){
+    this.languageSubscription.unsubscribe();
   }
 
   closeDialog() {

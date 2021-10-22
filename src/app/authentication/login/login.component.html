@@ -2,13 +2,27 @@
     <div class="close-button" (click)="closeDialog()">X</div>
     <div class="login-title">{{loginTitleText}}</div>
     <div class="login-subtitle">{{loginSubtitleText}}</div>
+    <div *ngIf="passwordDoesntMatch" class="response-error-message">
+        <div>{{passwordDoesntMatchtext}}</div>
+        <button class="close-error-message" (click)="closeErrorMessage()">X</button>
+    </div>
+    <div *ngIf="isUserMissing" class="response-error-message">
+        <div>{{missingUserText}}</div>
+        <button class="close-error-message" (click)="closeErrorMessage()">X</button>
+    </div>
     <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form">
         <div class="form-field-wrapper" *ngFor="let element of loginFormElements">
             <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
-                <input [id]="element.key" [type]="element.type!" (focus)="element.focus = true" (focusout)="element.focus = false" [placeholder]="element.placeholder" [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                <input [id]="element.key" [type]="element.type!" (focus)="element.focus = true"
+                    (focusout)="element.focus = false" [placeholder]="element.placeholder"
+                    [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
             </div>
-            <div class="required-error-message" *ngIf="isUserClicked && loginForm.controls[element.key].hasError('required')">{{element.placeholder}} {{requiredFieldErrorText}}</div>
-            <div class="required-error-message" *ngIf="isUserClicked && loginForm.controls[element.key].hasError('email')">{{wrongEmailFormatErrorText}}</div>
+            <div class="required-error-message"
+                *ngIf="isUserClicked && loginForm.controls[element.key].hasError('required')">{{element.placeholder}}
+                {{requiredFieldErrorText}}</div>
+            <div class="required-error-message"
+                *ngIf="isUserClicked && loginForm.controls[element.key].hasError('email')">{{wrongEmailFormatErrorText}}
+            </div>
         </div>
         <button class="submit-button">{{loginButtonText}}</button>
     </form>

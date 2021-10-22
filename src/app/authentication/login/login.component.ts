@@ -5,6 +5,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginButtonText: string = '';
   isUserClicked: boolean = false;
   requiredFieldErrorText: string = '';
+  isUserMissing: boolean = false;
+  passwordDoesntMatch: boolean = false;
   wrongEmailFormatErrorText: string = '';
+  missingUserText: string = '';
+  passwordDoesntMatchtext: string = '';
   loginFormElements: FormElement[] = [
     { key: 'loginEmail', placeholder: '', focus: false },
     { key: 'loginPassword', placeholder: '', focus: false , type: "password"}
@@ -31,7 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(public dialogRef: MatDialogRef<LoginComponent>,
     private dataService: DataService,
-    private languageService: LanguageService) { }
+    private languageService: LanguageService,
+    private sessionService: SessionService) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -48,6 +54,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.loginSubtitleText = this.languageService.getTranslationByKey(lang,res[0],'title','loginSubtitle','PublicContentTranslations');
         this.loginButtonText = this.languageService.getTranslationByKey(lang,res[0],'title','loginButton','PublicContentTranslations');
         
+        this.passwordDoesntMatchtext = this.languageService.getTranslationByKey(lang,res[1],'text','passwordDoesntMatch', 'ErrorMessageTranslations');
+        this.missingUserText = this.languageService.getTranslationByKey(lang,res[1],'text','missingUser', 'ErrorMessageTranslations');
         this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[1],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
         this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,res[1],'text','wrongEmailFormat', 'ErrorMessageTranslations');
       });
@@ -58,12 +66,33 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.languageSubscription.unsubscribe();
   }
 
+  closeErrorMessage(){
+    this.isUserMissing = false;
+    this.passwordDoesntMatch = false;
+  }
+
   closeDialog() {
     this.dialogRef.close();
   }
 
   login(){
     this.isUserClicked = true;
+    this.isUserMissing = false;
+    this.passwordDoesntMatch = false;
+    if(this.loginForm.valid){
+      this.dataService.httpPostMethod('/api/auth/login/public',this.loginForm.value).subscribe(res=>{
+        if(res.error == 'userNotExist'){
+          this.isUserMissing = true;
+          return;
+        }
+        this.sessionService.setSession(res.token);
+        this.dialogRef.close();
+      }, error=>{
+        if(error.status==401){
+          this.passwordDoesntMatch = true;
+        }
+      });
+    }
   }
 
 }

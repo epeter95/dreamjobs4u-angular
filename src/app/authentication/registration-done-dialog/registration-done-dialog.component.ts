@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 
@@ -24,7 +24,7 @@ export class RegistrationDoneDialog implements OnInit {
   successfulRegistrationText: string = '';
 
   constructor(public dialogRef: MatDialogRef<RegistrationDoneDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private dataService: DataService,
+    private dataService: DataService,
     private languageService: LanguageService) { }
 
   ngOnInit(): void {

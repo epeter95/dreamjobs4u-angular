@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;
   registrationDialogSubscription: Subscription = new Subscription();
+  registrationDoneDialogSubscription: Subscription = new Subscription();
   loginDialogSubscription: Subscription = new Subscription();
   constructor(public dialog: MatDialog) { }
 
@@ -28,11 +29,16 @@ export class HeaderComponent implements OnInit {
     });
     this.registrationDialogSubscription = registrationDialogRef.afterClosed().subscribe(()=>{
       this.isRegistrationOpen = false;
-      this.dialog.open(RegistrationDoneDialog,{
-        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-        disableClose: true
-      });
       if(registrationDialogRef.componentInstance.isRegistrationSuccess){
+        const registrationDoneDialogRef = this.dialog.open(RegistrationDoneDialog,{
+          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+          disableClose: true
+        });
+        this.registrationDoneDialogSubscription = registrationDoneDialogRef.afterClosed().subscribe(()=>{
+          if(registrationDoneDialogRef.componentInstance.openLoginNeeded){
+            this.openLoginDialog();
+          }
+        });
       }
     });
   }
@@ -50,6 +56,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnDestroy(){
     this.registrationDialogSubscription.unsubscribe();
+    this.registrationDoneDialogSubscription.unsubscribe();
   }
 
 }

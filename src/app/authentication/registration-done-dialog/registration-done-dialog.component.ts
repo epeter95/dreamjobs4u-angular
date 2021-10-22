@@ -19,7 +19,6 @@ export interface DialogData {
 })
 export class RegistrationDoneDialog implements OnInit, OnDestroy {
 
-  acceptance: boolean = false;
   openLoginNeeded: boolean = false;
   clickToLoginText: string = '';
   successfulRegistrationText: string = '';

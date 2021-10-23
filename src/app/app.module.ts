@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationDoneDialog } from './authentication/registration-done-dialog/registration-done-dialog.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoginComponent } from './authentication/login/login.component';
     HomeComponent,
     RegistrationDialogComponent,
     RegistrationDoneDialog,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

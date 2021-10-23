@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationDoneDialog } from './authentication/registration-done-dialog/registration-done-dialog.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { BasicInformationComponent } from './profile/basic-information/basic-information.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ProfileComponent } from './profile/profile.component';
     RegistrationDialogComponent,
     RegistrationDoneDialog,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    BasicInformationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { UserData } from '../interfaces/user-data';
 
@@ -12,7 +13,7 @@ export class SessionService {
   private userDataSubject: Subject<UserData> = new Subject<UserData>();
   userDataObservable$ = this.userDataSubject.asObservable();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   getSession(){
     return localStorage.getItem('user-token');
@@ -33,6 +34,9 @@ export class SessionService {
 
   clearSession(){
     localStorage.removeItem('user-token');
+    if(this.router.url == '/profile'){
+      this.router.navigate(['/']);
+    }
     this.nextUserState(false);
   }
 

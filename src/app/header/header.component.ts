@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { LoginComponent } from '../authentication/login/login.component';
@@ -24,10 +24,34 @@ export class HeaderComponent implements OnInit {
   userDataSubscription: Subscription = new Subscription();
   loginDialogSubscription: Subscription = new Subscription();
   userData!: UserData;
-  isProfileOpen: boolean = false;
+  isProfileMenuOpen: boolean = false;
   isUserMenuOpen: boolean = false;
 
-  constructor(public dialog: MatDialog, private sessionService: SessionService, private dataService: DataService) { }
+  @ViewChild('userButton') userButton!: ElementRef;
+  @ViewChild('userContainer') userContainer!: ElementRef;
+  @ViewChild('profileButton') profileButton!: ElementRef;
+  @ViewChild('profileContainer') profileContainer!: ElementRef;
+
+  constructor(
+    public dialog: MatDialog,
+    private sessionService: SessionService,
+    private dataService: DataService,
+    private renderer: Renderer2
+  ) {
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (this.profileButton && this.profileContainer) {
+        if (e.target !== this.profileButton.nativeElement && e.target !== this.profileContainer.nativeElement) {
+          this.isProfileMenuOpen = !this.isProfileMenuOpen;
+        }
+      }
+
+      if (this.userButton && this.userContainer) {
+        if (e.target !== this.userButton.nativeElement && e.target !== this.userContainer.nativeElement) {
+          this.isUserMenuOpen = !this.isUserMenuOpen;
+        }
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.userLoggedInSubscription = this.sessionService.userLoggedInObservable$.subscribe(state=>{
@@ -56,7 +80,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openProfileMenu(){
-    this.isProfileOpen = !this.isProfileOpen;
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 
   openRegistrationDialog(){
@@ -95,7 +119,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(){
-    this.isProfileOpen = false;
+    this.isProfileMenuOpen = false;
     this.sessionService.clearSession();
   }
 }

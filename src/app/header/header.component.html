@@ -11,16 +11,34 @@
             </div>
             <div class="auth-navigation-container">
                 <ng-container *ngIf="userLoggedIn; else loggedOut">
-                    <div *ngIf="userData" class="no-profile-picture-image" (click)="openProfileMenu()">
-                        {{userData.monogram}}
+                    <div class="profile-container">
+                        <div *ngIf="userData" class="no-profile-picture-image" (click)="openProfileMenu()">
+                            {{userData.monogram}}
+                        </div>
+                        <div *ngIf="isProfileOpen" class="profile-menu">
+                            <div class="no-profile-picture-image big-image">
+                                {{userData.monogram}}
+                            </div>
+                            <div>
+                                <a class="navigation-link" routerLinkActive="active-navigation-link" (click)="openProfileMenu()"
+                                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/profile">Profil<span
+                                        class="navigation-link-bottom-border"></span></a>
+                                <button class="logout-button navigation-link" (click)="logout()">Kijelentkezés</button>
+                            </div>
+                        </div>
                     </div>
-                    <button (click)="logout()">kijelentkezés</button>
                 </ng-container>
                 <ng-template #loggedOut>
-                    <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openLoginDialog()">Bejelentkezés<span
-                        class="navigation-link-bottom-border"></span></a>
-                    <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'" (click)="openRegistrationDialog()">Regisztráció<span
-                            class="navigation-link-bottom-border"></span></a>
+                    <div class="user-menu-container">
+                        <div (click)="openUserMenu()" [ngClass]="isUserMenuOpen ? 'user-menu-icon-active':'user-menu-icon'" class="user-menu-icon"></div>
+                        <div *ngIf="isUserMenuOpen" class="user-menu">
+                            <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'"
+                                (click)="openLoginDialog()">Bejelentkezés<span class="navigation-link-bottom-border"></span></a>
+                            <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'"
+                                (click)="openRegistrationDialog()">Regisztráció<span
+                                    class="navigation-link-bottom-border"></span></a>
+                        </div>
+                    </div>
                 </ng-template>
             </div>
         </div>

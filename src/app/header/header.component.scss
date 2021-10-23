@@ -39,6 +39,11 @@
     padding-bottom: 5px;
     cursor: pointer;
     font-family: $regular-font;
+    transition: color 0.2s ease-in-out;
+}
+
+.navigation-link:hover{
+    color: $highlighted-color;
 }
 
 .navigation-link-bottom-border{
@@ -49,12 +54,6 @@
     transition: width 0.2s ease-in-out;
     background-color: $highlighted-color;
     margin-top: 5px;
-}
-
-.navigation-link:hover{
-    .navigation-link-bottom-border{
-        width: 100%;
-    }
 }
 
 .active-navigation-link{
@@ -73,4 +72,71 @@
     font-family: $bold-font;
     @include flex-container(center,center);
     cursor: pointer;
+}
+
+.profile-container{
+    position: relative;
+}
+
+.profile-menu{
+    position: absolute;
+    z-index: 1;
+    top: 45px;
+    right: 0;
+    min-width: 200px;
+    background-color: white;
+    padding: 20px;
+    @include flex-container(space-between,center);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
+.user-menu{
+    position: absolute;
+    z-index: 1;
+    top: 45px;
+    right: 0;
+    min-width: 200px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
+.big-image{
+    width: 60px;
+    height: 60px;
+    cursor: initial;
+}
+
+.user-menu-container{
+    position: relative;
+}
+
+.user-menu-icon, .user-menu-active{
+    width: 32px;
+    height: 32px;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.user-menu-icon{
+    background-image: url('/assets/images/user-icon.jpg');
+}
+
+.user-menu-icon:hover{
+    background-image: url('/assets/images/user-icon-hover.jpg');
+}
+
+.user-menu-icon-active{
+    background-image: url('/assets/images/user-icon-hover.jpg');
+}
+
+.logout-button{
+    border: none;
+    background-color:transparent;
+    outline: none;
+    padding: 0;
+    margin-top: 10px;
 }

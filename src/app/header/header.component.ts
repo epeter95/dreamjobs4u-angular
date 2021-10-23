@@ -24,6 +24,9 @@ export class HeaderComponent implements OnInit {
   userDataSubscription: Subscription = new Subscription();
   loginDialogSubscription: Subscription = new Subscription();
   userData!: UserData;
+  isProfileOpen: boolean = false;
+  isUserMenuOpen: boolean = false;
+
   constructor(public dialog: MatDialog, private sessionService: SessionService, private dataService: DataService) { }
 
   ngOnInit(): void {
@@ -41,19 +44,24 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  openUserMenu(){
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
   ngOnDestroy(){
     this.registrationDialogSubscription.unsubscribe();
     this.registrationDoneDialogSubscription.unsubscribe();
     this.userLoggedInSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
   }
-  
-  openProfileMenu(){
 
+  openProfileMenu(){
+    this.isProfileOpen = !this.isProfileOpen;
   }
 
   openRegistrationDialog(){
     this.isRegistrationOpen = true;
+    this.isUserMenuOpen = false;
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent,{
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -76,6 +84,7 @@ export class HeaderComponent implements OnInit {
 
   openLoginDialog(){
     this.isLoginOpen = true;
+    this.isUserMenuOpen = false;
     const loginDialogRef = this.dialog.open(LoginComponent,{
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -86,6 +95,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(){
+    this.isProfileOpen = false;
     this.sessionService.clearSession();
   }
 }

@@ -4,14 +4,6 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 
-export interface DialogData {
-  icon: string;
-  text: string;
-  url?: string;
-  urlText?: string;
-  cancel?: boolean;
-}
-
 @Component({
   selector: 'app-registration-done-dialog',
   templateUrl: './registration-done-dialog.component.html',

@@ -1,17 +1,27 @@
 <div id="profile-container" class="profile-container" *ngIf="profileData">
     <div class="profile-page-menu">
         <div class="no-profile-picture">
-            {{monogram}}
-            <mat-icon color="primary" class="update-profile-pic">camera_enhance</mat-icon>
-            <mat-icon color="primary" class="delete-profile-pic">remove_circle_outline</mat-icon>
+            <img class="profile-picture" *ngIf="imageUrl; else noProfilePic" [src]="imageUrl">
+            <ng-template #noProfilePic>
+                {{monogram}}
+            </ng-template>
+            <input (change)="handleProfilePicture($event)" [formControl]="profilePictureControl" #pictureUpload type="file" name="upload"
+                accept="image/*"  class="change-picture-input">
+            <mat-icon color="primary" (click)="pictureUpload.click()" class="update-profile-pic">camera_enhance</mat-icon>
+            <mat-icon color="primary" class="delete-profile-pic" (click)="removeProfilePicture()">remove_circle_outline</mat-icon>
         </div>
+        <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()" class="save-profilepic-button">Mentés</button>
         <div class="profile-name">{{profileData.firstName}} {{profileData.lastName}}</div>
         <div class="profile-job-title">{{profileData.Profile.jobTitle}}</div>
         <div class="profile-menus">
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Általános információk</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">Elérhetőségi információk</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="kedvenc-allasok">Kedvelt állások</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="jelentkezett-allasok">Jelentkezett állások</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Általános információk</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">Elérhetőségi információk</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="kedvenc-allasok">Kedvelt állások</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="jelentkezett-allasok">Jelentkezett állások</a>
         </div>
     </div>
     <router-outlet></router-outlet>

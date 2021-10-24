@@ -1,8 +1,13 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { UserProfileData } from '../interfaces/user-data';
+import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
 import { ProfileService } from '../services/profile.service';
+import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,12 +20,19 @@ export class ProfileComponent implements OnInit {
   profileDataSubscription: Subscription = new Subscription();
   profileDataAndPublicContentSubscription: Subscription = new Subscription();
   jobTitle: string = '';
+  fileData!: File;
+  isProfilePictureExists: boolean = false;
+  profilePictureControl: FormControl = new FormControl('');
+  isProfilePicChanging: boolean = false;
+
+  imageUrl: any;
 
   constructor(private languageService: LanguageService,
-    private profileService: ProfileService) { }
+    private dataService: DataService,
+    private profileService: ProfileService,
+    private sessionService: SessionService) { }
 
   ngOnInit(): void {
-
     this.profileService.getProfileDataAndPublicContents().subscribe(res=>{
       this.profileService.nextProfileData(res);
       this.initProfileData(res[0]);
@@ -32,7 +44,7 @@ export class ProfileComponent implements OnInit {
           this.initProfileData(res);
         });
       }
-    })
+    });
   }
 
   ngOnDestroy(){
@@ -40,10 +52,41 @@ export class ProfileComponent implements OnInit {
     this.profileDataAndPublicContentSubscription.unsubscribe();
   }
 
+  handleProfilePicture(event: any) {
+    this.fileData = event.target.files[0] as File;
+    const files = event.target.files;
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imageUrl = reader.result;
+      this.isProfilePicChanging = true;
+    }
+  }
+
   initProfileData(res: any){
     this.profileData = res;
-    this.monogram = res.firstName[0]+res.lastName[0];
-    this.jobTitle = res.Profile.jobTitle;
+    this.monogram = this.profileData.firstName[0]+this.profileData.lastName[0];
+    this.imageUrl = this.profileData.Profile.profilePicture;
+    this.jobTitle = this.profileData.Profile.jobTitle;
+    this.imageUrl = environment.apiDomain +'/'+this.profileData.Profile.profilePicture;
+  }
+
+  saveProfilePicture(){
+    let formData = new FormData();
+    if (this.isProfilePicChanging) {
+      formData.append('profilePictureUrl', this.fileData);
+    }
+    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
+    this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture',formData,headers).subscribe(res=>{
+      console.log(res);
+      this.isProfilePicChanging = false;
+    });
+  }
+
+  removeProfilePicture(){
+    this.imageUrl = '';
+    this.isProfilePicChanging = true;
+    this.profilePictureControl.setValue('');
   }
 
 }

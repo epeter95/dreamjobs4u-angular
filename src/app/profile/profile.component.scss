@@ -5,15 +5,105 @@
     max-width: 1200px;
     margin: auto;
     width: 100%;
-    background-color: white;
     min-height:100px;
-    margin-top: 50px;
+    margin-top: 30px;
     border-radius: 8px;
     padding: 30px 50px;
     box-sizing: border-box;
+    @include flex-container(space-between,center, 50px);
+}
+
+.profile-page-menu{
+    max-width: 300px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    padding: 30px 0;
+    box-sizing: border-box;
+    height: 100%;
 }
 
 .profile-page-title{
     font-family: $bold-font;
     text-align: center;
+}
+
+.no-profile-picture{
+    width: 140px;
+    position: relative;
+    height: 140px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: $highlighted-color;
+    color: white;
+    font-family: $bold-font;
+    font-size: 32px;
+    @include flex-container(center,center);
+}
+
+.update-profile-pic, .delete-profile-pic{
+    position: absolute;
+    cursor: pointer;
+    border-radius: 50%;
+    top: 0px;
+    padding: 5px;
+    font-size: 32px;
+    z-index: 5;
+    border: 1px solid rgba(0,0,0,0.1);
+    background-color: white;
+    width: 32px;
+    height:32px;
+}
+
+.update-profile-pic{
+    left: -15px;
+}
+
+.delete-profile-pic{
+    right: -15px;
+}
+
+.profile-name{
+    color: $normal-color;
+    font-family: $bold-font;
+    font-size: 32px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.profile-job-title{
+    color: $normal-color;
+    font-family: $regular-font;
+    font-size: 20px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.profile-menus{
+    margin-top: 50px;
+}
+
+.profile-menu-item{
+    padding: 15px 30px;
+    font-family: $regular-font;
+    color: $normal-color;
+    display: block;
+    text-decoration: none;
+    transition: padding-left 0.3s ease-in-out;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.active-profile-route{
+    background-color: rgba($highlighted-color, 0.2);
+    font-family: $bold-font;
+    border-left: 3px solid $highlighted-color;
+    color: $highlighted-color;
+}
+
+.profile-menu-item:hover{
+    background-color: rgba($highlighted-color, 0.2);
+    font-family: $bold-font;
+    border-left: 3px solid $highlighted-color;
+    color: $highlighted-color;
+    padding-left: 40px;
 }

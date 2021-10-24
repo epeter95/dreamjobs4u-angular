@@ -1,9 +1,11 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { UserProfileData } from 'src/app/interfaces/user-data';
+import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -14,10 +16,12 @@ import { SessionService } from 'src/app/services/session.service';
   templateUrl: './basic-information.component.html',
   styleUrls: ['./basic-information.component.scss']
 })
-export class BasicInformationComponent implements OnInit {
+export class BasicInformationComponent implements OnInit, OnDestroy {
   basicInfoTitleText: string = '';
   sendButtonText: string = '';
   profileData!: UserProfileData;
+  profileDataSubscription: Subscription = new Subscription();
+
   basicInfoFormElements: FormElement[] = [
     { key: 'profileFirstName', placeholder: '', focus: false, profileDataKey: 'firstName' },
     { key: 'profileLastName', placeholder: '', focus: false, profileDataKey: 'lastName' },
@@ -39,25 +43,31 @@ export class BasicInformationComponent implements OnInit {
   });
 
   constructor(private dataService: DataService, private languageService: LanguageService,
-    private profileService: ProfileService, private sessionService: SessionService) { }
+    private profileService: ProfileService, private sessionService: SessionService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
    this.initData();
   }
 
+  ngOnDestroy(){
+    this.profileDataSubscription.unsubscribe();
+  }
+
   initData(){
-    this.profileService.getProfileDataAndPublicContents().subscribe(res => {
-      this.profileData = res[0];
-      this.languageService.languageObservable$.subscribe(lang => {
-        this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
-        this.sendButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileSendButtonText', 'PublicContentTranslations');
-        this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
-          this.basicInfoForm.controls[element.key].setValue(res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]);
-          element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
-          element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
-          return element;
+    this.profileDataSubscription = this.profileService.profileDataObservable$.subscribe(res => {
+      if(res.length > 0){
+        this.profileData = res[0];
+        this.languageService.languageObservable$.subscribe(lang => {
+          this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+          this.sendButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileSendButtonText', 'PublicContentTranslations');
+          this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
+            this.basicInfoForm.controls[element.key].setValue(res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]);
+            element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
+            element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
+            return element;
+          });
         });
-      });
+      }
     });
   }
 
@@ -78,7 +88,20 @@ export class BasicInformationComponent implements OnInit {
       this.dataService.httpPostMethod('/api/users/public/modifyUserData',userResult,headers),
       this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,headers)
     ]).subscribe(res=>{
-      this.profileService.nextRefreshState(true);
+      if(res[0].error || res[1].error){
+        this.dialog.open(MessageDialogComponent,{
+          data: {icon: 'warning', text: 'asd'},
+          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        });
+        return;
+      }
+      const ref = this.dialog.open(MessageDialogComponent,{
+        data: {icon: 'done', text: 'asdasdasd'},
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      });
+      ref.afterClosed().subscribe(()=>{
+        this.profileService.nextRefreshState(true);
+      });
     });
   }
 

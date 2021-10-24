@@ -20,7 +20,9 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService) { }
 
   ngOnInit(): void {
+
     this.profileService.getProfileDataAndPublicContents().subscribe(res=>{
+      this.profileService.nextProfileData(res);
       this.initProfileData(res[0]);
     });
 

@@ -66,17 +66,18 @@ export class HeaderComponent implements OnInit {
     if (this.sessionService.getSession()) {
       this.profileDataSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh => {
         if (refresh) {
-          let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-          this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
-            this.userData = data;
-          });
+         this.getUserData();
         }
       });
-      let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-      this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
-        this.userData = data;
-      });
+      this.getUserData();
     }
+  }
+
+  getUserData(){
+    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
+    this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
+      this.userData = data;
+    });
   }
 
   openUserMenu() {

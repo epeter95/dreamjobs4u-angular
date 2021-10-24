@@ -12,7 +12,15 @@ export class ProfileService {
   private refreshProfileDataSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
   refreshProfileDataObservable$ = this.refreshProfileDataSubject.asObservable();
 
+  private profileDataSubject: Subject<Array<any>> = new BehaviorSubject<Array<any>>(new Array());
+  profileDataObservable$ = this.profileDataSubject.asObservable();
+
   constructor(private dataService: DataService, private sessionService: SessionService) {}
+
+
+  nextProfileData(data: any[]){
+    this.profileDataSubject.next(data);
+  }
 
   nextRefreshState(refresh: boolean){
     this.refreshProfileDataSubject.next(refresh);

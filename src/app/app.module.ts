@@ -16,6 +16,7 @@ import { RegistrationDoneDialog } from './authentication/registration-done-dialo
 import { LoginComponent } from './authentication/login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BasicInformationComponent } from './profile/basic-information/basic-information.component';
+import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { BasicInformationComponent } from './profile/basic-information/basic-inf
     RegistrationDoneDialog,
     LoginComponent,
     ProfileComponent,
-    BasicInformationComponent
+    BasicInformationComponent,
+    ContactInformationComponent
   ],
   imports: [
     BrowserModule,

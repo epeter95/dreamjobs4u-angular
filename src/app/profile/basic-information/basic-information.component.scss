@@ -1,0 +1,45 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import '../../authentication/auth-form.scss';
+
+.basic-info-container{
+    background-color: white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    width: 850px;
+    box-sizing: border-box;
+    padding: 30px 40px;
+}
+
+.basic-info-title{
+    font-family: $bold-font;
+    line-height: 39px;
+    font-size: 32px;
+    color: $normal-color;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.profile-form-field{
+    box-sizing: border-box;
+    width: 375px;
+}
+
+.profile-form-textarea-field{
+    box-sizing: border-box;
+    width: 770px;
+    padding: 16px;
+}
+
+.profile-form{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+}
+
+.profile-submit-button{
+    margin-top: 20px;
+}
+
+.contact-title{
+    margin-top: 30px;
+}

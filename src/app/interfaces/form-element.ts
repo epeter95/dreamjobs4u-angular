@@ -4,4 +4,6 @@ export interface FormElement{
     imgUrl?:string;
     focus: boolean;
     type?: string;
+    value?: any;
+    fieldType?: string;
 }

@@ -15,7 +15,7 @@
     border: 2px solid $highlighted-color;
 }
 
-.form-input, .form-input-focused{
+.form-input, .form-input-focused, .form-textarea, .form-textarea-focused{
     border: none;
     outline: none;
     width: 100%;
@@ -27,17 +27,17 @@
     transition: color 0.2s ease-in-out;
 }
 
-.form-input-focused{
+.form-input-focused, .form-textarea-focused{
     color: $highlighted-color;
 }
 
-.form-input::placeholder{
+.form-input::placeholder, .form-textarea::placeholder{
     font-family: $regular-font;
     color: $normal-color;
     transition: color 0.2s ease-in-out;
 }
 
-.form-input-focused::placeholder{
+.form-input-focused::placeholder, .form-textarea-focused::placeholder{
     color: $highlighted-color;
     opacity: 1;
     font-family: $bold-font;
@@ -93,4 +93,20 @@
     cursor: pointer;
     padding: 3px 6px;
     border-radius: 2px;
+}
+
+.form-field-label{
+    font-family: $regular-font;
+    font-size: 20px;
+    color: $normal-color;
+    line-height: 24px;
+    margin: 0 0 10px 10px;
+}
+
+.form-field-label-focused{
+    font-family: $bold-font;
+    font-size: 20px;
+    color: $highlighted-color;
+    line-height: 24px;
+    margin: 0 0 10px 10px;
 }

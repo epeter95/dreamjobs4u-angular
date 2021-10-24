@@ -34,7 +34,7 @@ export class SessionService {
 
   clearSession(){
     localStorage.removeItem('user-token');
-    if(this.router.url == '/profile'){
+    if(this.router.url.includes('/profil')){
       this.router.navigate(['/']);
     }
     this.nextUserState(false);

@@ -3,15 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './authentication/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { BasicInformationComponent } from './profile/basic-information/basic-information.component';
+import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   {
-    path: 'profil', component: ProfileComponent, pathMatch: 'full',
+    path: 'profil', component: ProfileComponent,
     canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
-      { path: '', component: BasicInformationComponent }
+      { path: 'elerhetoseg', component: ContactInformationComponent, pathMatch: 'full' },
+      { path: '', component: BasicInformationComponent, pathMatch: 'full' },
     ]
   },
 ];

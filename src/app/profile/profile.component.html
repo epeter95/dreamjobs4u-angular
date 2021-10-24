@@ -8,9 +8,10 @@
         <div class="profile-name">{{profileData.firstName}} {{profileData.lastName}}</div>
         <div class="profile-job-title">{{profileData.firstName}}</div>
         <div class="profile-menus">
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil">Általános információk</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil/kedvenc-allasok">Kedvelt állások</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil/jelentkezett-allasok">Jelentkezett állások</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Általános információk</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">Elérhetőségi információk</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="kedvenc-allasok">Kedvelt állások</a>
+            <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="jelentkezett-allasok">Jelentkezett állások</a>
         </div>
     </div>
     <router-outlet></router-outlet>

@@ -1,9 +1,7 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UserProfileData } from '../interfaces/user-data';
-import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
-import { SessionService } from '../services/session.service';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,16 +11,13 @@ import { SessionService } from '../services/session.service';
 export class ProfileComponent implements OnInit {
   monogram: string = '';
   profileData!: UserProfileData;
-  constructor(private dataService: DataService,
-    private languageService: LanguageService,
-    private sessionService: SessionService) { }
+  constructor(private languageService: LanguageService,
+    private profileService: ProfileService) { }
 
   ngOnInit(): void {
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-    this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers).subscribe(res=>{
-      console.log(res);
-      this.profileData = res;
-      this.monogram = res.firstName[0]+res.lastName[0];
+    this.profileService.getProfileDataAndPublicContents().subscribe(res=>{
+      this.profileData = res[0];
+      this.monogram = res[0].firstName[0]+res[0].lastName[0];
     });
   }
 

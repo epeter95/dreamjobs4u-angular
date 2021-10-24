@@ -6,4 +6,5 @@ export interface FormElement{
     type?: string;
     value?: any;
     fieldType?: string;
+    profileDataKey?:string;
 }

@@ -42,6 +42,10 @@ export class BasicInformationComponent implements OnInit {
     private profileService: ProfileService, private sessionService: SessionService) { }
 
   ngOnInit(): void {
+   this.initData();
+  }
+
+  initData(){
     this.profileService.getProfileDataAndPublicContents().subscribe(res => {
       this.profileData = res[0];
       this.languageService.languageObservable$.subscribe(lang => {
@@ -74,7 +78,7 @@ export class BasicInformationComponent implements OnInit {
       this.dataService.httpPostMethod('/api/users/public/modifyUserData',userResult,headers),
       this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,headers)
     ]).subscribe(res=>{
-      console.log(res);
+      this.profileService.nextRefreshState(true);
     });
   }
 

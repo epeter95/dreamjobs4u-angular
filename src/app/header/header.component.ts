@@ -7,6 +7,7 @@ import { RegistrationDialogComponent } from '../authentication/registration-dial
 import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
 import { UserData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
+import { ProfileService } from '../services/profile.service';
 import { SessionService } from '../services/session.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   registrationDoneDialogSubscription: Subscription = new Subscription();
   userLoggedInSubscription: Subscription = new Subscription();
   userDataSubscription: Subscription = new Subscription();
+  profileDataSubscription: Subscription = new Subscription();
   loginDialogSubscription: Subscription = new Subscription();
   userData!: UserData;
   isProfileMenuOpen: boolean = false;
@@ -36,7 +38,8 @@ export class HeaderComponent implements OnInit {
     public dialog: MatDialog,
     private sessionService: SessionService,
     private dataService: DataService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private profileService: ProfileService
   ) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.profileButton && this.profileContainer) {
@@ -54,51 +57,60 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userLoggedInSubscription = this.sessionService.userLoggedInObservable$.subscribe(state=>{
+    this.userLoggedInSubscription = this.sessionService.userLoggedInObservable$.subscribe(state => {
       this.userLoggedIn = state;
     });
-    this.userDataSubscription = this.sessionService.userDataObservable$.subscribe(data=>{
+    this.userDataSubscription = this.sessionService.userDataObservable$.subscribe(data => {
       this.userData = data;
     });
-    if(this.sessionService.getSession()){
+    if (this.sessionService.getSession()) {
+      this.profileDataSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh => {
+        if (refresh) {
+          let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
+          this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
+            this.userData = data;
+          });
+        }
+      });
       let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-      this.dataService.getOneData('/api/users/getDataForPublic',headers).subscribe(data=>{
+      this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
         this.userData = data;
       });
     }
   }
 
-  openUserMenu(){
+  openUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.registrationDialogSubscription.unsubscribe();
     this.registrationDoneDialogSubscription.unsubscribe();
     this.userLoggedInSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
+    this.profileDataSubscription.unsubscribe();
   }
 
-  openProfileMenu(){
+  openProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 
-  openRegistrationDialog(){
+  openRegistrationDialog() {
     this.isRegistrationOpen = true;
     this.isUserMenuOpen = false;
-    const registrationDialogRef = this.dialog.open(RegistrationDialogComponent,{
+    const registrationDialogRef = this.dialog.open(RegistrationDialogComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    this.registrationDialogSubscription = registrationDialogRef.afterClosed().subscribe(()=>{
+    this.registrationDialogSubscription = registrationDialogRef.afterClosed().subscribe(() => {
       this.isRegistrationOpen = false;
-      if(registrationDialogRef.componentInstance.isRegistrationSuccess){
-        const registrationDoneDialogRef = this.dialog.open(RegistrationDoneDialog,{
+      if (registrationDialogRef.componentInstance.isRegistrationSuccess) {
+        const registrationDoneDialogRef = this.dialog.open(RegistrationDoneDialog, {
           backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
           disableClose: true
         });
-        this.registrationDoneDialogSubscription = registrationDoneDialogRef.afterClosed().subscribe(()=>{
-          if(registrationDoneDialogRef.componentInstance.openLoginNeeded){
+        this.registrationDoneDialogSubscription = registrationDoneDialogRef.afterClosed().subscribe(() => {
+          if (registrationDoneDialogRef.componentInstance.openLoginNeeded) {
             this.openLoginDialog();
           }
         });
@@ -106,19 +118,19 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  openLoginDialog(){
+  openLoginDialog() {
     this.isLoginOpen = true;
     this.isUserMenuOpen = false;
-    const loginDialogRef = this.dialog.open(LoginComponent,{
+    const loginDialogRef = this.dialog.open(LoginComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    this.loginDialogSubscription = loginDialogRef.afterClosed().subscribe(()=>{
+    this.loginDialogSubscription = loginDialogRef.afterClosed().subscribe(() => {
       this.isLoginOpen = false;
     });
   }
 
-  logout(){
+  logout() {
     this.isProfileMenuOpen = false;
     this.sessionService.clearSession();
   }

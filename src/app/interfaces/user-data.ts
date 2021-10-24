@@ -25,4 +25,11 @@ export interface Profile{
     phone: string;
     profilePicture: string;
     cvPath: string;
+    jobTitle: string;
+    country: string;
+    zipcode: string;
+    city: string;
+    address: string;
+    expectedSalary: string;
+    currentSalary: string;
 }

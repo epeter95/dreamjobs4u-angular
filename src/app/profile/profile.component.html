@@ -6,7 +6,7 @@
             <mat-icon color="primary" class="delete-profile-pic">remove_circle_outline</mat-icon>
         </div>
         <div class="profile-name">{{profileData.firstName}} {{profileData.lastName}}</div>
-        <div class="profile-job-title">{{profileData.firstName}}</div>
+        <div class="profile-job-title">{{profileData.Profile.jobTitle}}</div>
         <div class="profile-menus">
             <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Általános információk</a>
             <a class="profile-menu-item" routerLinkActive="active-profile-route" [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">Elérhetőségi információk</a>

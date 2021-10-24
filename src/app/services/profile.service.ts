@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
 import { UserProfileData } from '../interfaces/user-data';
 import { DataService } from './data.service';
 import { SessionService } from './session.service';
@@ -9,13 +9,13 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class ProfileService {
-  private profileDataSubject: Subject<UserProfileData> = new Subject<UserProfileData>();
-  profileDataObservable$ = this.profileDataSubject.asObservable();
+  private refreshProfileDataSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  refreshProfileDataObservable$ = this.refreshProfileDataSubject.asObservable();
 
   constructor(private dataService: DataService, private sessionService: SessionService) {}
 
-  nextProfileData(data: UserProfileData){
-    this.profileDataSubject.next(data);
+  nextRefreshState(refresh: boolean){
+    this.refreshProfileDataSubject.next(refresh);
   }
 
   getProfileDataAndPublicContents(){
@@ -24,5 +24,10 @@ export class ProfileService {
       this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public')
     ]);
+  }
+
+  getProfileData(){
+    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
+    return this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers);
   }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { UserProfileData } from 'src/app/interfaces/user-data';
+import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -24,6 +26,7 @@ export class ChangePasswordComponent implements OnInit {
   passwordMismatch: boolean = false;
   requiredFieldErrorText: string = '';
   isUserClicked: boolean = false;
+  successfulPasswordChangeText: string = '';
   
   changePasswordFormElements: FormElement[] = [
     { key: 'profileCurrentPassword', placeholder: '', focus: false, type: 'password' },
@@ -39,7 +42,8 @@ export class ChangePasswordComponent implements OnInit {
   
   constructor(private profileService: ProfileService,
     private languageService: LanguageService,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.initData();
@@ -57,6 +61,7 @@ export class ChangePasswordComponent implements OnInit {
             element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
             return element;
           });
+          this.successfulPasswordChangeText = this.languageService.getTranslationByKey(lang,res[2],'text','successfulPasswordChange', 'GeneralMessageTranslations');
           this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
           this.passwordDoesntMatchErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','passwordDoesntMatch', 'ErrorMessageTranslations');
           this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
@@ -79,6 +84,13 @@ export class ChangePasswordComponent implements OnInit {
       }
       this.dataService.httpPostMethod('/api/users/public/changePassword',result,this.dataService.getAuthHeader()).subscribe(res=>{
         this.closeErrorMessage();
+        this.changePasswordForm.reset();
+        this.isUserClicked = false;
+        this.dialog.open(MessageDialogComponent, {
+          data: { icon: 'done', text: this.successfulPasswordChangeText },
+          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+          disableClose: true
+        });
       },error=>{
         if(error.status == 401){
           this.passwordDoesntMatch = true;

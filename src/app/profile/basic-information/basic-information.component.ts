@@ -21,6 +21,7 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   sendButtonText: string = '';
   profileData!: UserProfileData;
   profileDataSubscription: Subscription = new Subscription();
+  succesfulBasicInfoText: string = '';
 
   basicInfoFormElements: FormElement[] = [
     { key: 'profileFirstName', placeholder: '', focus: false, profileDataKey: 'firstName' },
@@ -66,6 +67,7 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
             element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
             return element;
           });
+          this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang,res[2],'text','successfulProfileChange', 'GeneralMessageTranslations');
         });
       }
     });
@@ -83,10 +85,9 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
       expectedSalary: this.basicInfoForm.controls.profileExpectedSalary.value,
       description: this.basicInfoForm.controls.profileDescription.value
     }
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
     forkJoin([
-      this.dataService.httpPostMethod('/api/users/public/modifyUserData',userResult,headers),
-      this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,headers)
+      this.dataService.httpPostMethod('/api/users/public/modifyUserData',userResult,this.dataService.getAuthHeader()),
+      this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,this.dataService.getAuthHeader())
     ]).subscribe(res=>{
       if(res[0].error || res[1].error){
         this.dialog.open(MessageDialogComponent,{
@@ -96,8 +97,9 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
         return;
       }
       const ref = this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'done', text: 'asdasdasd'},
+        data: {icon: 'done', text: this.succesfulBasicInfoText},
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
       });
       ref.afterClosed().subscribe(()=>{
         this.profileService.nextRefreshState(true);

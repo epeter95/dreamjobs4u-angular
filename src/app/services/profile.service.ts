@@ -26,11 +26,13 @@ export class ProfileService {
     this.refreshProfileDataSubject.next(refresh);
   }
 
-  getProfileDataAndPublicContents(){
+  getInfoForProfileComponents(){
     let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
     return forkJoin([
       this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers),
-      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public')
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
+      this.dataService.getAllData('/api/generalMessages/public'),
+      this.dataService.getAllData('/api/errorMessages/public')
     ]);
   }
 

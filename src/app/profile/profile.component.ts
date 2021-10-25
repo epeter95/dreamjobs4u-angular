@@ -24,6 +24,9 @@ export class ProfileComponent implements OnInit {
   isProfilePictureExists: boolean = false;
   profilePictureControl: FormControl = new FormControl('');
   isProfilePicChanging: boolean = false;
+  basicInfoMenuText: string = '';
+  contactInfoMenuText: string = '';
+  changePasswordMenuText: string = '';
 
   imageUrl: any;
 
@@ -33,9 +36,14 @@ export class ProfileComponent implements OnInit {
     private sessionService: SessionService) { }
 
   ngOnInit(): void {
-    this.profileService.getProfileDataAndPublicContents().subscribe(res=>{
+    this.profileService.getInfoForProfileComponents().subscribe(res=>{
       this.profileService.nextProfileData(res);
       this.initProfileData(res[0]);
+      this.languageService.languageObservable$.subscribe(lang => {
+        this.basicInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+        this.contactInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileContactTitle', 'PublicContentTranslations');
+        this.changePasswordMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
+      });
     });
 
     this.profileDataAndPublicContentSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh=>{

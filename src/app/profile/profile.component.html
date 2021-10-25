@@ -15,13 +15,11 @@
         <div class="profile-job-title">{{profileData.Profile.jobTitle}}</div>
         <div class="profile-menus">
             <a class="profile-menu-item" routerLinkActive="active-profile-route"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Általános információk</a>
+                [routerLinkActiveOptions]="{ exact: true }" routerLink=".">{{basicInfoMenuText}}</a>
             <a class="profile-menu-item" routerLinkActive="active-profile-route"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">Elérhetőségi információk</a>
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">{{contactInfoMenuText}}</a>
             <a class="profile-menu-item" routerLinkActive="active-profile-route"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="kedvenc-allasok">Kedvelt állások</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="jelentkezett-allasok">Jelentkezett állások</a>
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="jelszo-valtoztatas">{{changePasswordMenuText}}</a>
         </div>
     </div>
     <router-outlet></router-outlet>

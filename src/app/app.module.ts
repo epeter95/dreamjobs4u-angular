@@ -18,6 +18,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { BasicInformationComponent } from './profile/basic-information/basic-information.component';
 import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { ChangePasswordComponent } from './profile/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MessageDialogComponent } from './message-dialog/message-dialog.componen
     ProfileComponent,
     BasicInformationComponent,
     ContactInformationComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   profileDataSubscription: Subscription = new Subscription();
   profileDataAndPublicContentSubscription: Subscription = new Subscription();
   jobTitle: string = '';
-  fileData!: File;
+  fileData!: File | string;
   isProfilePictureExists: boolean = false;
   profilePictureControl: FormControl = new FormControl('');
   isProfilePicChanging: boolean = false;
@@ -68,7 +68,11 @@ export class ProfileComponent implements OnInit {
     this.monogram = this.profileData.firstName[0]+this.profileData.lastName[0];
     this.imageUrl = this.profileData.Profile.profilePicture;
     this.jobTitle = this.profileData.Profile.jobTitle;
-    this.imageUrl = environment.apiDomain +'/'+this.profileData.Profile.profilePicture;
+    if(this.profileData.Profile.profilePicture){
+      this.imageUrl = environment.apiDomain +'/'+this.profileData.Profile.profilePicture;
+    }else{
+      this.imageUrl = '';
+    }
   }
 
   saveProfilePicture(){
@@ -78,15 +82,16 @@ export class ProfileComponent implements OnInit {
     }
     let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
     this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture',formData,headers).subscribe(res=>{
-      console.log(res);
       this.isProfilePicChanging = false;
+      this.profileService.nextRefreshState(true);
     });
-  }
+  } 
 
   removeProfilePicture(){
     this.imageUrl = '';
     this.isProfilePicChanging = true;
     this.profilePictureControl.setValue('');
+    this.fileData = '';
   }
 
 }

@@ -2,6 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { LoginComponent } from '../authentication/login/login.component';
 import { RegistrationDialogComponent } from '../authentication/registration-dialog/registration-dialog.component';
 import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
@@ -77,6 +78,9 @@ export class HeaderComponent implements OnInit {
     let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
     this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
       this.userData = data;
+      if(this.userData.profilePicture){
+        this.userData.profilePicture = environment.apiDomain+'/'+this.userData.profilePicture;
+      }
     });
   }
 

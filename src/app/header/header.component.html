@@ -12,12 +12,18 @@
             <div class="auth-navigation-container">
                 <ng-container *ngIf="userLoggedIn; else loggedOut">
                     <div class="profile-container">
-                        <div #profileButton *ngIf="userData" class="no-profile-picture-image" (click)="openProfileMenu()">
-                            {{userData.monogram}}
+                        <div *ngIf="userData" class="no-profile-picture-image">
+                            <img #profileButton (click)="openProfileMenu()" *ngIf="userData.profilePicture; else noPicture" class="profile-picture" [src]="userData.profilePicture">
+                            <ng-template #noPicture>
+                                <span #profileButton (click)="openProfileMenu()">{{userData.monogram}}</span>
+                            </ng-template>
                         </div>
                         <div *ngIf="isProfileMenuOpen" #profileContainer class="profile-menu">
                             <div class="no-profile-picture-image big-image">
-                                {{userData.monogram}}
+                                <img *ngIf="userData.profilePicture; else noPicture" class="profile-picture" [src]="userData.profilePicture">
+                                <ng-template #noPicture>
+                                    {{userData.monogram}}
+                                </ng-template>
                             </div>
                             <div>
                                 <a class="navigation-link" routerLinkActive="active-navigation-link" (click)="openProfileMenu()"

@@ -63,6 +63,9 @@ export class HeaderComponent implements OnInit {
     });
     this.userDataSubscription = this.sessionService.userDataObservable$.subscribe(data => {
       this.userData = data;
+      if(this.userData.profilePicture){
+        this.userData.profilePicture = environment.apiDomain+'/'+this.userData.profilePicture;
+      }
     });
     if (this.sessionService.getSession()) {
       this.profileDataSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh => {
@@ -75,8 +78,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserData(){
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-    this.dataService.getOneData('/api/users/getDataForPublic', headers).subscribe(data => {
+    this.dataService.getOneData('/api/users/getDataForPublic', this.dataService.getAuthHeader()).subscribe(data => {
       this.userData = data;
       if(this.userData.profilePicture){
         this.userData.profilePicture = environment.apiDomain+'/'+this.userData.profilePicture;

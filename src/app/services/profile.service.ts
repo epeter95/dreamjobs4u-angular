@@ -27,9 +27,8 @@ export class ProfileService {
   }
 
   getInfoForProfileComponents(){
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
     return forkJoin([
-      this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers),
+      this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
       this.dataService.getAllData('/api/generalMessages/public'),
       this.dataService.getAllData('/api/errorMessages/public')
@@ -37,7 +36,6 @@ export class ProfileService {
   }
 
   getProfileData(){
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-    return this.dataService.getOneData('/api/profiles/getProfileDataForPublic',headers);
+    return this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader());
   }
 }

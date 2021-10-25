@@ -8,7 +8,7 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class DataService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private sessionService: SessionService) { }
   getAllData(url: string, headers?: HttpHeaders): Observable<any[]> {
     return this.http.get<any[]>(environment.apiDomain + url,{headers: headers? headers: new HttpHeaders});
   }
@@ -34,5 +34,9 @@ export class DataService {
 
   httpDeleteMethod(url: string, id: string, headers?: HttpHeaders) {
     return this.http.delete(environment.apiDomain + url + '/' + id,{headers: headers? headers: new HttpHeaders});
+  }
+
+  getAuthHeader(){
+    return new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
   }
 }

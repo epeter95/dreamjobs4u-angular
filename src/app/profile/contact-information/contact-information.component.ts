@@ -73,8 +73,7 @@ export class ContactInformationComponent implements OnInit, OnDestroy {
       zipcode: this.contactInfoForm.controls.profileZipcode.value,
       address: this.contactInfoForm.controls.profileAddress.value
     }
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-    this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,headers).subscribe(res=>{
+    this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,this.dataService.getAuthHeader()).subscribe(res=>{
       console.log(res);
     });
   }

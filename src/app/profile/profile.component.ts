@@ -88,8 +88,7 @@ export class ProfileComponent implements OnInit {
     if (this.isProfilePicChanging) {
       formData.append('profilePictureUrl', this.fileData);
     }
-    let headers = new HttpHeaders().set("Authorization", 'Bearer ' + this.sessionService.getSession());
-    this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture',formData,headers).subscribe(res=>{
+    this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture',formData,this.dataService.getAuthHeader()).subscribe(res=>{
       this.isProfilePicChanging = false;
       this.profileService.nextRefreshState(true);
     });

@@ -3,14 +3,6 @@
 @import 'page-with-side-menu.scss';
 @import 'form.scss';
 
-.profile-form-field{
-    @include form-field-width(375px);
-}
-
-.form-field-full-width{
-    @include form-field-width(770px);
-}
-
 .profile-submit-button{
     margin-top: 20px;
 }

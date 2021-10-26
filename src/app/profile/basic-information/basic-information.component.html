@@ -9,14 +9,15 @@
                 <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
                     class="form-field-full-width">
                     <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
-                        [formControlName]="element.key" [value]="element.value" [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
+                        [formControlName]="element.key" [value]="element.value"
+                        [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
                         *ngSwitchCase="'textarea'"></textarea>
                 </div>
                 <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
-                    class="profile-form-field">
-                    <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!" (focus)="element.focus = true"
-                        (focusout)="element.focus = false" [formControlName]="element.key"
-                        [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                    class="form-field-width">
+                    <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"
+                        (focus)="element.focus = true" (focusout)="element.focus = false"
+                        [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
                 </div>
             </ng-container>
         </div>

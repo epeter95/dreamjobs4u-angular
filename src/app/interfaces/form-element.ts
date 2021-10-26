@@ -7,4 +7,5 @@ export interface FormElement{
     value?: any;
     fieldType?: string;
     profileDataKey?:string;
+    widthClass?: string;
 }

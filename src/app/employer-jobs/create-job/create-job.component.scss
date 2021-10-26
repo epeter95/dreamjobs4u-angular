@@ -1,3 +1,8 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.form-field-width{
+    @include form-field-width(375px);
+}

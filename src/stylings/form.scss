@@ -18,6 +18,14 @@
     flex-flow: wrap;
 }
 
+.form-field-width{
+    @include form-field-width(375px);
+}
+
+.form-field-full-width{
+    @include form-field-width(770px);
+}
+
 .form-field,.form-field-focused {
     margin-bottom: 5px;
     border-radius: 8px;

@@ -1,3 +1,29 @@
 <div id="my-jobs" class="side-menu-router-outlet-container">
     <div class="side-menu-router-outlet-title">Állás létrehozása</div>
+    <form [formGroup]="jobForm" (ngSubmit)="saveJob()" class="form flex-form">
+        <div class="form-field-wrapper" *ngFor="let element of jobFormElements">
+            <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
+                {{element.placeholder}}
+            </div>
+            <ng-container [ngSwitch]="element.fieldType">
+                <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                    class="form-field-full-width">
+                    <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
+                        [formControlName]="element.key" [value]="element.value"
+                        [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
+                        *ngSwitchCase="'textarea'"></textarea>
+                </div>
+                <div [ngClass]="element.widthClass ? 'form-field-full-width' : 'form-field-width'">
+                    <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
+                        <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"
+                            (focus)="element.focus = true" (focusout)="element.focus = false"
+                            [formControlName]="element.key"
+                            [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                    </div>
+                </div>
+            </ng-container>
+            <div class="required-error-message" *ngIf="isUserClicked && jobForm.controls[element.key].hasError('required')">{{element.placeholder}} {{requiredFieldErrorText}}</div>
+        </div>
+        <button class="submit-button profile-submit-button">{{sendButtonText}}</button>
+    </form>
 </div>

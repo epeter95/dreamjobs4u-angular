@@ -19,6 +19,10 @@ import { BasicInformationComponent } from './profile/basic-information/basic-inf
 import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 import { ChangePasswordComponent } from './profile/change-password/change-password.component';
+import { EmployerJobsComponent } from './employer-jobs/employer-jobs.component';
+import { MyJobsComponent } from './employer-jobs/my-jobs/my-jobs.component';
+import { CreateJobComponent } from './employer-jobs/create-job/create-job.component';
+import { ModifyJobComponent } from './employer-jobs/modify-job/modify-job.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,11 @@ import { ChangePasswordComponent } from './profile/change-password/change-passwo
     BasicInformationComponent,
     ContactInformationComponent,
     MessageDialogComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    EmployerJobsComponent,
+    MyJobsComponent,
+    CreateJobComponent,
+    ModifyJobComponent
   ],
   imports: [
     BrowserModule,

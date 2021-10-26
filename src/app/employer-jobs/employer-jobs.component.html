@@ -1,0 +1,15 @@
+<div id="employer-jobs" class="job-container">
+    <div class="job-menu-container">
+        <img src="/assets/images/myjobs-image.png" class="work-logo">
+        <div class="job-menu-title">Álláshirdetéseim</div>
+        <div class="job-menu-routes">
+            <a class="job-menu-item" routerLinkActive="active-job-route"
+            [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Hirdetéseim</a>
+            <a class="job-menu-item" routerLinkActive="active-job-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="letrehozas">Állás létrehozása</a>
+            <a class="job-menu-item" routerLinkActive="active-job-route"
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="modositas">Állás módosítása</a>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

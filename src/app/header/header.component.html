@@ -8,6 +8,9 @@
                 <a class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/">Kezdőlap<span
                         class="navigation-link-bottom-border"></span></a>
+                <a class="navigation-link" routerLinkActive="active-navigation-link"
+                        [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">Hírdetéseim<span
+                            class="navigation-link-bottom-border"></span></a>
             </div>
             <div class="auth-navigation-container">
                 <ng-container *ngIf="userLoggedIn; else loggedOut">

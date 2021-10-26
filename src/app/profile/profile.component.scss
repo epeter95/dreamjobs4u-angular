@@ -1,27 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
+@import 'page-with-side-menu.scss';
 
-.profile-container{
-    max-width: 1200px;
-    margin: auto;
-    width: 100%;
-    min-height:100px;
-    margin-top: 30px;
-    border-radius: 8px;
-    padding: 30px 0px;
-    box-sizing: border-box;
-    @include flex-container(space-between,flex-start, 30px);
-}
-
-.profile-page-menu{
-    max-width: 340px;
-    width: 100%;
-    background-color: white;
-    box-shadow: 0 0 4px rgba(0,0,0,0.2);
-    padding: 30px 0;
-    box-sizing: border-box;
-    height: 100%;
-}
 
 .profile-page-title{
     font-family: $bold-font;
@@ -70,14 +50,6 @@
     right: -15px;
 }
 
-.profile-name{
-    color: $normal-color;
-    font-family: $bold-font;
-    font-size: 32px;
-    text-align: center;
-    margin-top: 15px;
-}
-
 .profile-job-title{
     color: $normal-color;
     font-family: $regular-font;
@@ -92,31 +64,6 @@
 
 .change-picture-input{
     display: none;
-}
-
-.profile-menu-item{
-    padding: 15px 30px;
-    font-family: $regular-font;
-    color: $normal-color;
-    display: block;
-    text-decoration: none;
-    transition: padding-left 0.3s ease-in-out;
-    border-top: 1px solid rgba(0,0,0,0.1);
-}
-
-.active-profile-route{
-    background-color: rgba($highlighted-color, 0.2);
-    font-family: $bold-font;
-    border-left: 3px solid $highlighted-color;
-    color: $highlighted-color;
-}
-
-.profile-menu-item:hover{
-    background-color: rgba($highlighted-color, 0.2);
-    font-family: $bold-font;
-    border-left: 3px solid $highlighted-color;
-    color: $highlighted-color;
-    padding-left: 40px;
 }
 
 .save-profilepic-button{

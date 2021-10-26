@@ -1,0 +1,79 @@
+.page-container-with-side-menu{
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 30px;
+    border-radius: 8px;
+    padding: 30px 0px;
+    box-sizing: border-box;
+    @include flex-container(space-between,flex-start, 30px);
+}
+
+.side-menu-container{
+    width: 290px;
+    background-color: white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    padding: 30px 0;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.side-menu-logo{
+    display: block;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin: auto;
+    position: relative;
+}
+
+.side-menu-title{
+    font-family: $bold-font;
+    text-align: center;
+    margin: 15px auto;
+    font-size: 24px;
+    color: $normal-color;
+}
+
+.side-menu-item{
+    padding: 15px 30px;
+    font-family: $regular-font;
+    color: $normal-color;
+    display: block;
+    text-decoration: none;
+    transition: padding-left 0.3s ease-in-out;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.active-side-menu-item{
+    background-color: rgba($highlighted-color, 0.2);
+    font-family: $bold-font;
+    border-left: 3px solid $highlighted-color;
+    color: $highlighted-color;
+}
+
+.side-menu-item:hover{
+    background-color: rgba($highlighted-color, 0.2);
+    font-family: $bold-font;
+    border-left: 3px solid $highlighted-color;
+    color: $highlighted-color;
+    padding-left: 40px;
+}
+
+.side-menu-router-outlet-container{
+    background-color: white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    width: 850px;
+    box-sizing: border-box;
+    padding: 30px 40px;
+}
+
+.side-menu-router-outlet-title{
+    font-family: $bold-font;
+    line-height: 39px;
+    font-size: 32px;
+    color: $normal-color;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}

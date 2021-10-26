@@ -10,7 +10,7 @@
         <div>{{missingUserText}}</div>
         <button class="close-error-message" (click)="closeErrorMessage()">X</button>
     </div>
-    <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form">
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="form">
         <div class="form-field-wrapper" *ngFor="let element of loginFormElements">
             <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
                 <input [id]="element.key" [type]="element.type!" (focus)="element.focus = true"

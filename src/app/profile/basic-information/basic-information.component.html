@@ -1,13 +1,13 @@
-<div id="sweetjobs-profile-basic-info" class="basic-info-container">
-    <div class="basic-info-title">{{basicInfoTitleText}}</div>
-    <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="auth-form profile-form">
+<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
+    <div class="side-menu-router-outlet-title">{{basicInfoTitleText}}</div>
+    <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="form profile-form">
         <div class="form-field-wrapper" *ngFor="let element of basicInfoFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
                 {{element.placeholder}}
             </div>
             <ng-container [ngSwitch]="element.fieldType">
                 <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
-                    class="profile-form-textarea-field">
+                    class="form-field-full-width">
                     <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
                         [formControlName]="element.key" [value]="element.value" [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
                         *ngSwitchCase="'textarea'"></textarea>

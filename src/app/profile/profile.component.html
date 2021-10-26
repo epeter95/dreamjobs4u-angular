@@ -1,5 +1,5 @@
-<div id="profile-container" class="profile-container" *ngIf="profileData">
-    <div class="profile-page-menu">
+<div id="profile-container" class="page-container-with-side-menu" *ngIf="profileData">
+    <div class="side-menu-container">
         <div class="no-profile-picture">
             <img class="profile-picture" *ngIf="imageUrl; else noProfilePic" [src]="imageUrl">
             <ng-template #noProfilePic>
@@ -11,14 +11,14 @@
             <mat-icon color="primary" class="delete-profile-pic" (click)="removeProfilePicture()">remove_circle_outline</mat-icon>
         </div>
         <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()" class="save-profilepic-button">Mentés</button>
-        <div class="profile-name">{{profileData.firstName}} {{profileData.lastName}}</div>
+        <div class="side-menu-title">{{profileData.firstName}} {{profileData.lastName}}</div>
         <div class="profile-job-title">{{profileData.Profile.jobTitle}}</div>
         <div class="profile-menus">
-            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+            <a class="side-menu-item" routerLinkActive="active-side-menu-item"
                 [routerLinkActiveOptions]="{ exact: true }" routerLink=".">{{basicInfoMenuText}}</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+            <a class="side-menu-item" routerLinkActive="active-side-menu-item"
                 [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">{{contactInfoMenuText}}</a>
-            <a class="profile-menu-item" routerLinkActive="active-profile-route"
+            <a class="side-menu-item" routerLinkActive="active-side-menu-item"
                 [routerLinkActiveOptions]="{ exact: true }" routerLink="jelszo-valtoztatas">{{changePasswordMenuText}}</a>
         </div>
     </div>

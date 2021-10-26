@@ -1,33 +1,14 @@
 @import 'variables.scss';
 @import 'mixins.scss';
-@import '../../authentication/auth-form.scss';
-
-.basic-info-container{
-    background-color: white;
-    box-shadow: 0 0 4px rgba(0,0,0,0.1);
-    width: 850px;
-    box-sizing: border-box;
-    padding: 30px 40px;
-}
-
-.basic-info-title{
-    font-family: $bold-font;
-    line-height: 39px;
-    font-size: 32px;
-    color: $normal-color;
-    padding-bottom: 20px;
-    border-bottom: 2px solid rgba(0,0,0,0.1);
-}
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
 
 .profile-form-field{
-    box-sizing: border-box;
-    width: 375px;
+    @include form-field-width(375px);
 }
 
-.profile-form-textarea-field{
-    box-sizing: border-box;
-    width: 770px;
-    padding: 16px;
+.form-field-full-width{
+    @include form-field-width(770px);
 }
 
 .profile-form{

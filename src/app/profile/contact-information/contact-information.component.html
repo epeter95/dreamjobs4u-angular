@@ -1,6 +1,6 @@
-<div id="sweetjobs-profile-basic-info" class="basic-info-container">
-    <div class="basic-info-title contact-title">{{contactInfoTitleText}}</div>
-    <form [formGroup]="contactInfoForm" (ngSubmit)="saveInfos()" class="auth-form profile-form">
+<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
+    <div class="side-menu-router-outlet-title">{{contactInfoTitleText}}</div>
+    <form [formGroup]="contactInfoForm" (ngSubmit)="saveInfos()" class="form profile-form">
         <div class="form-field-wrapper" *ngFor="let element of contactInfoFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">{{element.placeholder}}
             </div>

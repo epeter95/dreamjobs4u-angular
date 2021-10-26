@@ -1,8 +1,16 @@
+@import './mixins.scss';
+@import './variables.scss';
 
-.auth-form{
+.form{
     min-width: 400px;
+    width: 100%;
     padding: 30px 0;
     display: block;
+}
+
+@mixin form-field-width($width: 100%){
+    width: $width;
+    box-sizing: border-box;
 }
 
 .form-field,.form-field-focused {
@@ -111,4 +119,10 @@
     color: $highlighted-color;
     line-height: 24px;
     margin: 0 0 10px 10px;
+}
+
+.form-textarea-field{
+    box-sizing: border-box;
+    width: 770px;
+    padding: 16px;
 }

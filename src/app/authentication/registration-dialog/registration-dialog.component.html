@@ -17,7 +17,7 @@
     <div class="role-selection-container">
         <div class="role-element" *ngFor="let role of roles" [ngClass]="role.isRoleSelected ? 'role-active' : ''" (click)="setRoleActive(role)">{{role.selectedTranslation.name}}</div>
     </div>
-    <form [formGroup]="registrationForm" (ngSubmit)="register()" class="auth-form">
+    <form [formGroup]="registrationForm" (ngSubmit)="register()" class="form">
         <div class="form-field-wrapper" *ngFor="let element of registrationFormElements">
             <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
                 <input [id]="element.key" [type]="element.type!" (focus)="element.focus = true" (focusout)="element.focus = false" [placeholder]="element.placeholder" [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">

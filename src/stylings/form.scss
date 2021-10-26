@@ -13,6 +13,11 @@
     box-sizing: border-box;
 }
 
+.flex-form{
+    @include flex-container(space-between, center);
+    flex-flow: wrap;
+}
+
 .form-field,.form-field-focused {
     margin-bottom: 5px;
     border-radius: 8px;

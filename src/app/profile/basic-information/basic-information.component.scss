@@ -11,12 +11,6 @@
     @include form-field-width(770px);
 }
 
-.profile-form{
-    display: flex;
-    flex-flow: wrap;
-    justify-content: space-between;
-}
-
 .profile-submit-button{
     margin-top: 20px;
 }

@@ -1,6 +1,6 @@
 <div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
     <div class="side-menu-router-outlet-title">{{basicInfoTitleText}}</div>
-    <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="form profile-form">
+    <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="form flex-form">
         <div class="form-field-wrapper" *ngFor="let element of basicInfoFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
                 {{element.placeholder}}

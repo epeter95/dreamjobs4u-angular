@@ -1,10 +1,10 @@
 <div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
     <div class="side-menu-router-outlet-title">{{contactInfoTitleText}}</div>
-    <form [formGroup]="contactInfoForm" (ngSubmit)="saveInfos()" class="form profile-form">
+    <form [formGroup]="contactInfoForm" (ngSubmit)="saveInfos()" class="form flex-form">
         <div class="form-field-wrapper" *ngFor="let element of contactInfoFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">{{element.placeholder}}
             </div>
-            <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'" class="profile-form-field">
+            <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'" class="form-field-width">
                 <input [id]="element.key" [value]="element.value" [type]="element.type!" (focus)="element.focus = true"
                     (focusout)="element.focus = false" [formControlName]="element.key"
                     [ngClass]="element.focus ? 'form-input-focused': 'form-input'">

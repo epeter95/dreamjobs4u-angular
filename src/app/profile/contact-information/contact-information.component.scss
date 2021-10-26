@@ -2,3 +2,7 @@
 @import 'mixins.scss';
 @import 'form.scss';
 @import 'page-with-side-menu.scss';
+
+.form-field-width{
+    @include form-field-width(375px);
+}

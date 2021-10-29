@@ -6,3 +6,36 @@
 .form-field-width{
     @include form-field-width(375px);
 }
+
+.language-choose-container{
+    margin: auto;
+    width: 100%;
+    border-top: 2px solid #e8ecec;
+    padding: 30px 0 20px 0;
+}
+
+.languages-container{
+    margin: auto;
+    @include flex-container(center, center, 50px);
+}
+
+.normal-language{
+    padding: 10px 20px;
+    border: 2px solid $highlighted-color;
+    border-radius: 4px;
+    color: $highlighted-color;
+    cursor: pointer;
+    font-family: $regular-font;
+    font-size: 20px;
+}
+
+.active-language{
+    padding: 10px 20px;
+    border: 2px solid $hover-button-color;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    background-color: $hover-button-color;
+    font-family: $bold-font;
+    font-size: 20px;
+}

@@ -1,5 +1,18 @@
 <div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="hunLanguage">
-    <div class="side-menu-router-outlet-title">Állás létrehozása</div>
+    <div class="side-menu-router-outlet-title">
+        <ng-container *ngIf="isModify;else createTitle">{{modifyJobTitleText}}</ng-container>
+        <ng-template #createTitle>{{createJobTitleText}}</ng-template>
+    </div>
+    <div class="get-job-data-dropdown" *ngIf="isModify">
+        <div class="selected-job-container regular-text" (click)="isDropdownOpen=!isDropdownOpen">
+            <span>{{selectedJob ? selectedJob.value : ''}} </span>
+            <span [ngClass]="isDropdownOpen ? 'up-arrow' : 'down-arrow'"></span>
+        </div>
+        <div class="dropdown-values" *ngIf="isDropdownOpen">
+            <div class="dropdown-element regular-text" [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''" *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">{{element.value}}</div>
+        </div>
+        <button (click)="setFormData()" class="submit-button little-button">Lekérdez</button>
+    </div>
     <form [formGroup]="jobForm" (ngSubmit)="saveJob()" class="form flex-form">
         <div class="form-field-wrapper" *ngFor="let element of jobFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">

@@ -39,3 +39,53 @@
     font-family: $bold-font;
     font-size: 20px;
 }
+
+.get-job-data-dropdown{
+    margin: 20px auto;
+    width: max-content;
+    width: 100%;
+    display: flex;
+    position: relative;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.selected-job-container{
+    width: 300px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 2px solid #e8ecec;
+    min-height: 40px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-values{
+    position: absolute;
+    left: 0;
+    top: 50px;
+    border: 2px solid #e8ecec;
+    border-radius: 8px;
+    box-sizing: border-box;
+    max-width: 300px;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+}
+
+.dropdown-element{
+    padding: 15px 10px;
+    cursor: pointer;
+}
+
+.dropdown-element:hover{
+    color: $highlighted-color;
+    background-color: rgba($highlighted-color, 0.2);
+}
+
+.border-class{
+    border-bottom: 2px solid #e8ecec;
+}

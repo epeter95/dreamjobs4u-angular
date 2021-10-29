@@ -1,13 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
+import { DropdownData } from 'src/app/interfaces/dropdown';
 import { FormElement } from 'src/app/interfaces/form-element';
+import { Job } from 'src/app/interfaces/job';
 import { Language } from 'src/app/interfaces/language';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
-import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-job-handle',
@@ -17,6 +19,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 export class JobHandleComponent implements OnInit, OnDestroy {
   sendButtonText: string = '';
   createJobTitleText: string = '';
+  modifyJobTitleText: string = '';
   successfulSaveJobText: string = '';
   requiredFieldErrorText: string = '';
   isUserClicked: boolean = false;
@@ -57,17 +60,65 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       jobDescription: new FormControl('')
     })
   });
+  isDropdownOpen: boolean = false;
+  isModify: boolean = false;
+  selectedJob!: DropdownData;
+  jobDropdownData: DropdownData[] = new Array();
+  jobDropdownControl: FormControl = new FormControl('', Validators.required);
+  jobData!: Job;
 
   constructor(private languageService: LanguageService,
     public dialog: MatDialog,
-    private dataService: DataService) { }
+    private dataService: DataService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    if(this.router.url.includes('modositas')){
+      this.isModify = true;
+      this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken',this.dataService.getAuthHeader()).subscribe(res=>{
+        this.jobDropdownData = res.map(element=>{
+          let newElement = { key: element.id, value: element.companyName};
+          return newElement;
+        });
+      });
+    }
     this.initData();
   }
 
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
+  }
+
+  setDropdownData(data: DropdownData){
+    this.selectedJob = data;
+    this.jobDropdownControl.setValue(data.value);
+    this.isDropdownOpen = false;
+    console.log(this.isDropdownOpen);
+  }
+
+  setFormData(){
+    this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/'+this.selectedJob.key,this.dataService.getAuthHeader()).subscribe(res=>{
+      this.jobData = res;
+      const huJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 1);
+      const enJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 2);
+      let formValue = {
+        jobCompanyName: this.jobData.companyName,
+        jobCompanyLogo: this.jobData.logoUrl,
+        jobCompanyWebsite: this.jobData.companyWebsite,
+        jobLocation: this.jobData.jobLocation,
+        huDetails: {
+          jobTitle: huJobDetails?.title,
+          jobAboutUs: huJobDetails?.aboutUs,
+          jobDescription: huJobDetails?.jobDescription,
+        },
+        enDetails: {
+          jobTitle: enJobDetails? enJobDetails.title : '',
+          jobAboutUs: enJobDetails? enJobDetails.aboutUs : '',
+          jobDescription: enJobDetails? enJobDetails.jobDescription : '',
+        }
+      }
+      this.jobForm.setValue(formValue);
+    });
   }
 
   initData() {
@@ -79,6 +130,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     ]).subscribe(res=>{
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         this.createJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'createJobTitle', 'PublicContentTranslations');
+        this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'modifyJobTitle', 'PublicContentTranslations');
         this.sendButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'saveJobButtonText', 'PublicContentTranslations');
         this.hunSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobHunLanguageSubtitle', 'PublicContentTranslations');
         this.enSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobEnLanguageSubtitle', 'PublicContentTranslations');

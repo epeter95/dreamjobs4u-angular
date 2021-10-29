@@ -2,18 +2,20 @@
     <div class="side-menu-router-outlet-title">
         <ng-container *ngIf="isModify;else createTitle">{{modifyJobTitleText}}</ng-container>
         <ng-template #createTitle>{{createJobTitleText}}</ng-template>
+        <div class="side-menu-regular-text custom-margin">{{jobSubtitleText}}</div>
     </div>
+    <div class="side-menu-regular-text custom-margin" *ngIf="isModify">{{jobDropdownLabel}}</div>
     <div class="get-job-data-dropdown" *ngIf="isModify">
-        <div class="selected-job-container regular-text" (click)="isDropdownOpen=!isDropdownOpen">
+        <div class="selected-job-container side-menu-regular-text" (click)="isDropdownOpen=!isDropdownOpen">
             <span>{{selectedJob ? selectedJob.value : ''}} </span>
             <span [ngClass]="isDropdownOpen ? 'up-arrow' : 'down-arrow'"></span>
         </div>
         <div class="dropdown-values" *ngIf="isDropdownOpen">
-            <div class="dropdown-element regular-text" [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''" *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">{{element.value}}</div>
+            <div class="dropdown-element side-menu-regular-text" [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''" *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">{{element.value}}</div>
         </div>
         <button (click)="setFormData()" class="submit-button little-button">Lekérdez</button>
     </div>
-    <form [formGroup]="jobForm" (ngSubmit)="saveJob()" class="form flex-form">
+    <form [formGroup]="jobForm" (ngSubmit)="saveJob()" *ngIf="jobQueried" class="form flex-form">
         <div class="form-field-wrapper" *ngFor="let element of jobFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
                 {{element.placeholder}}

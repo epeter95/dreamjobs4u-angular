@@ -30,6 +30,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   languages: Language[] = new Array();
   languageSubscription: Subscription = new Subscription();
   jobLanguageKey: string = 'hu';
+  queriedJobId: string = '';
+  successfulModifyJobText: string = '';
 
   jobFormElements: FormElement[] = [
     { key: 'jobCompanyName', placeholder: '', focus: false, fieldType: 'input' },
@@ -66,6 +68,11 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   jobDropdownData: DropdownData[] = new Array();
   jobDropdownControl: FormControl = new FormControl('', Validators.required);
   jobData!: Job;
+  jobDropdownLabel: string = '';
+  selectJobErrorText: string = '';
+  jobSubtitleText: string = '';
+  jobQueried: boolean = true;
+  modifyDialogRefSubscription: Subscription = new Subscription();
 
   constructor(private languageService: LanguageService,
     public dialog: MatDialog,
@@ -74,6 +81,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if(this.router.url.includes('modositas')){
+      this.jobQueried = false;
       this.isModify = true;
       this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken',this.dataService.getAuthHeader()).subscribe(res=>{
         this.jobDropdownData = res.map(element=>{
@@ -87,17 +95,19 @@ export class JobHandleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
+    this.modifyDialogRefSubscription.unsubscribe();
   }
 
   setDropdownData(data: DropdownData){
     this.selectedJob = data;
     this.jobDropdownControl.setValue(data.value);
     this.isDropdownOpen = false;
-    console.log(this.isDropdownOpen);
   }
 
   setFormData(){
-    this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/'+this.selectedJob.key,this.dataService.getAuthHeader()).subscribe(res=>{
+    this.queriedJobId = this.selectedJob.key;
+    this.jobQueried = true;
+    this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/'+this.queriedJobId,this.dataService.getAuthHeader()).subscribe(res=>{
       this.jobData = res;
       const huJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 1);
       const enJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 2);
@@ -134,6 +144,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.sendButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'saveJobButtonText', 'PublicContentTranslations');
         this.hunSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobHunLanguageSubtitle', 'PublicContentTranslations');
         this.enSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobEnLanguageSubtitle', 'PublicContentTranslations');
+        this.jobDropdownLabel = this.languageService.getTranslationByKey(lang, res[0], 'title', 'selectJobText', 'PublicContentTranslations');
+        this.jobSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'handleJobSubtitle', 'PublicContentTranslations');
+
         this.jobFormElements = this.jobFormElements.map(element => {
           element.placeholder = this.languageService.getTranslationByKey(lang, res[0], 'title', element.key, 'PublicContentTranslations');
           return element;
@@ -143,8 +156,13 @@ export class JobHandleComponent implements OnInit, OnDestroy {
           element.placeholder = this.languageService.getTranslationByKey(lang, res[0], 'title', element.key, 'PublicContentTranslations');
           return element;
         });
+
         this.successfulSaveJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulJobCreate', 'GeneralMessageTranslations');
+        this.successfulModifyJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulModifyJob', 'GeneralMessageTranslations');
+
         this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[2],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
+        this.selectJobErrorText = this.languageService.getTranslationByKey(lang,res[2],'text','selectJobNeededErrorText', 'ErrorMessageTranslations');
+        
         this.hunLanguage = res[3].find(element=>element.key == 'hu');
         this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang,this.hunLanguage.LanguageTranslations);
         this.enLanguage = res[3].find(element=>element.key == 'en');
@@ -158,13 +176,21 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   }
 
   saveJob(){
+    if(!this.queriedJobId && this.isModify){
+      this.dialog.open(MessageDialogComponent,{
+        data: {icon: 'done', text: this.selectJobErrorText},
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
+      return;
+    }
     this.isUserClicked = true;
     if(this.jobForm.valid){
       let formValue = {...this.jobForm.value};
       let result = {
         companyName: formValue.jobCompanyName,
-        companyWebsite: formValue.jobCompanyLogo,
-        logoUrl: formValue.jobCompanyWebsite,
+        companyWebsite: formValue.jobCompanyWebsite,
+        logoUrl: formValue.jobCompanyLogo,
         jobLocation: formValue.jobLocation,
         hunTitle: formValue.huDetails.jobTitle,
         hunAboutUs: formValue.huDetails.jobAboutUs,
@@ -173,15 +199,28 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         enAboutUs: formValue.enDetails.jobAboutUs,
         enJobDescription: formValue.enDetails.jobDescription
       };
-      this.dataService.httpPostMethod('/api/jobs/public/createJob',result,this.dataService.getAuthHeader()).subscribe(res=>{
-        console.log(res);
-        this.isUserClicked = false;
-        this.dialog.open(MessageDialogComponent,{
-          data: {icon: 'done', text: this.successfulSaveJobText},
-          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-          disableClose: true
-        })
-      });
+      if(this.isModify){
+        this.dataService.httpPutMethod('/api/jobs/public/modifyJob',this.queriedJobId,result,this.dataService.getAuthHeader()).subscribe(res=>{
+          this.isUserClicked = false;
+          const modifyDialogRef = this.dialog.open(MessageDialogComponent,{
+            data: {icon: 'done', text: this.successfulModifyJobText},
+            backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+            disableClose: true
+          });
+          this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(()=>{
+            this.jobQueried = false;
+          });
+        });
+      }else{
+        this.dataService.httpPostMethod('/api/jobs/public/createJob',result,this.dataService.getAuthHeader()).subscribe(res=>{
+          this.isUserClicked = false;
+          this.dialog.open(MessageDialogComponent,{
+            data: {icon: 'done', text: this.successfulSaveJobText},
+            backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+            disableClose: true
+          });
+        });
+      }
     }
   }
 

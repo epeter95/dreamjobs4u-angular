@@ -10,11 +10,11 @@ import { LanguageService } from 'src/app/services/language.service';
 import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
-  selector: 'app-create-job',
-  templateUrl: './create-job.component.html',
-  styleUrls: ['./create-job.component.scss']
+  selector: 'app-job-handle',
+  templateUrl: './job-handle.component.html',
+  styleUrls: ['./job-handle.component.scss']
 })
-export class CreateJobComponent implements OnInit, OnDestroy {
+export class JobHandleComponent implements OnInit, OnDestroy {
   sendButtonText: string = '';
   createJobTitleText: string = '';
   successfulSaveJobText: string = '';

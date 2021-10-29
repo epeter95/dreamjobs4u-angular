@@ -21,8 +21,7 @@ import { MessageDialogComponent } from './message-dialog/message-dialog.componen
 import { ChangePasswordComponent } from './profile/change-password/change-password.component';
 import { EmployerJobsComponent } from './employer-jobs/employer-jobs.component';
 import { MyJobsComponent } from './employer-jobs/my-jobs/my-jobs.component';
-import { CreateJobComponent } from './employer-jobs/create-job/create-job.component';
-import { ModifyJobComponent } from './employer-jobs/modify-job/modify-job.component';
+import { JobHandleComponent } from './employer-jobs/job-handle/job-handlecomponent';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { ModifyJobComponent } from './employer-jobs/modify-job/modify-job.compon
     ChangePasswordComponent,
     EmployerJobsComponent,
     MyJobsComponent,
-    CreateJobComponent,
-    ModifyJobComponent
+    JobHandleComponent
   ],
   imports: [
     BrowserModule,

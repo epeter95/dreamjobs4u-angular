@@ -123,27 +123,17 @@
     position: relative;
 }
 
-.user-menu-icon, .user-menu-active{
+.user-menu-icon {
     width: 32px;
     height: 32px;
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
     transition: background-image 0.2s ease-in-out;
+    background-image: url('/assets/images/user-icon.jpg');
     cursor: pointer;
 }
 
-.user-menu-icon{
-    background-image: url('/assets/images/user-icon.jpg');
-}
-
-.user-menu-icon:hover{
-    background-image: url('/assets/images/user-icon-hover.jpg');
-}
-
-.user-menu-icon-active{
-    background-image: url('/assets/images/user-icon-hover.jpg');
-}
 
 .logout-button{
     border: none;

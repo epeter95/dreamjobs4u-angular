@@ -1,7 +1,7 @@
 <div id="sweetjobs-header" class="header-wrapper">
     <div class="header-container">
         <a routerLink="/" class="header-logo">
-            <img src="/assets/images/logo.PNG">
+            <img src="/assets/images/logo.jpg">
         </a>
         <div class="navigation-container">
             <div class="main-navigation-container">
@@ -39,7 +39,7 @@
                 </ng-container>
                 <ng-template #loggedOut>
                     <div class="user-menu-container">
-                        <div #userButton (click)="openUserMenu()" [ngClass]="isUserMenuOpen ? 'user-menu-icon-active':'user-menu-icon'" class="user-menu-icon"></div>
+                        <div #userButton (click)="openUserMenu()" class="user-menu-icon"></div>
                         <div #userContainer *ngIf="isUserMenuOpen" class="user-menu">
                             <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'"
                                 (click)="openLoginDialog()">Bejelentkezés<span class="navigation-link-bottom-border"></span></a>

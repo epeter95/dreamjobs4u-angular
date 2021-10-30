@@ -11,26 +11,41 @@
             <span [ngClass]="isDropdownOpen ? 'up-arrow' : 'down-arrow'"></span>
         </div>
         <div class="dropdown-values" *ngIf="isDropdownOpen">
-            <div class="dropdown-element side-menu-regular-text" [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''" *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">{{element.value}}</div>
+            <div class="dropdown-element side-menu-regular-text"
+                [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''"
+                *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">
+                {{element.value}}</div>
         </div>
         <button (click)="setFormData()" class="submit-button little-button">{{getJobDataButtonText}}</button>
     </div>
     <form [formGroup]="jobForm" (ngSubmit)="saveJob()" *ngIf="jobQueried" class="form flex-form">
-        <div class="form-field-wrapper" *ngFor="let element of jobFormElements">
+        <div class="form-field-wrapper" [ngClass]="element.center ? 'form-field-center' : ''" *ngFor="let element of jobFormElements">
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
                 {{element.placeholder}}
             </div>
             <ng-container [ngSwitch]="element.fieldType">
-                <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'" class="form-field-width">
-                    <input [id]="element.key" [value]="element.value" [type]="element.type!" (focus)="element.focus = true"
-                        (focusout)="element.focus = false" [formControlName]="element.key"
-                        [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
-                    </div>
+                <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                    class="form-field-width">
+                    <input [id]="element.key" [value]="element.value" [type]="element.type!"
+                        (focus)="element.focus = true" (focusout)="element.focus = false"
+                        [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                </div>
                 <div *ngSwitchCase="'file'" class="form-field-width flex-form file-form-field">
-                    <a (click)="pictureUpload.click()" class="submit-button little-button">{{choosePictureButtonText}}</a>
+                    <a (click)="pictureUpload.click()"
+                        class="submit-button little-button">{{choosePictureButtonText}}</a>
                     <img *ngIf="imageUrl" [src]="imageUrl | sanitizer: 'resourceUrl'" class="file-input-image">
                     <input (change)="handleProfilePicture($event)" #pictureUpload type="file" name="upload"
-                    accept="image/*" class="change-picture-input">
+                        accept="image/*" class="change-picture-input">
+                </div>
+                <div (click)="openDropdown(element)" *ngSwitchCase="'dropdown'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                    class="form-field-width form-field-center dropdown-form-field">
+                    <input style="cursor: pointer;" [id]="element.key" [value]="element.value"
+                        [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'"
+                        readonly>
+                    <span [ngClass]="element.focus ? 'up-arrow-highlighted':'down-arrow'"></span>
+                    <div *ngIf="isCategoryDropdownOpen" class="category-dropdown-values">
+                        <div *ngFor="let category of categories" class="dropdown-element side-menu-regular-text" (click)="setSelectedCategory(category)">{{category.selectedTranslation.text}}</div>
+                    </div>
                 </div>
             </ng-container>
             <div class="required-error-message"
@@ -39,15 +54,18 @@
         </div>
         <div class="language-choose-container">
             <div class="languages-container">
-                <div [ngClass]="hunLanguage.key==jobLanguageKey ? 'active-language' : 'normal-language'" (click)="setJobLanguageKey(hunLanguage.key)">
+                <div [ngClass]="hunLanguage.key==jobLanguageKey ? 'active-language' : 'normal-language'"
+                    (click)="setJobLanguageKey(hunLanguage.key)">
                     {{hunLanguage.selectedTranslation.name}}
                 </div>
-                <div [ngClass]="enLanguage.key==jobLanguageKey ? 'active-language' : 'normal-language'" (click)="setJobLanguageKey(enLanguage.key)">
+                <div [ngClass]="enLanguage.key==jobLanguageKey ? 'active-language' : 'normal-language'"
+                    (click)="setJobLanguageKey(enLanguage.key)">
                     {{enLanguage.selectedTranslation.name}}
                 </div>
             </div>
             <div class="side-menu-subtitle">
-                <ng-container *ngIf="jobLanguageKey == 'hu'; else englishSubtitleText">{{hunSubtitleText}}</ng-container>
+                <ng-container *ngIf="jobLanguageKey == 'hu'; else englishSubtitleText">{{hunSubtitleText}}
+                </ng-container>
                 <ng-template #englishSubtitleText>{{enSubtitleText}}</ng-template>
             </div>
         </div>
@@ -74,9 +92,10 @@
                     </div>
                 </ng-container>
                 <div class="required-error-message"
-                    *ngIf="isUserClicked && jobForm.get('huDetails.'+element.key)?.hasError('required')">{{element.placeholder}}
+                    *ngIf="isUserClicked && jobForm.get('huDetails.'+element.key)?.hasError('required')">
+                    {{element.placeholder}}
                     {{requiredFieldErrorText}}</div>
-            </div> 
+            </div>
         </ng-container>
         <ng-template #englishContainer>
             <div formGroupName="enDetails" class="form-field-wrapper" *ngFor="let element of jobFormDetailElements">

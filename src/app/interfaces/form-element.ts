@@ -8,4 +8,5 @@ export interface FormElement{
     fieldType?: string;
     profileDataKey?:string;
     widthClass?: string;
+    center?: boolean;
 }

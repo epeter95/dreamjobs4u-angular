@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
+import { Category } from 'src/app/interfaces/category';
 import { DropdownData } from 'src/app/interfaces/dropdown';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { Job } from 'src/app/interfaces/job';
@@ -40,7 +41,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     { key: 'jobCompanyName', placeholder: '', focus: false, fieldType: 'input' },
     { key: 'jobCompanyLogo', placeholder: '', focus: false, fieldType: 'file' },
     { key: 'jobCompanyWebsite', placeholder: '', focus: false, fieldType: 'input' },
-    { key: 'jobLocation', placeholder: '', focus: false, fieldType: 'input' }
+    { key: 'jobLocation', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobCategoryId', placeholder: '', focus: false, fieldType: 'dropdown', center: true},
   ];
 
   jobFormDetailElements: FormElement[] = [
@@ -52,6 +54,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   jobForm: FormGroup = new FormGroup({
     jobCompanyName: new FormControl('', Validators.required),
     jobCompanyLogo: new FormControl('', Validators.required),
+    jobCategoryId: new FormControl('', Validators.required),
     jobCompanyWebsite: new FormControl('', Validators.required),
     jobLocation: new FormControl('', Validators.required),
     huDetails: new FormGroup({
@@ -79,6 +82,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   fileData!: File | string;
   jobQueried: boolean = true;
   modifyDialogRefSubscription: Subscription = new Subscription();
+  categories: Category[] = new Array();
+  selectedCategory!: Category;
+  isCategoryDropdownOpen: boolean = false;
 
   constructor(private languageService: LanguageService,
     public dialog: MatDialog,
@@ -129,6 +135,10 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.jobData = res;
       const huJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 1);
       const enJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 2);
+      this.selectedCategory = this.categories.find(element=>element.id == this.jobData.categoryId)!;
+      this.languageService.languageObservable$.subscribe(lang=>{
+        this.selectedCategory.selectedTranslation = this.languageService.getTranslation(lang, this.selectedCategory.CategoryTranslations);
+      });
       if (this.jobData.logoUrl) {
         this.imageUrl = environment.apiDomain + '/' + this.jobData.logoUrl;
       }else{
@@ -139,6 +149,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         jobCompanyLogo: this.jobData.logoUrl,
         jobCompanyWebsite: this.jobData.companyWebsite,
         jobLocation: this.jobData.jobLocation,
+        jobCategoryId: this.selectedCategory.selectedTranslation.text,
         huDetails: {
           jobTitle: huJobDetails?.title,
           jobAboutUs: huJobDetails?.aboutUs,
@@ -159,7 +170,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public'),
       this.dataService.getAllData('/api/generalMessages/public'),
       this.dataService.getAllData('/api/errorMessages/public'),
-      this.dataService.getAllData('/api/languages/public')
+      this.dataService.getAllData('/api/languages/public'),
+      this.dataService.getAllData('/api/categories/public')
     ]).subscribe(res => {
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         this.createJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'createJobTitle', 'PublicContentTranslations');
@@ -192,6 +204,11 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.hunLanguage.LanguageTranslations);
         this.enLanguage = res[3].find(element => element.key == 'en');
         this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.enLanguage.LanguageTranslations);
+      
+        this.categories = res[4].map((element: Category)=>{
+          element.selectedTranslation = this.languageService.getTranslation(lang,element.CategoryTranslations);
+          return element;
+        });
       });
     });
   }
@@ -221,7 +238,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         hunJobDescription: formValue.huDetails.jobDescription,
         enTitle: formValue.enDetails.jobTitle,
         enAboutUs: formValue.enDetails.jobAboutUs,
-        enJobDescription: formValue.enDetails.jobDescription
+        enJobDescription: formValue.enDetails.jobDescription,
+        categoryId: this.selectedCategory.id,
+        imageChanging: this.imageChanging,
       };
       let formData = new FormData();
       const attributes = Object.keys(result);
@@ -263,6 +282,16 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         });
       }
     }
+  }
+
+  openDropdown(element: FormElement){
+    element.focus = !element.focus;
+    this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+  }
+
+  setSelectedCategory(category: Category){
+    this.selectedCategory = category;
+    this.jobForm.controls.jobCategoryId.setValue(category.selectedTranslation.text);
   }
 
 }

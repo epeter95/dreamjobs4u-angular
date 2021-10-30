@@ -3,6 +3,7 @@ export interface Job{
     companyWebsite: string;
     jobLocation: string;
     logoUrl: string;
+    categoryId: number;
     JobTranslations: JobTranslation[];
     selectedTranslation: JobTranslation;
 }

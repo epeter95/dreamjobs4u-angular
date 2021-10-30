@@ -23,7 +23,7 @@
 }
 
 .form-field-full-width{
-    @include form-field-width(770px);
+    @include form-field-width(840px);
 }
 
 .down-arrow{
@@ -40,12 +40,25 @@
     display: inline-block;
 }
 
+.up-arrow-highlighted{
+    border-bottom: 6px solid $highlighted-color;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    display: inline-block;
+}
+
 .form-field,.form-field-focused {
     margin-bottom: 5px;
     border-radius: 8px;
     border: 2px solid #e8ecec;
     padding: 16px 40px 16px 16px;
     transition: border 0.2s ease-in-out;
+    position: relative;
+    span{
+        position:absolute;
+        right: 10px;
+        top: 23px;
+    }
 }
 
 .form-field-focused{
@@ -174,4 +187,8 @@
     padding: 10px 20px;
     height: auto;
     margin: 0;
+}
+
+.form-field-center{
+    margin: 0 auto 20px auto;
 }

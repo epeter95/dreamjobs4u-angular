@@ -93,3 +93,24 @@
 .custom-margin{
     margin-top: 20px;
 }
+
+.category-dropdown-values{
+    position: absolute;
+    top: 65px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: white;
+    z-index: 10;
+    border: 2px solid #e8ecec;
+    border-radius: 8px;
+    box-sizing: border-box;
+    max-width: 375px;
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.dropdown-form-field{
+    cursor: pointer;
+}

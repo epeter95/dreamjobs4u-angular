@@ -64,7 +64,7 @@ export class HeaderComponent implements OnInit {
     this.userDataSubscription = this.sessionService.userDataObservable$.subscribe(data => {
       this.userData = data;
       if(this.userData.profilePicture){
-        this.userData.profilePicture = environment.apiDomain+'/'+this.userData.profilePicture;
+        this.userData.profilePicture = this.userData.profilePicture;
       }
     });
     if (this.sessionService.getSession()) {
@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
     this.dataService.getOneData('/api/users/getDataForPublic', this.dataService.getAuthHeader()).subscribe(data => {
       this.userData = data;
       if(this.userData.profilePicture){
-        this.userData.profilePicture = environment.apiDomain+'/'+this.userData.profilePicture;
+        this.userData.profilePicture = this.userData.profilePicture;
       }
     });
   }

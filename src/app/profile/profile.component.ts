@@ -77,7 +77,7 @@ export class ProfileComponent implements OnInit {
     this.imageUrl = this.profileData.Profile.profilePicture;
     this.jobTitle = this.profileData.Profile.jobTitle;
     if(this.profileData.Profile.profilePicture){
-      this.imageUrl = environment.apiDomain +'/'+this.profileData.Profile.profilePicture;
+      this.imageUrl = this.profileData.Profile.profilePicture;
     }else{
       this.imageUrl = '';
     }

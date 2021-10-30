@@ -33,6 +33,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   jobLanguageKey: string = 'hu';
   queriedJobId: string = '';
   successfulModifyJobText: string = '';
+  choosePictureButtonText: string = '';
+  getJobDataButtonText: string = '';
 
   jobFormElements: FormElement[] = [
     { key: 'jobCompanyName', placeholder: '', focus: false, fieldType: 'input' },
@@ -167,6 +169,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.enSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobEnLanguageSubtitle', 'PublicContentTranslations');
         this.jobDropdownLabel = this.languageService.getTranslationByKey(lang, res[0], 'title', 'selectJobText', 'PublicContentTranslations');
         this.jobSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'handleJobSubtitle', 'PublicContentTranslations');
+        this.choosePictureButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'choosePictureButtonText', 'PublicContentTranslations');
+        this.getJobDataButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'getJobDataButtonText', 'PublicContentTranslations');
 
         this.jobFormElements = this.jobFormElements.map(element => {
           element.placeholder = this.languageService.getTranslationByKey(lang, res[0], 'title', element.key, 'PublicContentTranslations');

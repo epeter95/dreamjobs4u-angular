@@ -13,7 +13,7 @@
         <div class="dropdown-values" *ngIf="isDropdownOpen">
             <div class="dropdown-element side-menu-regular-text" [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''" *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">{{element.value}}</div>
         </div>
-        <button (click)="setFormData()" class="submit-button little-button">Lekérdez</button>
+        <button (click)="setFormData()" class="submit-button little-button">{{getJobDataButtonText}}</button>
     </div>
     <form [formGroup]="jobForm" (ngSubmit)="saveJob()" *ngIf="jobQueried" class="form flex-form">
         <div class="form-field-wrapper" *ngFor="let element of jobFormElements">
@@ -27,7 +27,7 @@
                         [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
                     </div>
                 <div *ngSwitchCase="'file'" class="form-field-width flex-form file-form-field">
-                    <a (click)="pictureUpload.click()" class="submit-button little-button">Kép kiválasztása</a>
+                    <a (click)="pictureUpload.click()" class="submit-button little-button">{{choosePictureButtonText}}</a>
                     <img *ngIf="imageUrl" [src]="imageUrl | sanitizer: 'resourceUrl'" class="file-input-image">
                     <input (change)="handleProfilePicture($event)" #pictureUpload type="file" name="upload"
                     accept="image/*" class="change-picture-input">

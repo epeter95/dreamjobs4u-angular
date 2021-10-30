@@ -29,8 +29,8 @@
                 <div *ngSwitchCase="'file'" class="form-field-width flex-form file-form-field">
                     <a (click)="pictureUpload.click()" class="submit-button little-button">Kép kiválasztása</a>
                     <img *ngIf="imageUrl" [src]="imageUrl | sanitizer: 'resourceUrl'" class="file-input-image">
-                    <input (change)="handleProfilePicture($event)" [formControlName]="element.key" #pictureUpload type="file" name="upload"
-                    accept="image/*"  class="change-picture-input">
+                    <input (change)="handleProfilePicture($event)" #pictureUpload type="file" name="upload"
+                    accept="image/*" class="change-picture-input">
                 </div>
             </ng-container>
             <div class="required-error-message"
@@ -74,7 +74,7 @@
                     </div>
                 </ng-container>
                 <div class="required-error-message"
-                    *ngIf="isUserClicked && jobForm.get(element.key)?.hasError('required')">{{element.placeholder}}
+                    *ngIf="isUserClicked && jobForm.get('huDetails.'+element.key)?.hasError('required')">{{element.placeholder}}
                     {{requiredFieldErrorText}}</div>
             </div> 
         </ng-container>

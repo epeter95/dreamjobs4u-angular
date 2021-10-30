@@ -106,6 +106,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     this.fileData = event.target.files[0] as File;
     const files = event.target.files;
     const reader = new FileReader();
+    this.jobForm.controls.jobCompanyLogo.setValue('value');
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
       this.imageUrl = reader.result;
@@ -128,6 +129,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       const enJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 2);
       if (this.jobData.logoUrl) {
         this.imageUrl = environment.apiDomain + '/' + this.jobData.logoUrl;
+      }else{
+        this.imageUrl = '';
       }
       let formValue = {
         jobCompanyName: this.jobData.companyName,
@@ -226,7 +229,6 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       }
       if (this.isModify) {
         this.dataService.httpPutMethod('/api/jobs/public/modifyJob', this.queriedJobId, formData, this.dataService.getAuthHeader()).subscribe(res => {
-          this.isUserClicked = false;
           const modifyDialogRef = this.dialog.open(MessageDialogComponent, {
             data: { icon: 'done', text: this.successfulModifyJobText },
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
@@ -234,6 +236,11 @@ export class JobHandleComponent implements OnInit, OnDestroy {
           });
           this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(() => {
             this.jobQueried = false;
+            this.isUserClicked = false;
+            this.fileData = '';
+            this.imageUrl = '';
+            this.imageChanging = false;
+            this.jobForm.reset();
           });
         });
       } else {
@@ -244,6 +251,11 @@ export class JobHandleComponent implements OnInit, OnDestroy {
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
             disableClose: true
           });
+          this.isUserClicked = false;
+            this.fileData = '';
+            this.imageUrl = '';
+            this.imageChanging = false;
+            this.jobForm.reset();
         });
       }
     }

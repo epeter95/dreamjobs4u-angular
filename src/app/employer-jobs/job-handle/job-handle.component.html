@@ -20,11 +20,19 @@
             <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
                 {{element.placeholder}}
             </div>
-            <div [ngClass]="element.focus ? 'form-field-focused': 'form-field'" class="form-field-width">
-                <input [id]="element.key" [value]="element.value" [type]="element.type!" (focus)="element.focus = true"
-                    (focusout)="element.focus = false" [formControlName]="element.key"
-                    [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
-            </div>
+            <ng-container [ngSwitch]="element.fieldType">
+                <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'" class="form-field-width">
+                    <input [id]="element.key" [value]="element.value" [type]="element.type!" (focus)="element.focus = true"
+                        (focusout)="element.focus = false" [formControlName]="element.key"
+                        [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                    </div>
+                <div *ngSwitchCase="'file'" class="form-field-width flex-form file-form-field">
+                    <a (click)="pictureUpload.click()" class="submit-button little-button">Kép kiválasztása</a>
+                    <img *ngIf="imageUrl" [src]="imageUrl | sanitizer: 'resourceUrl'" class="file-input-image">
+                    <input (change)="handleProfilePicture($event)" [formControlName]="element.key" #pictureUpload type="file" name="upload"
+                    accept="image/*"  class="change-picture-input">
+                </div>
+            </ng-container>
             <div class="required-error-message"
                 *ngIf="isUserClicked && jobForm.controls[element.key].hasError('required')">{{element.placeholder}}
                 {{requiredFieldErrorText}}</div>

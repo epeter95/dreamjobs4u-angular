@@ -22,6 +22,7 @@ import { ChangePasswordComponent } from './profile/change-password/change-passwo
 import { EmployerJobsComponent } from './employer-jobs/employer-jobs.component';
 import { MyJobsComponent } from './employer-jobs/my-jobs/my-jobs.component';
 import { JobHandleComponent } from './employer-jobs/job-handle/job-handlecomponent';
+import { SanitizerPipe } from './pipes/sanitizer.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { JobHandleComponent } from './employer-jobs/job-handle/job-handlecompone
     ChangePasswordComponent,
     EmployerJobsComponent,
     MyJobsComponent,
-    JobHandleComponent
+    JobHandleComponent,
+    SanitizerPipe
   ],
   imports: [
     BrowserModule,

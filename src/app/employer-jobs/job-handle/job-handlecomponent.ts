@@ -10,6 +10,7 @@ import { Language } from 'src/app/interfaces/language';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-job-handle',
@@ -35,7 +36,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
 
   jobFormElements: FormElement[] = [
     { key: 'jobCompanyName', placeholder: '', focus: false, fieldType: 'input' },
-    { key: 'jobCompanyLogo', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobCompanyLogo', placeholder: '', focus: false, fieldType: 'file' },
     { key: 'jobCompanyWebsite', placeholder: '', focus: false, fieldType: 'input' },
     { key: 'jobLocation', placeholder: '', focus: false, fieldType: 'input' }
   ];
@@ -71,6 +72,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   jobDropdownLabel: string = '';
   selectJobErrorText: string = '';
   jobSubtitleText: string = '';
+  imageUrl: any = '';
+  imageChanging: boolean = false;
+  fileData!: File | string;
   jobQueried: boolean = true;
   modifyDialogRefSubscription: Subscription = new Subscription();
 
@@ -80,12 +84,12 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    if(this.router.url.includes('modositas')){
+    if (this.router.url.includes('modositas')) {
       this.jobQueried = false;
       this.isModify = true;
-      this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken',this.dataService.getAuthHeader()).subscribe(res=>{
-        this.jobDropdownData = res.map(element=>{
-          let newElement = { key: element.id, value: element.companyName};
+      this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken', this.dataService.getAuthHeader()).subscribe(res => {
+        this.jobDropdownData = res.map(element => {
+          let newElement = { key: element.id, value: element.companyName };
           return newElement;
         });
       });
@@ -98,19 +102,33 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     this.modifyDialogRefSubscription.unsubscribe();
   }
 
-  setDropdownData(data: DropdownData){
+  handleProfilePicture(event: any) {
+    this.fileData = event.target.files[0] as File;
+    const files = event.target.files;
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imageUrl = reader.result;
+      this.imageChanging = true;
+    }
+  }
+
+  setDropdownData(data: DropdownData) {
     this.selectedJob = data;
     this.jobDropdownControl.setValue(data.value);
     this.isDropdownOpen = false;
   }
 
-  setFormData(){
+  setFormData() {
     this.queriedJobId = this.selectedJob.key;
     this.jobQueried = true;
-    this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/'+this.queriedJobId,this.dataService.getAuthHeader()).subscribe(res=>{
+    this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/' + this.queriedJobId, this.dataService.getAuthHeader()).subscribe(res => {
       this.jobData = res;
-      const huJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 1);
-      const enJobDetails = this.jobData.JobTranslations.find(element=>element.languageId == 2);
+      const huJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 1);
+      const enJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 2);
+      if (this.jobData.logoUrl) {
+        this.imageUrl = environment.apiDomain + '/' + this.jobData.logoUrl;
+      }
       let formValue = {
         jobCompanyName: this.jobData.companyName,
         jobCompanyLogo: this.jobData.logoUrl,
@@ -122,9 +140,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
           jobDescription: huJobDetails?.jobDescription,
         },
         enDetails: {
-          jobTitle: enJobDetails? enJobDetails.title : '',
-          jobAboutUs: enJobDetails? enJobDetails.aboutUs : '',
-          jobDescription: enJobDetails? enJobDetails.jobDescription : '',
+          jobTitle: enJobDetails ? enJobDetails.title : '',
+          jobAboutUs: enJobDetails ? enJobDetails.aboutUs : '',
+          jobDescription: enJobDetails ? enJobDetails.jobDescription : '',
         }
       }
       this.jobForm.setValue(formValue);
@@ -137,7 +155,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/generalMessages/public'),
       this.dataService.getAllData('/api/errorMessages/public'),
       this.dataService.getAllData('/api/languages/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         this.createJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'createJobTitle', 'PublicContentTranslations');
         this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'modifyJobTitle', 'PublicContentTranslations');
@@ -160,37 +178,36 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.successfulSaveJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulJobCreate', 'GeneralMessageTranslations');
         this.successfulModifyJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulModifyJob', 'GeneralMessageTranslations');
 
-        this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[2],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-        this.selectJobErrorText = this.languageService.getTranslationByKey(lang,res[2],'text','selectJobNeededErrorText', 'ErrorMessageTranslations');
-        
-        this.hunLanguage = res[3].find(element=>element.key == 'hu');
-        this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang,this.hunLanguage.LanguageTranslations);
-        this.enLanguage = res[3].find(element=>element.key == 'en');
-        this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang,this.enLanguage.LanguageTranslations);
+        this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
+        this.selectJobErrorText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'selectJobNeededErrorText', 'ErrorMessageTranslations');
+
+        this.hunLanguage = res[3].find(element => element.key == 'hu');
+        this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.hunLanguage.LanguageTranslations);
+        this.enLanguage = res[3].find(element => element.key == 'en');
+        this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.enLanguage.LanguageTranslations);
       });
     });
   }
 
-  setJobLanguageKey(key: string){
+  setJobLanguageKey(key: string) {
     this.jobLanguageKey = key;
   }
 
-  saveJob(){
-    if(!this.queriedJobId && this.isModify){
-      this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'done', text: this.selectJobErrorText},
+  saveJob() {
+    if (!this.queriedJobId && this.isModify) {
+      this.dialog.open(MessageDialogComponent, {
+        data: { icon: 'done', text: this.selectJobErrorText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });
       return;
     }
     this.isUserClicked = true;
-    if(this.jobForm.valid){
-      let formValue = {...this.jobForm.value};
-      let result = {
+    if (this.jobForm.valid) {
+      let formValue = { ...this.jobForm.value };
+      let result: any = {
         companyName: formValue.jobCompanyName,
         companyWebsite: formValue.jobCompanyWebsite,
-        logoUrl: formValue.jobCompanyLogo,
         jobLocation: formValue.jobLocation,
         hunTitle: formValue.huDetails.jobTitle,
         hunAboutUs: formValue.huDetails.jobAboutUs,
@@ -199,23 +216,31 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         enAboutUs: formValue.enDetails.jobAboutUs,
         enJobDescription: formValue.enDetails.jobDescription
       };
-      if(this.isModify){
-        this.dataService.httpPutMethod('/api/jobs/public/modifyJob',this.queriedJobId,result,this.dataService.getAuthHeader()).subscribe(res=>{
+      let formData = new FormData();
+      const attributes = Object.keys(result);
+      for (let i = 0; i < attributes.length; ++i) {
+        formData.append(attributes[i], result[attributes[i]]);
+      }
+      if (this.imageChanging) {
+        formData.append('logoUrl', this.fileData);
+      }
+      if (this.isModify) {
+        this.dataService.httpPutMethod('/api/jobs/public/modifyJob', this.queriedJobId, formData, this.dataService.getAuthHeader()).subscribe(res => {
           this.isUserClicked = false;
-          const modifyDialogRef = this.dialog.open(MessageDialogComponent,{
-            data: {icon: 'done', text: this.successfulModifyJobText},
+          const modifyDialogRef = this.dialog.open(MessageDialogComponent, {
+            data: { icon: 'done', text: this.successfulModifyJobText },
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
             disableClose: true
           });
-          this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(()=>{
+          this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(() => {
             this.jobQueried = false;
           });
         });
-      }else{
-        this.dataService.httpPostMethod('/api/jobs/public/createJob',result,this.dataService.getAuthHeader()).subscribe(res=>{
+      } else {
+        this.dataService.httpPostMethod('/api/jobs/public/createJob', formData, this.dataService.getAuthHeader()).subscribe(res => {
           this.isUserClicked = false;
-          this.dialog.open(MessageDialogComponent,{
-            data: {icon: 'done', text: this.successfulSaveJobText},
+          this.dialog.open(MessageDialogComponent, {
+            data: { icon: 'done', text: this.successfulSaveJobText },
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
             disableClose: true
           });

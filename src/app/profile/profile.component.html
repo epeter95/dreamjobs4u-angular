@@ -1,7 +1,7 @@
 <div id="profile-container" class="page-container-with-side-menu" *ngIf="profileData">
     <div class="side-menu-container">
         <div class="no-profile-picture">
-            <img class="profile-picture" *ngIf="imageUrl; else noProfilePic" [src]="imageUrl">
+            <img class="profile-picture" *ngIf="imageUrl; else noProfilePic" [src]="imageUrl | sanitizer: 'resourceUrl'">
             <ng-template #noProfilePic>
                 {{monogram}}
             </ng-template>

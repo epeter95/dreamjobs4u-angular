@@ -122,6 +122,21 @@
     text-align: center;
 }
 
+.file-form-field{
+    height: 56px;
+    box-sizing: border-box;
+}
+
+.change-picture-input{
+    display: none;
+}
+
+.file-input-image{
+    width: 120px;
+    height: 100%;
+    object-fit: contain;
+}
+
 .close-error-message{
     border: 2px solid red;
     background-color: red;

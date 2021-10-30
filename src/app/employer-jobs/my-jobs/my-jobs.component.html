@@ -1,3 +1,13 @@
 <div id="my-jobs" class="side-menu-router-outlet-container">
-    <div class="side-menu-router-outlet-title">Hirdetéseim</div>
+    <div class="side-menu-router-outlet-title">{{myJobsTitleText}}</div>
+    <div class="jobs-container">
+        <div class="job" *ngFor="let job of myJobs">
+            <img class="job-image" [src]="job.logoUrl">
+            <div class="job-company side-menu-regular-text">{{job.companyName}}</div>
+            <div class="location-container">
+                <img class="location-image" src="/assets/images/location-icon.PNG">
+                <div class="location-text side-menu-regular-text">{{job.jobLocation}}</div>
+            </div>
+        </div>
+    </div>
 </div>

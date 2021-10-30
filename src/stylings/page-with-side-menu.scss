@@ -7,11 +7,11 @@
     border-radius: 8px;
     padding: 30px 0px;
     box-sizing: border-box;
-    @include flex-container(space-between,flex-start, 30px);
+    @include flex-container(space-between,flex-start, 20px);
 }
 
 .side-menu-container{
-    width: 290px;
+    width: 270px;
     background-color: white;
     box-shadow: 0 0 4px rgba(0,0,0,0.2);
     padding: 30px 0;
@@ -78,9 +78,9 @@
 .side-menu-router-outlet-container{
     background-color: white;
     box-shadow: 0 0 4px rgba(0,0,0,0.1);
-    width: 850px;
+    width: 900px;
     box-sizing: border-box;
-    padding: 30px 40px;
+    padding: 30px;
 }
 
 .side-menu-router-outlet-title{

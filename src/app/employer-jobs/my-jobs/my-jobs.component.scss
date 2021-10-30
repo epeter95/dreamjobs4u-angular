@@ -1,3 +1,52 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
+
+.jobs-container{
+    display: flex;
+    gap: 30px;
+    flex-flow: wrap;
+    padding: 30px 0;
+}
+
+.job{
+    width: 260px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease-in-out;
+    transition: border 0.2s ease-in-out;
+}
+
+.job-image{
+    display: block;
+    margin: auto;
+    width: 84px;
+    height: 84px;
+}
+
+.job-company{
+    text-align: center;
+    margin: 10px 0;
+}
+
+.job:hover{
+    border: 2px solid $highlighted-color;
+    background-color: rgba($highlighted-color,0.2);
+}
+
+.location-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5px;
+}
+
+.location-text{
+    font-size: 13px;
+}

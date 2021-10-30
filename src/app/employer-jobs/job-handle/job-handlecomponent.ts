@@ -140,7 +140,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.selectedCategory.selectedTranslation = this.languageService.getTranslation(lang, this.selectedCategory.CategoryTranslations);
       });
       if (this.jobData.logoUrl) {
-        this.imageUrl = environment.apiDomain + '/' + this.jobData.logoUrl;
+        this.imageUrl = this.jobData.logoUrl;
       }else{
         this.imageUrl = '';
       }

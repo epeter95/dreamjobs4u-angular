@@ -1,0 +1,120 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.job-left-side{
+    max-width: 850px;
+    width: 100%;
+    background-color: white;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.job-image{
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.job-header{
+    display: flex;
+    column-gap: 20px;
+    border-bottom: 2px solid #e8e8e8;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.job-title{
+    text-align: left;
+    margin: 0;
+}
+
+.job-big-title{
+    margin: 40px 0 20px 0;
+    text-align: left;
+}
+
+.job-contact-info{
+    color: #888;
+    font-family: $regular-font;
+    font-size: 13px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    img{
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+    }
+}
+
+.job-location{
+    margin: 5px 0;
+}
+
+.contact-container{
+    display: flex;
+    column-gap: 20px;
+}
+
+.job-right-side{
+    max-width: 330px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.custom-margin{
+    margin: 0 0 50px 0;
+}
+
+.job-right-side-info-container{
+    border: 2px solid #e8e8e8;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.job-right-side-info-element{
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 2px solid white;
+}
+
+.job-right-side-info-element:hover{
+    border: 2px solid $highlighted-color;
+    background-color: rgba($highlighted-color,0.2);
+    border-radius: 4px;
+}
+
+.custom-padding{
+    padding: 20px 10px 10px 10px;
+}
+
+.job-right-side-info{
+    display: grid;
+    row-gap: 10px;
+}
+
+.info-icon{
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.job-info-regular-text{
+    font-size: 14px;
+    font-family: $regular-font;
+    line-height: 17px;
+    color: #888;
+}
+
+.bold-style{
+    font-family: $bold-font;
+}

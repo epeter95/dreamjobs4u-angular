@@ -9,9 +9,11 @@ import { BasicInformationComponent } from './profile/basic-information/basic-inf
 import { ChangePasswordComponent } from './profile/change-password/change-password.component';
 import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 import { ProfileComponent } from './profile/profile.component';
+import { JobComponent } from './job/job.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'kategoria/:categoryId/allas/:jobId', component: JobComponent, pathMatch: 'full' },
   {
     path: 'hirdeteseim', component: EmployerJobsComponent,
     canActivate: [AuthGuard], canActivateChild: [AuthGuard],

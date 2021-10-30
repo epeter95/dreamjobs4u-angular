@@ -18,6 +18,7 @@
     cursor: pointer;
     display: grid;
     align-items: center;
+    text-decoration: none;
     justify-content: center;
     transition: background-color 0.2s ease-in-out;
     transition: border 0.2s ease-in-out;
@@ -28,16 +29,23 @@
     margin: auto;
     width: 84px;
     height: 84px;
+    object-fit: contain;
 }
 
-.job-company{
+.job-company, .job-category{
     text-align: center;
     margin: 10px 0;
+}
+
+.job-category{
+    font-size: 14px;
+    color: $hover-button-color;
 }
 
 .job:hover{
     border: 2px solid $highlighted-color;
     background-color: rgba($highlighted-color,0.2);
+    object-fit: contain;
 }
 
 .location-container{

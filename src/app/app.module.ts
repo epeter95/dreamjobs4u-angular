@@ -23,6 +23,7 @@ import { EmployerJobsComponent } from './employer-jobs/employer-jobs.component';
 import { MyJobsComponent } from './employer-jobs/my-jobs/my-jobs.component';
 import { JobHandleComponent } from './employer-jobs/job-handle/job-handlecomponent';
 import { SanitizerPipe } from './pipes/sanitizer.pipe';
+import { JobComponent } from './job/job.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SanitizerPipe } from './pipes/sanitizer.pipe';
     EmployerJobsComponent,
     MyJobsComponent,
     JobHandleComponent,
-    SanitizerPipe
+    SanitizerPipe,
+    JobComponent
   ],
   imports: [
     BrowserModule,

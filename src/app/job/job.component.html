@@ -1,0 +1,70 @@
+<div id="job" class="page-container-with-side-menu flex-container" *ngIf="job">
+    <div class="job-left-side">
+        <div class="job-header" *ngIf="job.selectedTranslation">
+            <img class="job-image" [src]="job.logoUrl">
+            <div>
+                <div class="job-title side-menu-title">{{job.selectedTranslation.title}}</div>
+                <div class="job-location side-menu-regular-text">{{job.jobLocation}}</div>
+                <div class="contact-container">
+                    <div class="job-contact-info">
+                        <img src="/assets/images/email-icon.PNG">
+                        <span>{{job.User.email}}</span>
+                    </div>
+                    <div class="job-contact-info">
+                        <img src="/assets/images/website-icon.PNG">
+                        <span>{{job.companyWebsite}}</span>
+                    </div>
+                    <div class="job-contact-info">
+                        <img src="/assets/images/phone-icon.PNG">
+                        <span>{{job.User.Profile.phone}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="job-big-title side-menu-title">A cégről</div>
+        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.aboutUs}}</div>
+        <div class="job-big-title side-menu-title">Az állás leírása</div>
+        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.jobDescription}}</div>
+    </div>
+    <div class="job-right-side">
+        <button class="submit-button custom-margin">Jelentkezés az állásra</button>
+        <div class="job-right-side-info-container">
+            <div class="job-title side-menu-title custom-padding">Állás áttekintés</div>
+            <div class="job-right-side-info-element">
+                <img class="info-icon" src="/assets/images/language.jpg">
+                <div class="job-right-side-info">
+                    <div class="side-menu-regular-text bold-style">Fizetés</div>
+                    <div class="job-info-regular-text">Bruttó 500.000</div>
+                </div>
+            </div>
+            <div class="job-right-side-info-element">
+                <img class="info-icon" src="/assets/images/language.jpg">
+                <div class="job-right-side-info">
+                    <div class="side-menu-regular-text bold-style">Munkavégzés</div>
+                    <div class="job-info-regular-text">Teljes munkaidő, Home office</div>
+                </div>
+            </div>
+            <div class="job-right-side-info-element">
+                <img class="info-icon" src="/assets/images/language.jpg">
+                <div class="job-right-side-info">
+                    <div class="side-menu-regular-text bold-style">Tapasztalat</div>
+                    <div class="job-info-regular-text">3 év</div>
+                </div>
+            </div>
+            <div class="job-right-side-info-element">
+                <img class="info-icon" src="/assets/images/language.jpg">
+                <div class="job-right-side-info">
+                    <div class="side-menu-regular-text bold-style">Végzettség</div>
+                    <div class="job-info-regular-text">Érettségi</div>
+                </div>
+            </div>
+            <div class="job-right-side-info-element">
+                <img class="info-icon" src="/assets/images/language.jpg">
+                <div class="job-right-side-info">
+                    <div class="side-menu-regular-text bold-style">Nyelvi tudás</div>
+                    <div class="job-info-regular-text">Angol középszint</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

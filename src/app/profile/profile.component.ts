@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
   basicInfoMenuText: string = '';
   contactInfoMenuText: string = '';
   changePasswordMenuText: string = '';
+  preferedCategoriesText: string = '';
 
   imageUrl: any;
 
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit {
       this.languageService.languageObservable$.subscribe(lang => {
         this.basicInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
         this.contactInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileContactTitle', 'PublicContentTranslations');
+        this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
         this.changePasswordMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
       });
     });

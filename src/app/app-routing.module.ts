@@ -10,6 +10,7 @@ import { ChangePasswordComponent } from './profile/change-password/change-passwo
 import { ContactInformationComponent } from './profile/contact-information/contact-information.component';
 import { ProfileComponent } from './profile/profile.component';
 import { JobComponent } from './job/job.component';
+import { PreferedCategoriesComponent } from './profile/prefered-categories/prefered-categories.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
     path: 'profil', component: ProfileComponent,
     canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
+      { path: 'preferalt-kategoriak', component: PreferedCategoriesComponent, pathMatch: 'full' },
       { path: 'jelszo-valtoztatas', component: ChangePasswordComponent, pathMatch: 'full' },
       { path: 'elerhetoseg', component: ContactInformationComponent, pathMatch: 'full' },
       { path: '', component: BasicInformationComponent, pathMatch: 'full' },

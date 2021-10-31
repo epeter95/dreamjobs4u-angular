@@ -1,16 +1,20 @@
 <div id="profile-container" class="page-container-with-side-menu" *ngIf="profileData">
     <div class="side-menu-container">
         <div class="no-profile-picture">
-            <img class="profile-picture" *ngIf="imageUrl; else noProfilePic" [src]="imageUrl | sanitizer: 'resourceUrl'">
+            <img class="profile-picture" *ngIf="imageUrl; else noProfilePic"
+                [src]="imageUrl | sanitizer: 'resourceUrl'">
             <ng-template #noProfilePic>
                 {{monogram}}
             </ng-template>
-            <input (change)="handleProfilePicture($event)" [formControl]="profilePictureControl" #pictureUpload type="file" name="upload"
-                accept="image/*"  class="change-picture-input">
-            <mat-icon color="primary" (click)="pictureUpload.click()" class="update-profile-pic">camera_enhance</mat-icon>
-            <mat-icon color="primary" class="delete-profile-pic" (click)="removeProfilePicture()">remove_circle_outline</mat-icon>
+            <input (change)="handleProfilePicture($event)" [formControl]="profilePictureControl" #pictureUpload
+                type="file" name="upload" accept="image/*" class="change-picture-input">
+            <mat-icon color="primary" (click)="pictureUpload.click()" class="update-profile-pic">camera_enhance
+            </mat-icon>
+            <mat-icon color="primary" class="delete-profile-pic" (click)="removeProfilePicture()">remove_circle_outline
+            </mat-icon>
         </div>
-        <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()" class="save-profilepic-button">Mentés</button>
+        <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()"
+            class="save-profilepic-button">Mentés</button>
         <div class="side-menu-title">{{profileData.firstName}} {{profileData.lastName}}</div>
         <div class="profile-job-title">{{profileData.Profile.jobTitle}}</div>
         <div class="profile-menus">
@@ -19,7 +23,11 @@
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
                 [routerLinkActiveOptions]="{ exact: true }" routerLink="elerhetoseg">{{contactInfoMenuText}}</a>
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="jelszo-valtoztatas">{{changePasswordMenuText}}</a>
+                [routerLinkActiveOptions]="{ exact: true }"
+                routerLink="jelszo-valtoztatas">{{changePasswordMenuText}}</a>
+            <a class="side-menu-item" routerLinkActive="active-side-menu-item"
+                [routerLinkActiveOptions]="{ exact: true }"
+                routerLink="preferalt-kategoriak">{{preferedCategoriesText}}</a>
         </div>
     </div>
     <router-outlet></router-outlet>

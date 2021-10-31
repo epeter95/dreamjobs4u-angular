@@ -1,0 +1,49 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.categories-container{
+    display: flex;
+    gap: 20px;
+    flex-flow:wrap;
+    padding: 20px 0;
+}
+
+.custom-title{
+    text-align: left;
+    margin: 20px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selected-categories-container{
+    border-bottom: 2px solid #e8e8e8;
+    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+    flex-flow: wrap;
+}
+
+.category-close-button{
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.selected-category{
+    display: flex;
+    align-items: center;
+}
+
+.selected-category{
+    border-bottom: 2px solid $highlighted-color;
+    color: $highlighted-color;
+    font-family: $bold-font;
+    font-size: 14px;
+    line-height: 19px;
+    padding: 5px;
+}

@@ -39,30 +39,19 @@
     color: $normal-color;
     text-decoration: none;
     font-size: 18px;
-    padding-bottom: 5px;
     cursor: pointer;
     font-family: $regular-font;
     transition: color 0.2s ease-in-out;
+    @include flex-container('center','center',20px)
 }
 
 .navigation-link:hover{
     color: $highlighted-color;
 }
 
-.navigation-link-bottom-border{
-    width: 0;
-    height: 2px;
-    display: block;
-    overflow: hidden;
-    transition: width 0.2s ease-in-out;
-    background-color: $highlighted-color;
-    margin-top: 5px;
-}
-
 .active-navigation-link{
     color: $highlighted-color;
     font-family: $bold-font;
-    border-bottom: 2px solid $highlighted-color;
 }
 
 .no-profile-picture-image{
@@ -81,31 +70,35 @@
     position: relative;
 }
 
-.profile-menu{
-    position: absolute;
-    z-index: 1;
-    top: 45px;
-    right: 0;
-    min-width: 200px;
-    background-color: white;
-    padding: 20px;
-    @include flex-container(space-between,center);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-}
-
 .main-navigation-container{
     @include flex-container(space-between,center, 30px);
 }
 
-.user-menu{
+.flag-image{
+    width: 30px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.user-menu, .languages-menu, .profile-menu{
     position: absolute;
-    z-index: 1;
+    z-index: 15;
     top: 45px;
     right: 0;
-    min-width: 200px;
     background-color: white;
     padding: 20px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
+.profile-menu{
+    @include flex-container(space-between,center, 10px);
+    min-width: 200px;
+}
+
+.languages-menu{
+    display: grid;
+    row-gap: 10px;
 }
 
 .profile-picture{
@@ -143,4 +136,20 @@
     outline: none;
     padding: 0;
     margin-top: 10px;
+}
+
+.language-image{
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.languages-container{
+    position: relative;
+}
+
+.profile-links{
+    max-width: min-content;
 }

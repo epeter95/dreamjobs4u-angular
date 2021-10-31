@@ -1,11 +1,12 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginComponent } from '../authentication/login/login.component';
 import { RegistrationDialogComponent } from '../authentication/registration-dialog/registration-dialog.component';
 import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
+import { Language } from '../interfaces/language';
 import { UserData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
@@ -38,9 +39,14 @@ export class HeaderComponent implements OnInit {
   registrationText: string = '';
   profileText: string = '';
   myJobsText: string = '';
+  languages: Language[] = new Array();
+  isLanguagesOpen: boolean = false;
+  activeLanguageKey: string = '';
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
+  @ViewChild('languageButton') languageButton!: ElementRef;
+  @ViewChild('languageContainer') languageContainer!: ElementRef;
   @ViewChild('profileButton') profileButton!: ElementRef;
   @ViewChild('profileContainer') profileContainer!: ElementRef;
 
@@ -67,6 +73,12 @@ export class HeaderComponent implements OnInit {
           this.isUserMenuOpen = !this.isUserMenuOpen;
         }
       }
+
+      if (this.languageButton && this.languageContainer) {
+        if (e.target !== this.languageButton.nativeElement && e.target !== this.languageContainer.nativeElement) {
+          this.isLanguagesOpen = !this.isLanguagesOpen;
+        }
+      }
     });
   }
 
@@ -88,15 +100,33 @@ export class HeaderComponent implements OnInit {
       });
       this.getUserData();
     }
-    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public').subscribe(res=>{
+    forkJoin([
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public'),
+      this.dataService.getAllData('/api/languages/public')
+    ]).subscribe(res=>{
       this.languageService.languageObservable$.subscribe(lang=>{
-        this.myJobsText = this.languageService.getTranslationByKey(lang,res,'title','navbarMyJobsText','PublicContentTranslations');
-        this.loginText = this.languageService.getTranslationByKey(lang,res,'title','navbarLoginText','PublicContentTranslations');
-        this.registrationText = this.languageService.getTranslationByKey(lang,res,'title','navbarRegistrationText','PublicContentTranslations');
-        this.profileText = this.languageService.getTranslationByKey(lang,res,'title','navbarProfileText','PublicContentTranslations');
-        this.logoutText = this.languageService.getTranslationByKey(lang,res,'title','navbarLogoutText','PublicContentTranslations');
+        this.myJobsText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarMyJobsText','PublicContentTranslations');
+        this.loginText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarLoginText','PublicContentTranslations');
+        this.registrationText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarRegistrationText','PublicContentTranslations');
+        this.profileText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarProfileText','PublicContentTranslations');
+        this.logoutText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarLogoutText','PublicContentTranslations');
+        this.languages = res[1].map((element: Language)=>{
+          if(element.key=='hu'){
+            element.flag = '/assets/images/hun-flag.png';
+          }else if(element.key == 'en'){
+            element.flag = '/assets/images/eng-flag.png';
+          }
+          element.selectedTranslation = this.languageService.getTranslation(lang,element.LanguageTranslations);
+          return element;
+        });
+        this.activeLanguageKey = this.languageService.getLangauge()!;
       });
     });
+  }
+
+  setLanguage(language: Language){
+    this.languageService.nextLanguage(language.key);
+    this.isLanguagesOpen = false;
   }
 
   getUserData(){
@@ -106,6 +136,10 @@ export class HeaderComponent implements OnInit {
         this.userData.profilePicture = this.userData.profilePicture;
       }
     });
+  }
+
+  openLanguges(){
+    this.isLanguagesOpen = !this.isLanguagesOpen;
   }
 
   openUserMenu() {
@@ -163,5 +197,6 @@ export class HeaderComponent implements OnInit {
     this.isProfileMenuOpen = false;
     this.roleService.clearRole();
     this.sessionService.clearSession();
+    location.reload();
   }
 }

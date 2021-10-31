@@ -4,6 +4,7 @@ export interface Language{
     adminName: string;
     active: boolean;
     createdAt: Date;
+    flag: string;
     updatedAt: Date;
     LanguageTranslations: LanguageTranslation[];
     selectedTranslation: LanguageTranslation;

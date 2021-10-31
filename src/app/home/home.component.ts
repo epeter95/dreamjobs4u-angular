@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 import { Category } from '../interfaces/category';
 import { FormElement } from '../interfaces/form-element';
 import { DataService } from '../services/data.service';
@@ -12,41 +13,35 @@ import { LanguageService } from '../services/language.service';
 })
 export class HomeComponent implements OnInit {
   searchTermElement: FormElement = {
-    key: 'searchTerm', placeholder: '', focus: false,
+    key: 'homeTextSearchTerm', placeholder: '', focus: false,
   };
 
   categoriesDropDown: FormElement = {
-    key: 'category', placeholder: '', focus: false,
+    key: 'homeCategorySearchTerm', placeholder: '', focus: false,
   };
 
-  categories: Category[] = new Array();
-  isCategoryDropdownOpen: boolean = false;
+  isPageLoaded: boolean = false;
 
-  searchForm: FormGroup = new FormGroup({
-    searchTerm: new FormControl(''),
-    category: new FormControl(''),
-  });
+  categories: Category[] = new Array();
+
   constructor(private dataService: DataService,
     private languageService: LanguageService) { }
 
   ngOnInit(): void {
-    this.dataService.getAllData('/api/categories/public').subscribe(res=>{
+    forkJoin([
+      this.dataService.getAllData('/api/categories/public'),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/home/public')
+    ]).subscribe(res=>{
       this.languageService.languageObservable$.subscribe(lang=>{
-        this.categories = res.map((element: Category)=>{
+        this.categories = res[0].map((element: Category)=>{
           element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });
+        this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeTextSearchTerm','PublicContentTranslations');
+        this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeCategorySearchTerm','PublicContentTranslations');
+        if(!this.isPageLoaded)this.isPageLoaded = true;
       });
-    })
-  }
-
-  setSelectedCategory(category: Category){
-    this.searchForm.controls.category.setValue(category.selectedTranslation.text);
-    this.isCategoryDropdownOpen = false;
-  }
-
-  openCategory(){
-    this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+    });
   }
 
 }

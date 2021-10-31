@@ -1,0 +1,27 @@
+<div class="search-wrapper" id="search-job">
+    <div class="search-container">
+        <div class="search-title">A legkönnyebb út, hogy megtaláld a számodra tökéletes állást!</div>
+        <div class="search-sub-title">Keress szabadon megadható kifejezéssel, és a neked szimpatikus kategóriákkal!
+        </div>
+        <form [formGroup]="searchForm" class="search-form">
+            <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
+                (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
+                [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
+                [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'">
+            <div class="search-select-dropdown">
+                <input readonly [id]="categoriesDropDown.key" (click)="openCategory()"
+                    [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
+                    [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input">
+                    <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                <div class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
+                    <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
+                        <ng-container *ngIf="category.selectedTranslation">
+                            {{category.selectedTranslation.text}}
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <button class="submit-button little-button">Keresés</button>
+        </form>
+    </div>
+</div>

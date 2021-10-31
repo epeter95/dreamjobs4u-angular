@@ -25,6 +25,7 @@ import { JobHandleComponent } from './employer-jobs/job-handle/job-handlecompone
 import { SanitizerPipe } from './pipes/sanitizer.pipe';
 import { JobComponent } from './job/job.component';
 import { PreferedCategoriesComponent } from './profile/prefered-categories/prefered-categories.component';
+import { HomeSearchComponent } from './home/home-search/home-search.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { PreferedCategoriesComponent } from './profile/prefered-categories/prefe
     JobHandleComponent,
     SanitizerPipe,
     JobComponent,
-    PreferedCategoriesComponent
+    PreferedCategoriesComponent,
+    HomeSearchComponent
   ],
   imports: [
     BrowserModule,

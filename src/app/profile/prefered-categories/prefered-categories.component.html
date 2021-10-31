@@ -1,8 +1,9 @@
 <div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container" *ngIf="categories.length > 0">
-    <div class="side-menu-router-outlet-title">Preferált kategóriák</div>
+    <div class="side-menu-router-outlet-title">{{preferedCategoriesText}}</div>
     <div class="profile-categories-wrapper">
         <div class="profile-categories-container">
-            <div class="side-menu-title custom-title">Kiválasztott kategóriák <button (click)="saveCategories()" class="submit-button little-button">Mentés</button></div>
+            <div class="side-menu-title custom-title">{{selectedCategoriesText}}<button (click)="saveCategories()"
+                    class="submit-button little-button">{{saveButtonText}}</button></div>
             <div class="selected-categories-container">
                 <div *ngFor="let category of selectedCategories">
                     <span class="selected-category"
@@ -12,10 +13,10 @@
                     </span>
                 </div>
             </div>
-            <div class="side-menu-title custom-title">Összes kategória</div>
+            <div class="side-menu-title custom-title">{{allCategoryText}}</div>
             <div class="categories-container">
-                <div (click)="addOrRemoveCategory(category)" *ngFor="let category of categories" class="little-button submit-button"
-                    [ngClass]="selectedCategories.includes(category) ? 'submit-button-active': ''">
+                <div (click)="addOrRemoveCategory(category)" *ngFor="let category of categories"
+                    [ngClass]="checkCategoryIsSelected(category) ? 'profile-button-active': 'profile-category-button'">
                     <span *ngIf="category.selectedTranslation">{{category.selectedTranslation.text}}</span>
                 </div>
             </div>

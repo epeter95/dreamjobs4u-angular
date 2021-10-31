@@ -16,6 +16,11 @@ export class PreferedCategoriesComponent implements OnInit {
   selectedCategories: Category[] = new Array();
   categories: Category[] = new Array();
   userData!: UserProfileData;
+  allCategoryText: string = '';
+  selectedCategoriesText: string = '';
+  preferedCategoriesText: string = '';
+  saveButtonText: string = '';
+
   constructor(private dataService: DataService,
     private languageService: LanguageService,
     public dialog: MatDialog) { }
@@ -23,36 +28,51 @@ export class PreferedCategoriesComponent implements OnInit {
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/categories/public'),
-      this.dataService.getOneData('/api/users/getUserDataWithCategoriesForPublic',this.dataService.getAuthHeader())
+      this.dataService.getOneData('/api/users/getUserDataWithCategoriesForPublic',this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public')
     ]).subscribe(res=>{
       this.userData = res[1];
       this.languageService.languageObservable$.subscribe(lang=>{
-        this.categories = res[0].map((element: Category)=>{
-          element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
-          return element;
-        });
         if(this.userData.Categories.length > 0){
           this.selectedCategories = this.userData.Categories.map((element: Category)=>{
             element.selectedTranslation = this.languageService.getTranslation(lang,element.CategoryTranslations);
             return element;
           });
         }
+
+        this.categories = res[0].map((element: Category)=>{
+          const index = this.selectedCategories.indexOf(element, 0);
+          element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
+          return element;
+        });
+        
+        this.saveButtonText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileSendButtonText', 'PublicContentTranslations');
+        this.allCategoryText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileAllCategoriesText', 'PublicContentTranslations');
+        this.selectedCategoriesText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileSelectedCategoriesText', 'PublicContentTranslations');
+        this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
       });
     });
   }
 
+  checkCategoryIsSelected(category: Category){
+    return this.selectedCategories.some(element=> element.id == category.id);
+  }
+
   removeCategory(category: Category){
-    const index = this.selectedCategories.indexOf(category, 0);
+    let selectedCategory = this.selectedCategories.find(element=>element.id == category.id);
+    const index = this.selectedCategories.indexOf(selectedCategory!, 0);
     if (index > -1) {
       this.selectedCategories.splice(index, 1);
     }
   }
 
   addOrRemoveCategory(category: Category){
-    if (!this.selectedCategories.includes(category)) {
-      this.selectedCategories.push(category);
-    } else {
-      this.removeCategory(category);
+    let selectedCategory = this.selectedCategories.find(element=>element.id == category.id);
+    const index = this.selectedCategories.indexOf(selectedCategory!, 0);
+    if (index > -1) {
+      this.selectedCategories.splice(index, 1);
+    }else{
+      this.selectedCategories.push(category); 
     }
   }
 

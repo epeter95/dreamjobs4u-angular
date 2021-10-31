@@ -98,15 +98,15 @@
     @include flex-container(center);
     border: none;
     outline: none;
-    color: $highlighted-color;
+    color: white;
     font-size: 16px;
     background-color: $button-color;
-    border: 2px solid $highlighted-color;
     border-radius: 8px;
     margin-top: 50px;
     cursor: pointer;
     font-family: $bold-font;
     transition: background-color 0.3s ease-in-out;
+    box-sizing: border-box;
     @include default-container(100%, 60px);
 }
 

@@ -1,13 +1,10 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { UserProfileData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
 import { ProfileService } from '../services/profile.service';
-import { SessionService } from '../services/session.service';
 
 @Component({
   selector: 'app-profile',
@@ -28,13 +25,11 @@ export class ProfileComponent implements OnInit {
   contactInfoMenuText: string = '';
   changePasswordMenuText: string = '';
   preferedCategoriesText: string = '';
-
   imageUrl: any;
 
   constructor(private languageService: LanguageService,
     private dataService: DataService,
-    private profileService: ProfileService,
-    private sessionService: SessionService) { }
+    private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.profileService.getInfoForProfileComponents().subscribe(res=>{

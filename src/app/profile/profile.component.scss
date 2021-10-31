@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
+@import 'form.scss';
 
 
 .profile-page-title{
@@ -70,10 +71,10 @@
     display: block;
     margin: 15px auto;
     background-color: $button-color;
-    color: white;
+    color: $highlighted-color;
     font-family: $bold-font;
+    border: 1px solid $highlighted-color;
     padding: 5px 10px;
-    border: none;
     border-radius: 4px;
     outline: none;
     transition: background-color 0.2s ease-in-out;
@@ -82,4 +83,6 @@
 
 .save-profilepic-button:hover{
     background-color: $hover-button-color;
+    color: white;
+    border: 1px solid $hover-button-color;
 }

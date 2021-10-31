@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { forkJoin } from 'rxjs';
 import { Category } from 'src/app/interfaces/category';
+import { UserProfileData } from 'src/app/interfaces/user-data';
+import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 
@@ -11,16 +15,28 @@ import { LanguageService } from 'src/app/services/language.service';
 export class PreferedCategoriesComponent implements OnInit {
   selectedCategories: Category[] = new Array();
   categories: Category[] = new Array();
+  userData!: UserProfileData;
   constructor(private dataService: DataService,
-    private languageService: LanguageService) { }
+    private languageService: LanguageService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.dataService.getAllData('/api/categories/public').subscribe(res=>{
+    forkJoin([
+      this.dataService.getAllData('/api/categories/public'),
+      this.dataService.getOneData('/api/users/getUserDataWithCategoriesForPublic',this.dataService.getAuthHeader())
+    ]).subscribe(res=>{
+      this.userData = res[1];
       this.languageService.languageObservable$.subscribe(lang=>{
-        this.categories = res.map((element: Category)=>{
+        this.categories = res[0].map((element: Category)=>{
           element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });
+        if(this.userData.Categories.length > 0){
+          this.selectedCategories = this.userData.Categories.map((element: Category)=>{
+            element.selectedTranslation = this.languageService.getTranslation(lang,element.CategoryTranslations);
+            return element;
+          });
+        }
       });
     });
   }
@@ -41,7 +57,19 @@ export class PreferedCategoriesComponent implements OnInit {
   }
 
   saveCategories(){
-
+    this.dataService.httpPostMethod('/api/users/public/addUserCategories', {categories: this.selectedCategories}, this.dataService.getAuthHeader()).subscribe(res=>{
+      if(!res.error){
+        this.dialog.open(MessageDialogComponent, {
+          data: {icon: 'done', text: 'Sikeres'},
+          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+          disableClose: true
+        });
+      }
+    });
   }
 
 }
+function UserProfileData(arg0: any[], UserProfileData: any) {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,3 +1,4 @@
+import { Category } from "./category";
 import { Role } from "./role";
 
 export interface UserData{
@@ -18,6 +19,7 @@ export interface UserProfileData{
     city: string;
     address: string;
     Profile: Profile;
+    Categories: Category[];
     Role: Role;
 }
 

@@ -11,13 +11,14 @@ import { ContactInformationComponent } from './profile/contact-information/conta
 import { ProfileComponent } from './profile/profile.component';
 import { JobComponent } from './job/job.component';
 import { PreferedCategoriesComponent } from './profile/prefered-categories/prefered-categories.component';
+import { EmployerRoleGuard } from './authentication/employer-role.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId/allas/:jobId', component: JobComponent, pathMatch: 'full' },
   {
     path: 'hirdeteseim', component: EmployerJobsComponent,
-    canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard, EmployerRoleGuard], canActivateChild: [AuthGuard, EmployerRoleGuard],
     children: [
       { path: 'letrehozas', component: JobHandleComponent, pathMatch: 'full' },
       { path: 'modositas', component: JobHandleComponent, pathMatch: 'full' },

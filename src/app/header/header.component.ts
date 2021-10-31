@@ -9,6 +9,7 @@ import { RegistrationDoneDialog } from '../authentication/registration-done-dial
 import { UserData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { ProfileService } from '../services/profile.service';
+import { RoleService } from '../services/role.service';
 import { SessionService } from '../services/session.service';
 
 @Component({
@@ -40,7 +41,8 @@ export class HeaderComponent implements OnInit {
     private sessionService: SessionService,
     private dataService: DataService,
     private renderer: Renderer2,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private roleService: RoleService,
   ) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.profileButton && this.profileContainer) {
@@ -139,6 +141,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.isProfileMenuOpen = false;
+    this.roleService.clearRole();
     this.sessionService.clearSession();
   }
 }

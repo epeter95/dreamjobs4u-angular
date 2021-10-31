@@ -5,6 +5,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
+import { RoleService } from 'src/app/services/role.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(public dialogRef: MatDialogRef<LoginComponent>,
     private dataService: DataService,
     private languageService: LanguageService,
-    private sessionService: SessionService) { }
+    private sessionService: SessionService,
+    private roleService: RoleService) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -86,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           return;
         }
         this.sessionService.setSession(res.token);
+        this.roleService.nextRole(res.role);
         this.sessionService.nextUserData({monogram: res.monogram, profilePicture: res.profilePicture})
         this.dialogRef.close();
       }, error=>{

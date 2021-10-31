@@ -1,26 +1,28 @@
 <div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
     <div class="side-menu-router-outlet-title">{{basicInfoTitleText}}</div>
     <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="form flex-form">
-        <div class="form-field-wrapper" *ngFor="let element of basicInfoFormElements">
-            <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
-                {{element.placeholder}}
+        <ng-container *ngFor="let element of basicInfoFormElements">
+        <div class="form-field-wrapper" *ngIf="!element.hide">
+                <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
+                    {{element.placeholder}}
+                </div>
+                <ng-container [ngSwitch]="element.fieldType">
+                    <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                        class="form-field-full-width">
+                        <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
+                            [formControlName]="element.key" [value]="element.value"
+                            [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
+                            *ngSwitchCase="'textarea'"></textarea>
+                    </div>
+                    <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                        class="form-field-width">
+                        <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"
+                            (focus)="element.focus = true" (focusout)="element.focus = false"
+                            [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                    </div>
+                </ng-container>
             </div>
-            <ng-container [ngSwitch]="element.fieldType">
-                <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
-                    class="form-field-full-width">
-                    <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
-                        [formControlName]="element.key" [value]="element.value"
-                        [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
-                        *ngSwitchCase="'textarea'"></textarea>
-                </div>
-                <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
-                    class="form-field-width">
-                    <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"
-                        (focus)="element.focus = true" (focusout)="element.focus = false"
-                        [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
-                </div>
-            </ng-container>
-        </div>
+        </ng-container>
         <button class="submit-button profile-submit-button">{{sendButtonText}}</button>
     </form>
 </div>

@@ -9,4 +9,6 @@ export interface FormElement{
     profileDataKey?:string;
     widthClass?: string;
     center?: boolean;
+    roleName?: string;
+    hide?: boolean;
 }

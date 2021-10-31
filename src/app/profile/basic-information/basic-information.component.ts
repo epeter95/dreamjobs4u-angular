@@ -9,6 +9,7 @@ import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.co
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { ProfileService } from 'src/app/services/profile.service';
+import { RoleService } from 'src/app/services/role.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -22,14 +23,16 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   profileData!: UserProfileData;
   profileDataSubscription: Subscription = new Subscription();
   succesfulBasicInfoText: string = '';
+  isEmployerRole: boolean = false;
+  isEmployeeRole: boolean = false;
 
   basicInfoFormElements: FormElement[] = [
     { key: 'profileFirstName', placeholder: '', focus: false, profileDataKey: 'firstName' },
     { key: 'profileLastName', placeholder: '', focus: false, profileDataKey: 'lastName' },
     { key: 'profileJobTitle', placeholder: '', focus: false, profileDataKey: 'jobTitle' },
     { key: 'profileAge', placeholder: '', focus: false, profileDataKey: 'age' },
-    { key: 'profileCurrentSalary', placeholder: '', focus: false, profileDataKey: 'currentSalary' },
-    { key: 'profileExpectedSalary', placeholder: '', focus: false, profileDataKey: 'expectedSalary' },
+    { key: 'profileCurrentSalary', placeholder: '', focus: false, profileDataKey: 'currentSalary', roleName: 'employee' },
+    { key: 'profileExpectedSalary', placeholder: '', focus: false, profileDataKey: 'expectedSalary', roleName: 'employee' },
     { key: 'profileDescription', placeholder: '', focus: false, fieldType: 'textarea', profileDataKey: 'description' }
   ];
 
@@ -44,19 +47,21 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   });
 
   constructor(private dataService: DataService, private languageService: LanguageService,
-    private profileService: ProfileService, private sessionService: SessionService, public dialog: MatDialog) { }
+    private profileService: ProfileService, private roleService: RoleService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-   this.initData();
+    this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
+    this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
+    this.initData();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.profileDataSubscription.unsubscribe();
   }
 
-  initData(){
+  initData() {
     this.profileDataSubscription = this.profileService.profileDataObservable$.subscribe(res => {
-      if(res.length > 0){
+      if (res.length > 0) {
         this.profileData = res[0];
         this.languageService.languageObservable$.subscribe(lang => {
           this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
@@ -65,9 +70,12 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
             this.basicInfoForm.controls[element.key].setValue(res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]);
             element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
             element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
+            if(element.roleName == 'employee' && !this.isEmployeeRole){
+              element.hide = true;
+            }
             return element;
           });
-          this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang,res[2],'text','successfulProfileChange', 'GeneralMessageTranslations');
+          this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'successfulProfileChange', 'GeneralMessageTranslations');
         });
       }
     });
@@ -86,22 +94,22 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
       description: this.basicInfoForm.controls.profileDescription.value
     }
     forkJoin([
-      this.dataService.httpPostMethod('/api/users/public/modifyUserData',userResult,this.dataService.getAuthHeader()),
-      this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData',profileResult,this.dataService.getAuthHeader())
-    ]).subscribe(res=>{
-      if(res[0].error || res[1].error){
-        this.dialog.open(MessageDialogComponent,{
-          data: {icon: 'warning', text: 'asd'},
+      this.dataService.httpPostMethod('/api/users/public/modifyUserData', userResult, this.dataService.getAuthHeader()),
+      this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData', profileResult, this.dataService.getAuthHeader())
+    ]).subscribe(res => {
+      if (res[0].error || res[1].error) {
+        this.dialog.open(MessageDialogComponent, {
+          data: { icon: 'warning', text: 'asd' },
           backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         });
         return;
       }
-      const ref = this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'done', text: this.succesfulBasicInfoText},
+      const ref = this.dialog.open(MessageDialogComponent, {
+        data: { icon: 'done', text: this.succesfulBasicInfoText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });
-      ref.afterClosed().subscribe(()=>{
+      ref.afterClosed().subscribe(() => {
         this.profileService.nextRefreshState(true);
       });
     });

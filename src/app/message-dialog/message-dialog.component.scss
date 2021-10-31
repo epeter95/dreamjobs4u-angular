@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import '../authentication/auth-form.scss';
+@import 'form.scss';
 
 .message-dialog-container{
     padding: 0 36px 16px 36px;
@@ -22,12 +23,4 @@
     line-height: 29px;
     text-align: center;
     margin-bottom: 20px;
-}
-
-.link-button{
-    font-size: 16px;
-    color: $highlighted-color;
-    background-color: white;
-    cursor: pointer;
-    text-decoration: underline;
 }

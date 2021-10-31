@@ -21,4 +21,9 @@ export interface JobTranslation{
     title: string;
     aboutUs: string;
     jobDescription: string;
+    payment: string;
+    jobType: string;
+    experience: string;
+    qualification: string;
+    language: string;
 }

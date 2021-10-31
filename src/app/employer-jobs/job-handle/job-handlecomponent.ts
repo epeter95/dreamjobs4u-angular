@@ -42,14 +42,19 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     { key: 'jobCompanyLogo', placeholder: '', focus: false, fieldType: 'file' },
     { key: 'jobCompanyWebsite', placeholder: '', focus: false, fieldType: 'input' },
     { key: 'jobLocation', placeholder: '', focus: false, fieldType: 'input' },
-    { key: 'jobCategoryId', placeholder: '', focus: false, fieldType: 'dropdown', center: true},
+    { key: 'jobCategoryId', placeholder: '', focus: false, fieldType: 'dropdown', center: true },
   ];
 
   jobFormDetailElements: FormElement[] = [
     { key: 'jobTitle', placeholder: '', focus: false, fieldType: 'input', widthClass: 'form-field-full-width' },
     { key: 'jobAboutUs', placeholder: '', focus: false, fieldType: 'textarea' },
-    { key: 'jobDescription', placeholder: '', focus: false, fieldType: 'textarea' }
-  ]
+    { key: 'jobDescription', placeholder: '', focus: false, fieldType: 'textarea' },
+    { key: 'jobPayment', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobType', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobExperience', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobQualification', placeholder: '', focus: false, fieldType: 'input' },
+    { key: 'jobLanguage', placeholder: '', focus: false, fieldType: 'input' }
+  ];
 
   jobForm: FormGroup = new FormGroup({
     jobCompanyName: new FormControl('', Validators.required),
@@ -60,12 +65,22 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     huDetails: new FormGroup({
       jobTitle: new FormControl('', Validators.required),
       jobAboutUs: new FormControl('', Validators.required),
-      jobDescription: new FormControl('', Validators.required)
+      jobDescription: new FormControl('', Validators.required),
+      jobPayment: new FormControl('', Validators.required),
+      jobType: new FormControl('', Validators.required),
+      jobExperience: new FormControl('', Validators.required),
+      jobQualification: new FormControl('', Validators.required),
+      jobLanguage: new FormControl('', Validators.required)
     }),
     enDetails: new FormGroup({
       jobTitle: new FormControl(''),
       jobAboutUs: new FormControl(''),
-      jobDescription: new FormControl('')
+      jobDescription: new FormControl(''),
+      jobPayment: new FormControl(''),
+      jobType: new FormControl(''),
+      jobExperience: new FormControl(''),
+      jobQualification: new FormControl(''),
+      jobLanguage: new FormControl('')
     })
   });
   isDropdownOpen: boolean = false;
@@ -135,13 +150,13 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.jobData = res;
       const huJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 1);
       const enJobDetails = this.jobData.JobTranslations.find(element => element.languageId == 2);
-      this.selectedCategory = this.categories.find(element=>element.id == this.jobData.categoryId)!;
-      this.languageService.languageObservable$.subscribe(lang=>{
+      this.selectedCategory = this.categories.find(element => element.id == this.jobData.categoryId)!;
+      this.languageService.languageObservable$.subscribe(lang => {
         this.selectedCategory.selectedTranslation = this.languageService.getTranslation(lang, this.selectedCategory.CategoryTranslations);
       });
       if (this.jobData.logoUrl) {
         this.imageUrl = this.jobData.logoUrl;
-      }else{
+      } else {
         this.imageUrl = '';
       }
       let formValue = {
@@ -154,11 +169,21 @@ export class JobHandleComponent implements OnInit, OnDestroy {
           jobTitle: huJobDetails?.title,
           jobAboutUs: huJobDetails?.aboutUs,
           jobDescription: huJobDetails?.jobDescription,
+          jobPayment: huJobDetails?.payment,
+          jobType: huJobDetails?.jobType,
+          jobExperience: huJobDetails?.experience,
+          jobQualification: huJobDetails?.qualification,
+          jobLanguage: huJobDetails?.language
         },
         enDetails: {
           jobTitle: enJobDetails ? enJobDetails.title : '',
           jobAboutUs: enJobDetails ? enJobDetails.aboutUs : '',
           jobDescription: enJobDetails ? enJobDetails.jobDescription : '',
+          jobPayment: enJobDetails ? enJobDetails.payment : '',
+          jobType: enJobDetails ? enJobDetails.jobType : '',
+          jobExperience: enJobDetails ? enJobDetails.experience : '',
+          jobQualification: enJobDetails ? enJobDetails.qualification : '',
+          jobLanguage: enJobDetails ? enJobDetails.language : ''
         }
       }
       this.jobForm.setValue(formValue);
@@ -204,9 +229,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.hunLanguage.LanguageTranslations);
         this.enLanguage = res[3].find(element => element.key == 'en');
         this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.enLanguage.LanguageTranslations);
-      
-        this.categories = res[4].map((element: Category)=>{
-          element.selectedTranslation = this.languageService.getTranslation(lang,element.CategoryTranslations);
+
+        this.categories = res[4].map((element: Category) => {
+          element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });
       });
@@ -236,9 +261,19 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         hunTitle: formValue.huDetails.jobTitle,
         hunAboutUs: formValue.huDetails.jobAboutUs,
         hunJobDescription: formValue.huDetails.jobDescription,
+        hunPayment: formValue.huDetails.jobPayment,
+        hunJobType: formValue.huDetails.jobType,
+        hunExperience: formValue.huDetails.jobExperience,
+        hunQualification: formValue.huDetails.jobQualification,
+        hunLanguage: formValue.huDetails.jobLanguage,
         enTitle: formValue.enDetails.jobTitle,
         enAboutUs: formValue.enDetails.jobAboutUs,
         enJobDescription: formValue.enDetails.jobDescription,
+        enPayment: formValue.enDetails.jobPayment,
+        enJobType: formValue.enDetails.jobType,
+        enExperience: formValue.enDetails.jobExperience,
+        enQualification: formValue.enDetails.jobQualification,
+        enLanguage: formValue.enDetails.jobLanguage,
         categoryId: this.selectedCategory.id,
         imageChanging: this.imageChanging,
       };
@@ -275,21 +310,21 @@ export class JobHandleComponent implements OnInit, OnDestroy {
             disableClose: true
           });
           this.isUserClicked = false;
-            this.fileData = '';
-            this.imageUrl = '';
-            this.imageChanging = false;
-            this.jobForm.reset();
+          this.fileData = '';
+          this.imageUrl = '';
+          this.imageChanging = false;
+          this.jobForm.reset();
         });
       }
     }
   }
 
-  openDropdown(element: FormElement){
+  openDropdown(element: FormElement) {
     element.focus = !element.focus;
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
   }
 
-  setSelectedCategory(category: Category){
+  setSelectedCategory(category: Category) {
     this.selectedCategory = category;
     this.jobForm.controls.jobCategoryId.setValue(category.selectedTranslation.text);
   }

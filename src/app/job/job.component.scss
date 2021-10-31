@@ -59,6 +59,7 @@
 .contact-container{
     display: flex;
     column-gap: 20px;
+    flex-flow: wrap;
 }
 
 .job-right-side{

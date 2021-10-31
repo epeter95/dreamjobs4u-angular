@@ -25,6 +25,8 @@
 
 .navigation-container{
     @include flex-container(space-between,center,20px);
+    width: 100%;
+    margin-left: 15%;
 }
 
 .auth-navigation-container{

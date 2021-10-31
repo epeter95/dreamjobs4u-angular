@@ -5,34 +5,34 @@
         </a>
         <div class="navigation-container">
             <div class="main-navigation-container">
-                <a class="navigation-link" routerLinkActive="active-navigation-link"
-                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/">Kezdőlap<span
+                <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
+                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">{{myJobsText}}<span
                         class="navigation-link-bottom-border"></span></a>
-                <a class="navigation-link" routerLinkActive="active-navigation-link"
-                        [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">Hírdetéseim<span
-                            class="navigation-link-bottom-border"></span></a>
             </div>
             <div class="auth-navigation-container">
                 <ng-container *ngIf="userLoggedIn; else loggedOut">
                     <div class="profile-container">
                         <div *ngIf="userData" class="no-profile-picture-image">
-                            <img #profileButton (click)="openProfileMenu()" *ngIf="userData.profilePicture; else noPicture" class="profile-picture" [src]="userData.profilePicture">
+                            <img #profileButton (click)="openProfileMenu()"
+                                *ngIf="userData.profilePicture; else noPicture" class="profile-picture"
+                                [src]="userData.profilePicture">
                             <ng-template #noPicture>
                                 <span #profileButton (click)="openProfileMenu()">{{userData.monogram}}</span>
                             </ng-template>
                         </div>
                         <div *ngIf="isProfileMenuOpen" #profileContainer class="profile-menu">
                             <div class="no-profile-picture-image big-image">
-                                <img *ngIf="userData.profilePicture; else noPicture" class="profile-picture" [src]="userData.profilePicture">
+                                <img *ngIf="userData.profilePicture; else noPicture" class="profile-picture"
+                                    [src]="userData.profilePicture">
                                 <ng-template #noPicture>
                                     {{userData.monogram}}
                                 </ng-template>
                             </div>
                             <div>
-                                <a class="navigation-link" routerLinkActive="active-navigation-link" (click)="openProfileMenu()"
-                                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil">Profil<span
-                                        class="navigation-link-bottom-border"></span></a>
-                                <button class="logout-button navigation-link" (click)="logout()">Kijelentkezés</button>
+                                <a class="navigation-link" routerLinkActive="active-navigation-link"
+                                    (click)="openProfileMenu()" [routerLinkActiveOptions]="{ exact: true }"
+                                    routerLink="/profil">{{profileText}}<span class="navigation-link-bottom-border"></span></a>
+                                <button class="logout-button navigation-link" (click)="logout()">{{logoutText}}</button>
                             </div>
                         </div>
                     </div>
@@ -42,9 +42,10 @@
                         <div #userButton (click)="openUserMenu()" class="user-menu-icon"></div>
                         <div #userContainer *ngIf="isUserMenuOpen" class="user-menu">
                             <a [ngClass]="isLoginOpen ? 'active-navigation-link' : 'navigation-link'"
-                                (click)="openLoginDialog()">Bejelentkezés<span class="navigation-link-bottom-border"></span></a>
+                                (click)="openLoginDialog()">{{loginText}}<span
+                                    class="navigation-link-bottom-border"></span></a>
                             <a [ngClass]="isRegistrationOpen ? 'active-navigation-link' : 'navigation-link'"
-                                (click)="openRegistrationDialog()">Regisztráció<span
+                                (click)="openRegistrationDialog()">{{registrationText}}<span
                                     class="navigation-link-bottom-border"></span></a>
                         </div>
                     </div>

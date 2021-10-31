@@ -8,6 +8,7 @@ import { RegistrationDialogComponent } from '../authentication/registration-dial
 import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
 import { UserData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
+import { LanguageService } from '../services/language.service';
 import { ProfileService } from '../services/profile.service';
 import { RoleService } from '../services/role.service';
 import { SessionService } from '../services/session.service';
@@ -30,6 +31,13 @@ export class HeaderComponent implements OnInit {
   userData!: UserData;
   isProfileMenuOpen: boolean = false;
   isUserMenuOpen: boolean = false;
+  isEmployee: boolean = false;
+  isEmployer: boolean = false;
+  loginText: string = '';
+  logoutText: string = '';
+  registrationText: string = '';
+  profileText: string = '';
+  myJobsText: string = '';
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
@@ -43,7 +51,10 @@ export class HeaderComponent implements OnInit {
     private renderer: Renderer2,
     private profileService: ProfileService,
     private roleService: RoleService,
+    private languageService: LanguageService
   ) {
+    this.isEmployee = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
+    this.isEmployer = this.roleService.checkEmployerRole(this.roleService.getRole()!);
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.profileButton && this.profileContainer) {
         if (e.target !== this.profileButton.nativeElement && e.target !== this.profileContainer.nativeElement) {
@@ -77,6 +88,15 @@ export class HeaderComponent implements OnInit {
       });
       this.getUserData();
     }
+    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public').subscribe(res=>{
+      this.languageService.languageObservable$.subscribe(lang=>{
+        this.myJobsText = this.languageService.getTranslationByKey(lang,res,'title','navbarMyJobsText','PublicContentTranslations');
+        this.loginText = this.languageService.getTranslationByKey(lang,res,'title','navbarLoginText','PublicContentTranslations');
+        this.registrationText = this.languageService.getTranslationByKey(lang,res,'title','navbarRegistrationText','PublicContentTranslations');
+        this.profileText = this.languageService.getTranslationByKey(lang,res,'title','navbarProfileText','PublicContentTranslations');
+        this.logoutText = this.languageService.getTranslationByKey(lang,res,'title','navbarLogoutText','PublicContentTranslations');
+      });
+    });
   }
 
   getUserData(){

@@ -9,11 +9,11 @@
                 [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
                 [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'">
             <div class="search-select-dropdown">
-                <input readonly [id]="categoriesDropDown.key" (click)="openCategory()"
+                <input #categoryButton readonly [id]="categoriesDropDown.key" (click)="openCategory()"
                     [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
                     [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input">
                     <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
-                <div class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
+                <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
                     <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
                         <ng-container *ngIf="category.selectedTranslation">
                             {{category.selectedTranslation.text}}

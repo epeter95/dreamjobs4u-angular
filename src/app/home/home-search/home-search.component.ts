@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Category } from 'src/app/interfaces/category';
 import { FormElement } from 'src/app/interfaces/form-element';
@@ -21,14 +21,25 @@ export class HomeSearchComponent implements OnInit {
 
   isCategoryDropdownOpen: boolean = false;
 
-  constructor() { }
+  constructor(private renderer: Renderer2) {
+    this.renderer.listen('window', 'click', (e: Event) => {
+      if (this.categoryButton && this.categoryContainer) {
+        if (e.target !== this.categoryButton.nativeElement && e.target !== this.categoryContainer.nativeElement) {
+          this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+        }
+      }
+    });
+  }
+
+  @ViewChild('categoryButton') categoryButton!:ElementRef;
+  @ViewChild('categoryContainer') categoryContainer!:ElementRef;
 
   ngOnInit(): void {
   }
 
   
   setSelectedCategory(category: Category){
-    this.searchForm.controls.category.setValue(category.selectedTranslation.text);
+    this.searchForm.controls.homeCategorySearchTerm.setValue(category.selectedTranslation.text);
     this.isCategoryDropdownOpen = false;
   }
 

@@ -13,6 +13,9 @@ export class HomeSearchComponent implements OnInit {
   @Input() searchTermElement!: FormElement;
   @Input() categoriesDropDown!: FormElement;
   @Input() categories!: Category[];
+  @Input() titleText: string = '';
+  @Input() subtitleText: string = '';
+  @Input() submitButtonText: string = '';
   
   searchForm: FormGroup = new FormGroup({
     homeTextSearchTerm: new FormControl(''),

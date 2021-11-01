@@ -22,6 +22,10 @@ export class HomeComponent implements OnInit {
     key: 'homeCategorySearchTerm', placeholder: '', focus: false,
   };
 
+  searchTitleText: string = '';
+  searchSubtitleText: string = '';
+  searchSubmitButtonText: string = '';
+
   pageLoaded!: Promise<boolean>;
   jobs: Job[] = new Array();
   categories: Category[] = new Array();
@@ -51,6 +55,9 @@ export class HomeComponent implements OnInit {
         });
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeTextSearchTerm','PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySearchTerm','PublicContentTranslations');
+        this.searchTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchTitle','PublicContentTranslations');
+        this.searchSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubtitle','PublicContentTranslations');
+        this.searchSubmitButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubmitButtonText','PublicContentTranslations');
         this.pageLoaded = Promise.resolve(true);
       });
     });

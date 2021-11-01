@@ -1,7 +1,7 @@
 <div class="search-wrapper" id="search-job">
     <div class="search-container">
-        <div class="search-title">A legkönnyebb út, hogy megtaláld a számodra tökéletes állást!</div>
-        <div class="search-sub-title">Keress szabadon megadható kifejezéssel, és a neked szimpatikus kategóriákkal!
+        <div class="search-title">{{titleText}}</div>
+        <div class="search-sub-title">{{subtitleText}}
         </div>
         <form [formGroup]="searchForm" class="search-form">
             <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <button class="submit-button little-button">Keresés</button>
+            <button class="submit-button little-button">{{submitButtonText}}</button>
         </form>
     </div>
 </div>

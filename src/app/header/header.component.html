@@ -6,6 +6,8 @@
         <div class="navigation-container">
             <div class="main-navigation-container">
                 <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
+                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/kategoriak">{{categoryText}}</a>
+                <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">{{myJobsText}}</a>
             </div>
             <div class="auth-navigation-container">

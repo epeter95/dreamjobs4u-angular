@@ -1,4 +1,4 @@
-<ng-container *ngIf="isPageLoaded">
+<ng-container *ngIf="pageLoaded | async">
     <app-home-search [searchTermElement]="searchTermElement" [categoriesDropDown]="categoriesDropDown"
         [categories]="categories"></app-home-search>
     <app-home-categories [categories]="categories"></app-home-categories>

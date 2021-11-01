@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { Category } from '../interfaces/category';
 import { FormElement } from '../interfaces/form-element';
+import { PublicContent } from '../interfaces/public-contents';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
 
@@ -20,9 +21,10 @@ export class HomeComponent implements OnInit {
     key: 'homeCategorySearchTerm', placeholder: '', focus: false,
   };
 
-  isPageLoaded: boolean = false;
+  pageLoaded!: Promise<boolean>;
 
   categories: Category[] = new Array();
+  publicContents: PublicContent[] = new Array();
 
   constructor(private dataService: DataService,
     private languageService: LanguageService) { }
@@ -32,14 +34,16 @@ export class HomeComponent implements OnInit {
       this.dataService.getAllData('/api/categories/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/home/public')
     ]).subscribe(res=>{
+      this.categories = res[0];
+      this.publicContents = res[1];
       this.languageService.languageObservable$.subscribe(lang=>{
-        this.categories = res[0].map((element: Category)=>{
+        this.categories = this.categories.map((element: Category)=>{
           element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });
-        this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeTextSearchTerm','PublicContentTranslations');
-        this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeCategorySearchTerm','PublicContentTranslations');
-        if(!this.isPageLoaded)setTimeout(()=>{this.isPageLoaded = true;},200);
+        this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeTextSearchTerm','PublicContentTranslations');
+        this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySearchTerm','PublicContentTranslations');
+        this.pageLoaded = Promise.resolve(true);
       });
     });
   }

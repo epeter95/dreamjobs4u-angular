@@ -42,14 +42,18 @@
     font-size: 18px;
     line-height: 22px;
     font-family: $regular-font;
+    transition: all 0.3s ease;
     outline: none;
     color: $medium-color;
 }
 
-.search-input-focused{
+.search-input-focused, .search-input:hover{
     border: 2px solid $highlighted-color;
     font-family: $bold-font;
     color: $highlighted-color;
+    .search-arrow-down{
+        border-top: 7px solid  $highlighted-color;
+    }
 }
 
 .search-select-dropdown{

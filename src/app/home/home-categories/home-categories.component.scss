@@ -24,9 +24,9 @@
     box-sizing: border-box;
     cursor: pointer;
     display: grid;
-    background-color: #fcfdff;
+    background-color: $light-background;
     justify-content: center;
-    transition: all 0.4s ease;
+    transition: all 0.2s ease;
 }
 
 .category:hover{

@@ -1,0 +1,14 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'form.scss';
+@import 'page-with-side-menu.scss';
+
+.home-regiter-wrapper{
+    padding: 50px 10px;
+    background: $dark-background;
+}
+
+.home-register-container{
+    max-width: 500px;
+    margin: auto;
+}

@@ -1,0 +1,14 @@
+<div id="home-register" class="home-regiter-wrapper">
+    <div class="home-register-container">
+        <ng-container *ngIf="isUserLoggedIn; else notLoggedIn">
+            <div class="side-menu-title">Profil</div>
+            <div class="side-menu-subtitle">Állítson be még több információt a profil oldalon!</div>
+            <a routerLink="/profil" class="submit-button">Ugrás a profilomra</a>
+        </ng-container>
+        <ng-template #notLoggedIn>
+            <div class="side-menu-title">Regisztráció</div>
+            <div class="side-menu-subtitle">Még nem rendelkezik felhasználói, fiókkal? Kattintson a regisztrációért.</div>
+            <button (click)="openRegistrationDialog()" class="submit-button">REGISZTRÁLOK</button>
+        </ng-template>
+    </div>
+</div>

@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
         });
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeTextSearchTerm','PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title','homeCategorySearchTerm','PublicContentTranslations');
-        if(!this.isPageLoaded)this.isPageLoaded = true;
+        if(!this.isPageLoaded)setTimeout(()=>{this.isPageLoaded = true;},200);
       });
     });
   }

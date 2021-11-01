@@ -27,6 +27,7 @@ import { JobComponent } from './job/job.component';
 import { PreferedCategoriesComponent } from './profile/prefered-categories/prefered-categories.component';
 import { HomeSearchComponent } from './home/home-search/home-search.component';
 import { HomeCategoriesComponent } from './home/home-categories/home-categories.component';
+import { HomeRegisterComponent } from './home/home-register/home-register.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { HomeCategoriesComponent } from './home/home-categories/home-categories.
     JobComponent,
     PreferedCategoriesComponent,
     HomeSearchComponent,
-    HomeCategoriesComponent
+    HomeCategoriesComponent,
+    HomeRegisterComponent
   ],
   imports: [
     BrowserModule,

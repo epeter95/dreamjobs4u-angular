@@ -5,11 +5,12 @@
 
 .home-categories-wrapper{
     box-shadow: $light-box-shadow;
+    padding: 50px 0;
 }
 
 .home-categories-container{
     max-width: 1220px;
-    padding: 50px 10px;
+    padding: 0 10px;
     margin: auto;
 }
 
@@ -62,4 +63,27 @@
     font-size: 14px;
     line-height: 22px;
     font-family: $regular-font;
+    padding: 0 10px;
+}
+
+.all-category-button{
+    display: block;
+    margin: 0 auto 50px auto;
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    color: $hover-button-color;
+    $font-family: $regular-font;
+    font-size: 16px;
+    line-height: 22px;
+    @include flex-container(center, center);
+    border: 1px solid $hover-button-color;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.all-category-button:hover{
+    color: white;
+    background-color: $hover-button-color;
 }

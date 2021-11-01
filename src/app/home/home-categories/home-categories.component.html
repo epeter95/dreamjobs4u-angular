@@ -1,13 +1,14 @@
 <div class="home-categories-wrapper">
     <div id="home-categories" class="home-categories-container">
-        <div class="side-menu-title">Népszerű kateógriák</div>
-        <div class="side-menu-subtitle">37 állás található az összes kategóriában</div>
+        <div class="side-menu-title">{{categoryTitle}}k</div>
+        <div class="side-menu-subtitle">{{categorySubtitle}}</div>
         <div class="categories-container">
             <div class="category" *ngFor="let category of categories |slice:0:8;let i=index;">
                 <img src="/assets/images/test-icon.png" class="category-image">
                 <div class="side-menu-subtitle">{{category.selectedTranslation.text}}</div>
-                <div class="category-job-count">22 állás található ebben a kategóriában</div>
+                <div class="category-job-count">{{category.Jobs.length}} {{categoryJobCountText}}</div>
             </div>
         </div>
     </div>
+    <a routerLink="/kategoriak" class="all-category-button">{{allCategoryButtonText}}</a>
 </div>

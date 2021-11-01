@@ -1,8 +1,10 @@
 <ng-container *ngIf="pageLoaded | async">
-    <app-home-search [titleText]="searchTitleText" [subtitleText]="searchSubtitleText" [submitButtonText]="searchSubmitButtonText"
-        [searchTermElement]="searchTermElement" [categoriesDropDown]="categoriesDropDown" [categories]="categories">
+    <app-home-search [titleText]="searchTitleText" [subtitleText]="searchSubtitleText"
+        [submitButtonText]="searchSubmitButtonText" [searchTermElement]="searchTermElement"
+        [categoriesDropDown]="categoriesDropDown" [categories]="categories">
     </app-home-search>
-    <app-home-categories [categories]="categories"></app-home-categories>
+    <app-home-categories [categoryTitle]="categoryTitleText" [categorySubtitle]="categorySubtitleText"
+       [categoryJobCountText]="categoryJobCountText" [allCategoryButtonText]="allCategoryButtonText" [categories]="categories"></app-home-categories>
     <app-home-register></app-home-register>
     <app-home-jobs [jobs]="jobs"></app-home-jobs>
 </ng-container>

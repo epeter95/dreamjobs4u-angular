@@ -8,6 +8,10 @@ import { Category } from 'src/app/interfaces/category';
 })
 export class HomeCategoriesComponent implements OnInit {
   @Input() categories!:Category[];
+  @Input() categoryTitle: string = '';
+  @Input() categorySubtitle: string = '';
+  @Input() categoryJobCountText: string = '';
+  @Input() allCategoryButtonText: string = '';
   constructor() { }
 
   ngOnInit(): void {

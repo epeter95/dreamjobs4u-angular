@@ -26,6 +26,11 @@ export class HomeComponent implements OnInit {
   searchSubtitleText: string = '';
   searchSubmitButtonText: string = '';
 
+  categoryTitleText: string = '';
+  categorySubtitleText: string = '';
+  categoryJobCountText: string = '';
+  allCategoryButtonText: string = '';
+
   pageLoaded!: Promise<boolean>;
   jobs: Job[] = new Array();
   categories: Category[] = new Array();
@@ -41,6 +46,7 @@ export class HomeComponent implements OnInit {
       this.dataService.getAllData('/api/jobs/public')
     ]).subscribe(res=>{
       this.categories = res[0];
+      console.log(res[0]);
       this.publicContents = res[1];
       this.jobs = res[2];
       this.languageService.languageObservable$.subscribe(lang=>{
@@ -58,6 +64,11 @@ export class HomeComponent implements OnInit {
         this.searchTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchTitle','PublicContentTranslations');
         this.searchSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubtitle','PublicContentTranslations');
         this.searchSubmitButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubmitButtonText','PublicContentTranslations');
+        
+        this.categoryTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryTitleText','PublicContentTranslations');
+        this.categorySubtitleText = this.jobs.length +' '+ this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySubtitleText','PublicContentTranslations');
+        this.categoryJobCountText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryJobCountText','PublicContentTranslations');
+        this.allCategoryButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeAllCategoryButtonText','PublicContentTranslations'); 
         this.pageLoaded = Promise.resolve(true);
       });
     });

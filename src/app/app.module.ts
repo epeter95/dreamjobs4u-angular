@@ -29,6 +29,7 @@ import { HomeSearchComponent } from './home/home-search/home-search.component';
 import { HomeCategoriesComponent } from './home/home-categories/home-categories.component';
 import { HomeRegisterComponent } from './home/home-register/home-register.component';
 import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
     HomeSearchComponent,
     HomeCategoriesComponent,
     HomeRegisterComponent,
-    HomeJobsComponent
+    HomeJobsComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,

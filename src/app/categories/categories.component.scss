@@ -1,0 +1,66 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.categories-wrapper{
+    padding: 50px 0;
+}
+
+.category-container{
+    max-width: 1220px;
+    padding: 50px 10px;
+    margin: auto;
+    display: flex;
+    flex-flow: wrap;
+    gap: 20px;
+}
+
+.category{
+    width: 290px;
+    border: 1px solid rgba($medium-color,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.category:hover{
+    transform: scale(1.05);
+    background-color: white;
+    box-shadow: $light-box-shadow;
+    border: 1px solid $highlighted-color;
+    background-color: rgba($highlighted-color, 0.2);
+    .category-image{
+        background-color: $hover-button-color;
+    }
+}
+
+.category-image{
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    background-color: $highlighted-color;
+    transition: all 0.3s ease;
+}
+
+.category-name{
+    color: $normal-color;
+    font-family: $regular-font;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 25px auto;
+    text-align: center;
+}
+
+.category-job-count{
+    color: $hover-button-color;
+    font-family: $bold-font;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+}

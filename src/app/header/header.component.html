@@ -1,4 +1,4 @@
-<div id="sweetjobs-header" class="header-wrapper">
+<div id="sweetjobs-header" class="header-wrapper" *ngIf="pageLoaded | async">
     <div class="header-container">
         <a routerLink="/" class="header-logo">
             <img src="/assets/images/logo.jpg">

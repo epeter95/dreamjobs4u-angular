@@ -7,7 +7,7 @@ import { Language } from '../interfaces/language';
 })
 export class LanguageService {
 
-  private languageSubject: Subject<string> = new BehaviorSubject<string>(this.initLanguage());
+  private languageSubject: Subject<string> = new BehaviorSubject<string>('');
   languageObservable$ = this.languageSubject.asObservable();
   private languages: Language[] = new Array();
   private languagesArraySubject: Subject<Language[]> = new BehaviorSubject<Language[]>(new Array());
@@ -17,6 +17,7 @@ export class LanguageService {
 
   nextLanguagesArray(languages: Language[]){
     this.languages = languages;
+    this.languageSubject.next(this.initLanguage());
     this.languagesArraySubject.next(languages);
   }
 

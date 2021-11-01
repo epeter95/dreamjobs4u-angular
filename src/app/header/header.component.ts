@@ -7,6 +7,7 @@ import { LoginComponent } from '../authentication/login/login.component';
 import { RegistrationDialogComponent } from '../authentication/registration-dialog/registration-dialog.component';
 import { RegistrationDoneDialog } from '../authentication/registration-done-dialog/registration-done-dialog.component';
 import { Language } from '../interfaces/language';
+import { PublicContent } from '../interfaces/public-contents';
 import { UserData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit {
   userDataSubscription: Subscription = new Subscription();
   profileDataSubscription: Subscription = new Subscription();
   loginDialogSubscription: Subscription = new Subscription();
+  languageSubscription: Subscription = new Subscription();
   userData!: UserData;
   isProfileMenuOpen: boolean = false;
   isUserMenuOpen: boolean = false;
@@ -42,6 +44,8 @@ export class HeaderComponent implements OnInit {
   languages: Language[] = new Array();
   isLanguagesOpen: boolean = false;
   activeLanguageKey: string = '';
+  pageLoaded!: Promise<boolean>;
+  publicContents: PublicContent[] = new Array();
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
@@ -104,22 +108,27 @@ export class HeaderComponent implements OnInit {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public'),
       this.dataService.getAllData('/api/languages/public')
     ]).subscribe(res=>{
-      this.languageService.languageObservable$.subscribe(lang=>{
-        this.myJobsText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarMyJobsText','PublicContentTranslations');
-        this.loginText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarLoginText','PublicContentTranslations');
-        this.registrationText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarRegistrationText','PublicContentTranslations');
-        this.profileText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarProfileText','PublicContentTranslations');
-        this.logoutText = this.languageService.getTranslationByKey(lang,res[0],'title','navbarLogoutText','PublicContentTranslations');
-        this.languages = res[1].map((element: Language)=>{
-          if(element.key=='hu'){
-            element.flag = '/assets/images/hun-flag.png';
-          }else if(element.key == 'en'){
-            element.flag = '/assets/images/eng-flag.png';
-          }
-          element.selectedTranslation = this.languageService.getTranslation(lang,element.LanguageTranslations);
-          return element;
-        });
-        this.activeLanguageKey = this.languageService.getLangauge()!;
+      this.publicContents = res[0];
+      this.languages = res[1];
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
+        if(lang){
+          this.myJobsText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarMyJobsText','PublicContentTranslations');
+          this.loginText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLoginText','PublicContentTranslations');
+          this.registrationText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarRegistrationText','PublicContentTranslations');
+          this.profileText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarProfileText','PublicContentTranslations');
+          this.logoutText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLogoutText','PublicContentTranslations');
+          this.languages = this.languages.map((element: Language)=>{
+            if(element.key=='hu'){
+              element.flag = '/assets/images/hun-flag.png';
+            }else if(element.key == 'en'){
+              element.flag = '/assets/images/eng-flag.png';
+            }
+            element.selectedTranslation = this.languageService.getTranslation(lang,element.LanguageTranslations);
+            return element;
+          });
+          this.activeLanguageKey = this.languageService.getLangauge()!;
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     });
   }
@@ -152,6 +161,7 @@ export class HeaderComponent implements OnInit {
     this.userLoggedInSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
     this.profileDataSubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
   }
 
   openProfileMenu() {
@@ -190,6 +200,7 @@ export class HeaderComponent implements OnInit {
     });
     this.loginDialogSubscription = loginDialogRef.afterClosed().subscribe(() => {
       this.isLoginOpen = false;
+      location.reload();
     });
   }
 

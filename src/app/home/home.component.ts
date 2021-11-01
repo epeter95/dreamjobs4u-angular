@@ -38,6 +38,10 @@ export class HomeComponent implements OnInit {
   profileSubtitleText: string = '';
   profileButtonText: string = '';
 
+  jobsTitleText: string = '';
+  jobsSubtitleText: string = '';
+  allJobButtonText: string = '';
+
   pageLoaded!: Promise<boolean>;
   jobs: Job[] = new Array();
   categories: Category[] = new Array();
@@ -83,6 +87,10 @@ export class HomeComponent implements OnInit {
         this.profileTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileTitleText','PublicContentTranslations');
         this.profileSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileSubtitleText','PublicContentTranslations');
         this.profileButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileButtonText','PublicContentTranslations');
+        
+        this.jobsTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeJobsTitleText','PublicContentTranslations');
+        this.jobsSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeJobsSubtitleText','PublicContentTranslations');
+        this.allJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','homeJobsAllJobButtonText', 'PublicContentTranslations');
         this.pageLoaded = Promise.resolve(true);
       });
     });

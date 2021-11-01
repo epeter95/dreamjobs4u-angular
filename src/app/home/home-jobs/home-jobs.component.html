@@ -1,7 +1,7 @@
 <div id="home-jobs" class="home-jobs-wrapper">
     <div class="home-jobs-container">
-        <div class="side-menu-title">Kiemelt állások</div>
-        <div class="side-menu-subtitle custom-subtitle">Vezető munkaadók, akik már alkalmazzák a munkát és tehetséget</div>
+        <div class="side-menu-title">{{jobsTitleText}}</div>
+        <div class="side-menu-subtitle custom-subtitle">{{jobsSubtitleText}}</div>
         <div class="home-jobs">
             <a [routerLink]="'/kategoria/'+job.categoryId+'/allas/'+job.id" class="home-job" *ngFor="let job of jobs">
                 <div class="job-left-side">
@@ -17,5 +17,6 @@
                 </div>
             </a>
         </div>
+        <a routerLink="/allasok" class="all-job-button">{{allJobButtonText}}</a>
     </div>
 </div>

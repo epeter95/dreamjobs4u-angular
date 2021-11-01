@@ -8,6 +8,9 @@ import { Job } from 'src/app/interfaces/job';
 })
 export class HomeJobsComponent implements OnInit {
   @Input() jobs!: Job[];
+  @Input() jobsTitleText: string = '';
+  @Input() jobsSubtitleText: string = '';
+  @Input() allJobButtonText: string = '';
   constructor() {}
 
   ngOnInit(): void {

@@ -1,6 +1,8 @@
+@import 'variables.scss';
+
 .site-layout-container{
     padding-top: 90px;
     min-height: 100vh;
     box-sizing: border-box;
-    background-color: #fcfdff;
+    background: $light-background;
 }

@@ -1,0 +1,83 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'form.scss';
+@import 'page-with-side-menu.scss';
+
+
+.home-jobs-wrapper{
+    box-shadow: $light-box-shadow;
+}
+.home-jobs-container{
+    max-width: 1220px;
+    padding: 50px 10px;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.home-jobs{
+    width: 100%;
+    display: grid;
+    margin: 50px 0;
+    row-gap: 1px;
+    background-color: rgba($medium-color, 0.4);
+}
+
+.home-job{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: $light-background;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    @include flex-container(space-between,center);
+}
+
+.home-job:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba($medium-color,0.4);
+    position:relative;
+    z-index: 0;
+    background-color: white;
+    .job-type{
+        background-color: $highlighted-color;
+        color: white;
+    }
+}
+
+.job-logo{
+    width: 100px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.job-left-side{
+    @include flex-container(center, center, 30px);
+}
+
+.job-company{
+    font-size: 14px;
+    font-family: $regular-font;
+    line-height: 22px;
+    color: $hover-button-color;
+}
+
+.custom-subtitle{
+    text-align: center;
+}
+
+.job-right-side{
+    display: flex;
+    align-items: center;
+    column-gap: 50px;
+}
+
+.job-type{
+    border: 1px solid $highlighted-color;
+    color: $highlighted-color;
+    font-size: 14px;
+    font-family: $regular-font;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}

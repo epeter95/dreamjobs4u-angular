@@ -1,0 +1,21 @@
+<div id="home-jobs" class="home-jobs-wrapper">
+    <div class="home-jobs-container">
+        <div class="side-menu-title">Kiemelt állások</div>
+        <div class="side-menu-subtitle custom-subtitle">Vezető munkaadók, akik már alkalmazzák a munkát és tehetséget</div>
+        <div class="home-jobs">
+            <a [routerLink]="'/kategoria/'+job.categoryId+'/allas/'+job.id" class="home-job" *ngFor="let job of jobs">
+                <div class="job-left-side">
+                    <img class="job-logo" [src]="job.logoUrl">
+                    <div class="job-name-and-company">
+                        <div class="job-name side-menu-regular-text">{{job.selectedTranslation.title}}</div>
+                        <div class="job-company">{{job.companyName}}</div>
+                    </div>
+                </div>
+                <div class="job-right-side">
+                    <div class="job-location side-menu-regular-text">{{job.jobLocation}}</div>
+                    <div class="job-type">{{job.selectedTranslation.jobType}}</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

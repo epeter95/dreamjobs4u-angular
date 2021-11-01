@@ -3,6 +3,10 @@
 @import 'form.scss';
 @import 'page-with-side-menu.scss';
 
+.home-categories-wrapper{
+    box-shadow: $light-box-shadow;
+}
+
 .home-categories-container{
     max-width: 1220px;
     padding: 50px 10px;
@@ -15,7 +19,7 @@
     flex-flow: wrap;
     position: relative;
     gap: 1px;
-    background-color: rgba($medium-color,0.2);
+    background: $light-background
 }
 
 .category{

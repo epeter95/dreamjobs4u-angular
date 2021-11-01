@@ -30,6 +30,7 @@ import { HomeCategoriesComponent } from './home/home-categories/home-categories.
 import { HomeRegisterComponent } from './home/home-register/home-register.component';
 import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { CategoryComponent } from './category/category.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { CategoriesComponent } from './categories/categories.component';
     HomeCategoriesComponent,
     HomeRegisterComponent,
     HomeJobsComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

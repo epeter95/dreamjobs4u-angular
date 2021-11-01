@@ -1,6 +1,11 @@
 <div class="category-jobs-wrapper">
-    <div class="side-menu-title">{{jobs[0].Category.selectedTranslation.text}}</div>
-    <div class="side-menu-subtitle">{{jobs.length}} állás található ebben a kategóriában</div>
+    <ng-container *ngIf="jobs.length > 0;else noJob">
+        <div class="side-menu-title">{{jobs[0].Category.selectedTranslation.text}}</div>
+        <div class="side-menu-subtitle">{{jobs.length}} állás található ebben a kategóriában</div>
+    </ng-container>
+    <ng-template #noJob>
+        <div class="side-menu-title">Ebben a kategóriában nincsen megjelenítendő állás</div>
+    </ng-template>
     <div class="category-jobs-container">
         <a [routerLink]="'/kategoria/'+categoryId+'/allas/'+job.id" class="category-job" *ngFor="let job of jobs">
             <img class="job-logo" [src]="job.logoUrl">

@@ -23,13 +23,15 @@ export class MyJobsComponent implements OnInit, OnDestroy {
     ]).subscribe(res => {
       this.myJobs = res[0];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-        this.myJobs = this.myJobs.map(element => {
-          element.logoUrl = element.logoUrl;
-          element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
-          element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
-          return element;
-        });
-        this.myJobsTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'myJobsTitleText', 'PublicContentTranslations');
+        if(lang){
+          this.myJobs = this.myJobs.map(element => {
+            element.logoUrl = element.logoUrl;
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
+            element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
+            return element;
+          });
+          this.myJobsTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'myJobsTitleText', 'PublicContentTranslations');
+        }
       });
     });
   }

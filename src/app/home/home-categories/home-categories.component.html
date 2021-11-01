@@ -1,0 +1,11 @@
+<div id="home-categories" class="home-categories-container">
+    <div class="side-menu-title">Népszerű kateógriák</div>
+    <div class="side-menu-subtitle">37 állás található az összes kategóriában</div>
+    <div class="categories-container">
+        <div class="category" *ngFor="let category of categories |slice:0:8;let i=index;">
+            <img src="/assets/images/phone-icon.PNG" class="category-image">
+            <div class="side-menu-subtitle">{{category.selectedTranslation.text}}</div>
+            <div class="category-job-count">22 állás található ebben a kategóriában</div>
+        </div>
+    </div>
+</div>

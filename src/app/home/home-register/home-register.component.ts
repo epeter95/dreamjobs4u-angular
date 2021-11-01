@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { LoginComponent } from 'src/app/authentication/login/login.component';
@@ -12,6 +12,13 @@ import { SessionService } from 'src/app/services/session.service';
   styleUrls: ['./home-register.component.scss']
 })
 export class HomeRegisterComponent implements OnInit, OnDestroy {
+  @Input() registrationTitle: string = '';
+  @Input() registrationSubtitle: string = '';
+  @Input() registrationButton: string = '';
+  @Input() profileTitle: string = '';
+  @Input() profileSubtitle: string = '';
+  @Input() profileButton: string = '';
+
   registrationDialogSubscription: Subscription = new Subscription();
   registrationDoneDialogSubscription: Subscription = new Subscription();
   isUserLoggedIn: boolean = false;

@@ -31,6 +31,13 @@ export class HomeComponent implements OnInit {
   categoryJobCountText: string = '';
   allCategoryButtonText: string = '';
 
+  registrationTitleText: string = '';
+  registrationSubtitleText: string = '';
+  registrationButtonText: string = '';
+  profileTitleText: string = '';
+  profileSubtitleText: string = '';
+  profileButtonText: string = '';
+
   pageLoaded!: Promise<boolean>;
   jobs: Job[] = new Array();
   categories: Category[] = new Array();
@@ -69,6 +76,13 @@ export class HomeComponent implements OnInit {
         this.categorySubtitleText = this.jobs.length +' '+ this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySubtitleText','PublicContentTranslations');
         this.categoryJobCountText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryJobCountText','PublicContentTranslations');
         this.allCategoryButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeAllCategoryButtonText','PublicContentTranslations'); 
+        
+        this.registrationTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationTitleText','PublicContentTranslations');
+        this.registrationSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationSubtitleText','PublicContentTranslations');
+        this.registrationButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationButtonText','PublicContentTranslations');
+        this.profileTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileTitleText','PublicContentTranslations');
+        this.profileSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileSubtitleText','PublicContentTranslations');
+        this.profileButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileButtonText','PublicContentTranslations');
         this.pageLoaded = Promise.resolve(true);
       });
     });

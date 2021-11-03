@@ -1,0 +1,88 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+
+.company-logo{
+    width: 220px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: white;
+}
+
+.footer-wrapper{
+    width: 100%;
+    padding: 50px 10px 0 10px;
+    box-sizing: border-box;
+    background-color: #24324a;
+    box-shadow: $light-box-shadow;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.footer-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer-container{
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: wrap;
+}
+
+.company-socials{
+    display: flex;
+    margin-top: 30px;
+    column-gap: 30px;
+    flex-flow: wrap;
+}
+
+.social-icon{
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.company-title, .company-subtitle, .company-info-element{
+    color: white;
+    font-family: $bold-font;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.company-info-element{
+    font-size: 16px;
+    line-height: 20px;
+    margin: 10px 0;
+}
+
+.company-title{
+    font-size: 28px;
+    line-height: 36px;
+}
+
+.company-subtitle{
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.footer-rights{
+    padding: 25px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    color: white;
+    font-family: $bold-font;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    background-color: #1d293e;
+}

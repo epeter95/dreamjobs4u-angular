@@ -31,6 +31,7 @@ import { HomeRegisterComponent } from './home/home-register/home-register.compon
 import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './category/category.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { CategoryComponent } from './category/category.component';
     HomeRegisterComponent,
     HomeJobsComponent,
     CategoriesComponent,
-    CategoryComponent
+    CategoryComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

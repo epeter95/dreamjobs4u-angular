@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'form.scss';
+@import 'search-form.scss';
 
 
 .search-wrapper{
@@ -28,86 +29,17 @@
     color: $medium-color;
 }
 
+.input-width{
+    width: 500px;
+    padding: 20px 40px;
+}
+
 .search-form{
     margin: 50px 0;
     @include flex-container(space-between,center,20px);
 }
 
-.search-input, .search-input-focused{
-    width: 500px;
-    padding: 20px 40px;
-    box-sizing: border-box;
-    border: 2px solid rgba($medium-color,0.5);
-    border-radius: 10px;
-    font-size: 18px;
-    line-height: 22px;
-    font-family: $regular-font;
-    transition: all 0.3s ease;
-    outline: none;
-    color: $medium-color;
-}
-
-.search-input-focused, .search-input:hover{
-    border: 2px solid $highlighted-color;
-    font-family: $bold-font;
-    color: $highlighted-color;
-    .search-arrow-down{
-        border-top: 7px solid  $highlighted-color;
-    }
-}
-
-.search-select-dropdown{
-    position: relative;
-}
 
 .little-button{
     padding: 22px 20px;
-}
-
-.dropdown-input{
-    cursor: pointer;
-}
-
-.search-arrow-up, .search-arrow-down{
-    position: absolute;
-    top: 30px;
-    right: 15px;
-    border-right: 7px solid transparent;
-    border-left: 7px solid transparent;
-    display: inline-block;
-}
-
-.search-arrow-up{
-    border-bottom: 7px solid $highlighted-color;
-}
-
-.search-arrow-down{
-    border-top: 7px solid rgba($medium-color, 0.5);
-}
-
-.categories-dropdown-container{
-    width: 500px;
-    max-height: 300px;
-    overflow: auto;
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    top: 80px;
-    border: 2px solid $highlighted-color;
-    background-color: white;
-    border-radius: 10px;
-}
-
-.dropdown-category{
-    padding: 15px;
-    color: $medium-color;
-    font-family: $regular-font;
-    font-size: 18px;
-    line-height: 22px;
-    cursor: pointer;
-}
-.dropdown-category:hover{
-    background-color: rgba($highlighted-color,0.2);
-    color: $highlighted-color;
-    font-family: $bold-font;
 }

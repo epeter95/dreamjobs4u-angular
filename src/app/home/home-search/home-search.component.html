@@ -7,11 +7,11 @@
             <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
                 (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
                 [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
-                [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'">
+                [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'" class="input-width">
             <div class="search-select-dropdown">
                 <input #categoryButton readonly [id]="categoriesDropDown.key" (click)="openCategory()"
                     [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
-                    [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input">
+                    [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
                     <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
                 <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
                     <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">

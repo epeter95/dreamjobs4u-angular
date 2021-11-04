@@ -1,11 +1,31 @@
-<div id="sweetjobs-jobs" class="jobs-wrapper">
-    <div class="side-menu-title">Állások</div>
-    <div class="side-menu-subtitle">Nézz szét az aktuális álláshirdetések között</div>
+<div id="sweetjobs-jobs" class="jobs-wrapper" *ngIf="pageLoaded | async">
+    <div class="side-menu-title">{{jobsTitleText}}</div>
+    <div class="side-menu-subtitle">{{jobsSubtitleText}}</div>
+    <form [formGroup]="searchForm" class="search-form" (ngSubmit)="filterJobs()">
+        <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
+            (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
+            [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
+            [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'" class="input-width">
+        <div class="search-select-dropdown">
+            <input #categoryButton readonly [id]="categoriesDropDown.key" (click)="openCategory()"
+                [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
+                [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
+                <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+            <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
+                <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
+                    <ng-container *ngIf="category.selectedTranslation">
+                        {{category.selectedTranslation.text}}
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <button class="submit-button little-button">{{searchButtonText}}</button>
+    </form>
     <div class="job-container">
-        <a [routerLink]="'/kategoria/'+job.id" class="job" *ngFor="let job of jobs">
+        <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of jobs">
             <img class="job-image" [src]="job.logoUrl">
-            <div class="job-name">{{job.selectedTranslation.title}}</div>
-            <div class="category-job-count">{{job.Category.selectedTranslation.text}}</div>
+            <div class="job-name" *ngIf="job.selectedTranslation">{{job.selectedTranslation.title}}</div>
+            <div class="job-category-name" *ngIf="job.Category.selectedTranslation">{{job.Category.selectedTranslation.text}}</div>
         </a>
     </div>
 </div>

@@ -2,6 +2,7 @@
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
 @import 'form.scss';
+@import 'search-form.scss';
 .jobs-wrapper{
     padding: 50px 0;
 }
@@ -13,4 +14,58 @@
     display: flex;
     flex-flow: wrap;
     gap: 20px;
+}
+
+.job{
+    width: 285px;
+    border: 1px solid rgba($medium-color,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.job:hover{
+    transform: scale(1.05);
+    background-color: white;
+    box-shadow: $light-box-shadow;
+    border: 1px solid $highlighted-color;
+    background-color: rgba($highlighted-color, 0.2);
+    .category-image{
+        background-color: $hover-button-color;
+    }
+}
+
+.job-image{
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.job-name{
+    color: $normal-color;
+    font-family: $regular-font;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 25px auto;
+    text-align: center;
+}
+
+.job-category-name{
+    color: $hover-button-color;
+    font-family: $bold-font;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.input-width{
+    width: 400px;
+    padding: 15px 30px;
 }

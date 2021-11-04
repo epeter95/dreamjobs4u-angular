@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { forkJoin, Subscription } from 'rxjs';
+import { unAccentise } from '../interfaces/accentise';
 import { Category } from '../interfaces/category';
 import { FormElement } from '../interfaces/form-element';
 import { Job } from '../interfaces/job';
@@ -15,6 +16,7 @@ import { LanguageService } from '../services/language.service';
 })
 export class JobsComponent implements OnInit {
   jobs: Job[] = new Array();
+  filteredJobs: Job[] = new Array();
   jobsTitleText: string = '';
   jobsSubtitleText: string = '';
   searchButtonText: string = '';
@@ -58,6 +60,12 @@ export class JobsComponent implements OnInit {
           element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });
+        this.categories = this.categories.sort((a: Category, b: Category)=>{
+          if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) < unAccentise(b.selectedTranslation!.text)) { return -1 }
+          if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) > unAccentise(b.selectedTranslation!.text)) { return 1 }
+          return 0;
+        });
+        this.filteredJobs = this.jobs;
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobTextSearchTerm','PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobCategorySearchTerm','PublicContentTranslations');
         this.jobsTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobsPageTitle','PublicContentTranslations');
@@ -69,7 +77,7 @@ export class JobsComponent implements OnInit {
   }
 
   setSelectedCategory(category: Category){
-    this.searchForm.controls.homeCategorySearchTerm.setValue(category.selectedTranslation.text);
+    this.searchForm.controls.jobCategorySearchTerm.setValue(category.selectedTranslation.text);
     this.isCategoryDropdownOpen = false;
   }
 
@@ -78,7 +86,18 @@ export class JobsComponent implements OnInit {
   }
 
   filterJobs(){
-
+    const searchTerm = this.searchForm.controls.jobTextSearchTerm.value;
+    const jobCategorySearchTerm = this.searchForm.controls.jobCategorySearchTerm.value;
+    this.filteredJobs = this.jobs;
+    if(searchTerm || jobCategorySearchTerm){
+      const category = this.categories.find(element => element.selectedTranslation.text == jobCategorySearchTerm);
+      this.filteredJobs = this.jobs.filter(element=>{
+        if(category && category.key != 'allCategory'){
+          return (element.categoryId == category?.id && JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm));
+        }
+        return (JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm));
+      });
+    }
   }
 
 }

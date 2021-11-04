@@ -22,7 +22,7 @@
         <button class="submit-button little-button">{{searchButtonText}}</button>
     </form>
     <div class="job-container">
-        <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of jobs">
+        <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of filteredJobs">
             <img class="job-image" [src]="job.logoUrl">
             <div class="job-name" *ngIf="job.selectedTranslation">{{job.selectedTranslation.title}}</div>
             <div class="job-category-name" *ngIf="job.Category.selectedTranslation">{{job.Category.selectedTranslation.text}}</div>

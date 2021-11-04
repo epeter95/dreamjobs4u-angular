@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Category } from 'src/app/interfaces/category';
 import { FormElement } from 'src/app/interfaces/form-element';
 
@@ -24,7 +25,7 @@ export class HomeSearchComponent implements OnInit {
 
   isCategoryDropdownOpen: boolean = false;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private router: Router) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.categoryButton && this.categoryContainer) {
         if (e.target !== this.categoryButton.nativeElement && e.target !== this.categoryContainer.nativeElement) {
@@ -48,6 +49,18 @@ export class HomeSearchComponent implements OnInit {
 
   openCategory(){
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+  }
+  
+  search(){
+    let queryParams: any = {};
+    if(this.searchForm.controls.homeTextSearchTerm.value){
+      queryParams['text'] = this.searchForm.controls.homeTextSearchTerm.value
+    }
+    if(this.searchForm.controls.homeCategorySearchTerm.value){
+      let categoryId = this.categories.find(element=>element.selectedTranslation.text == this.searchForm.controls.homeCategorySearchTerm.value)?.id;
+      queryParams['category'] = categoryId
+    }
+    this.router.navigate(['/allasok'], {queryParams: queryParams ? queryParams: null});
   }
 
 }

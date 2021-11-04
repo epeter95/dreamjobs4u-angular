@@ -32,6 +32,7 @@ export class PreferedCategoriesComponent implements OnInit {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public')
     ]).subscribe(res=>{
       this.userData = res[1];
+      this.categories = res[0].filter((element: Category)=>element.key!='allCategory');
       this.languageService.languageObservable$.subscribe(lang=>{
         if(this.userData.Categories.length > 0){
           this.selectedCategories = this.userData.Categories.map((element: Category)=>{
@@ -40,8 +41,7 @@ export class PreferedCategoriesComponent implements OnInit {
           });
         }
 
-        this.categories = res[0].map((element: Category)=>{
-          const index = this.selectedCategories.indexOf(element, 0);
+        this.categories = this.categories.map((element: Category)=>{
           element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
           return element;
         });

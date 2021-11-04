@@ -5,9 +5,12 @@ import { Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { Category } from 'src/app/interfaces/category';
 import { DropdownData } from 'src/app/interfaces/dropdown';
+import { ErrorMessage } from 'src/app/interfaces/error-message';
 import { FormElement } from 'src/app/interfaces/form-element';
+import { GeneralMessage } from 'src/app/interfaces/general-message';
 import { Job } from 'src/app/interfaces/job';
 import { Language } from 'src/app/interfaces/language';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -100,6 +103,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   categories: Category[] = new Array();
   selectedCategory!: Category;
   isCategoryDropdownOpen: boolean = false;
+  publicContents: PublicContent[] = new Array();
+  generalMessages: GeneralMessage[] = new Array();
+  errorMessages: ErrorMessage[] = new Array();
 
   constructor(private languageService: LanguageService,
     public dialog: MatDialog,
@@ -198,40 +204,45 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/languages/public'),
       this.dataService.getAllData('/api/categories/public')
     ]).subscribe(res => {
+      this.publicContents = res[0];
+      this.generalMessages = res[1];
+      this.errorMessages = res[2];
+      this.languages = res[3];
+      this.categories = res[4].filter(element=>element.key!='allCategory');
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if(lang){
-          this.createJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'createJobTitle', 'PublicContentTranslations');
-          this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'modifyJobTitle', 'PublicContentTranslations');
-          this.sendButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'saveJobButtonText', 'PublicContentTranslations');
-          this.hunSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobHunLanguageSubtitle', 'PublicContentTranslations');
-          this.enSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'jobEnLanguageSubtitle', 'PublicContentTranslations');
-          this.jobDropdownLabel = this.languageService.getTranslationByKey(lang, res[0], 'title', 'selectJobText', 'PublicContentTranslations');
-          this.jobSubtitleText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'handleJobSubtitle', 'PublicContentTranslations');
-          this.choosePictureButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'choosePictureButtonText', 'PublicContentTranslations');
-          this.getJobDataButtonText = this.languageService.getTranslationByKey(lang, res[0], 'title', 'getJobDataButtonText', 'PublicContentTranslations');
+          this.createJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
+          this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
+          this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'saveJobButtonText', 'PublicContentTranslations');
+          this.hunSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobHunLanguageSubtitle', 'PublicContentTranslations');
+          this.enSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobEnLanguageSubtitle', 'PublicContentTranslations');
+          this.jobDropdownLabel = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'selectJobText', 'PublicContentTranslations');
+          this.jobSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'handleJobSubtitle', 'PublicContentTranslations');
+          this.choosePictureButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'choosePictureButtonText', 'PublicContentTranslations');
+          this.getJobDataButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'getJobDataButtonText', 'PublicContentTranslations');
   
           this.jobFormElements = this.jobFormElements.map(element => {
-            element.placeholder = this.languageService.getTranslationByKey(lang, res[0], 'title', element.key, 'PublicContentTranslations');
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
   
           this.jobFormDetailElements = this.jobFormDetailElements.map(element => {
-            element.placeholder = this.languageService.getTranslationByKey(lang, res[0], 'title', element.key, 'PublicContentTranslations');
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
   
-          this.successfulSaveJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulJobCreate', 'GeneralMessageTranslations');
-          this.successfulModifyJobText = this.languageService.getTranslationByKey(lang, res[1], 'text', 'successfulModifyJob', 'GeneralMessageTranslations');
+          this.successfulSaveJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulJobCreate', 'GeneralMessageTranslations');
+          this.successfulModifyJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulModifyJob', 'GeneralMessageTranslations');
   
-          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
-          this.selectJobErrorText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'selectJobNeededErrorText', 'ErrorMessageTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.selectJobErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'selectJobNeededErrorText', 'ErrorMessageTranslations');
   
-          this.hunLanguage = res[3].find(element => element.key == 'hu');
+          this.hunLanguage = this.languages.find(element => element.key == 'hu')!;
           this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.hunLanguage.LanguageTranslations);
-          this.enLanguage = res[3].find(element => element.key == 'en');
+          this.enLanguage = this.languages.find(element => element.key == 'en')!;
           this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.enLanguage.LanguageTranslations);
   
-          this.categories = res[4].map((element: Category) => {
+          this.categories = this.categories.map((element: Category) => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
           });

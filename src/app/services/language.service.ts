@@ -41,7 +41,11 @@ export class LanguageService {
   }
 
   getTranslationByKey(language: string, container: any[], resultAttribute: string, key: string, objectName: string){  
-    let transArray = container.find(element => element.key == key)[objectName];
+    let publicContent = container.find(element => element.key == key);
+    if(!publicContent){
+      return null;
+    }
+    let transArray = publicContent[objectName];
     let huLangId = this.languages.find(lang => lang.key == 'hu')?.id;
     let langId = this.languages.find(lang => lang.key == language)?.id;
     let translation = transArray.find((trans:any) => trans.languageId == langId);

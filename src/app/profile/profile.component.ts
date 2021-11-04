@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
+import { PublicContent } from '../interfaces/public-contents';
 import { UserProfileData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
@@ -15,6 +16,7 @@ export class ProfileComponent implements OnInit {
   monogram: string = '';
   profileData!: UserProfileData;
   profileDataSubscription: Subscription = new Subscription();
+  languageSubscription: Subscription = new Subscription();
   profileDataAndPublicContentSubscription: Subscription = new Subscription();
   jobTitle: string = '';
   fileData!: File | string;
@@ -26,34 +28,43 @@ export class ProfileComponent implements OnInit {
   changePasswordMenuText: string = '';
   preferedCategoriesText: string = '';
   imageUrl: any;
+  pageLoaded!: Promise<boolean>;
+  publicContents: PublicContent[] = new Array();
 
   constructor(private languageService: LanguageService,
     private dataService: DataService,
     private profileService: ProfileService) { }
 
   ngOnInit(): void {
-    this.profileService.getInfoForProfileComponents().subscribe(res=>{
-      this.profileService.nextProfileData(res);
+    forkJoin([
+      this.dataService.getOneData('/api/profiles/getProfileDataForPublic', this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public')
+    ]).subscribe(res => {
       this.initProfileData(res[0]);
-      this.languageService.languageObservable$.subscribe(lang => {
-        this.basicInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
-        this.contactInfoMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileContactTitle', 'PublicContentTranslations');
-        this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
-        this.changePasswordMenuText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
+      this.publicContents = res[1];
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.basicInfoMenuText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+          this.contactInfoMenuText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileContactTitle', 'PublicContentTranslations');
+          this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
+          this.changePasswordMenuText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     });
 
-    this.profileDataAndPublicContentSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh=>{
-      if(refresh){
-        this.profileDataSubscription = this.profileService.getProfileData().subscribe(res=>{
+    this.profileDataAndPublicContentSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh => {
+      if (refresh) {
+        this.profileDataSubscription = this.profileService.getProfileData().subscribe(res => {
           this.initProfileData(res);
         });
       }
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.profileDataSubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
     this.profileDataAndPublicContentSubscription.unsubscribe();
   }
 
@@ -68,30 +79,30 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  initProfileData(res: any){
+  initProfileData(res: any) {
     this.profileData = res;
-    this.monogram = this.profileData.firstName[0]+this.profileData.lastName[0];
+    this.monogram = this.profileData.firstName[0] + this.profileData.lastName[0];
     this.imageUrl = this.profileData.Profile.profilePicture;
     this.jobTitle = this.profileData.Profile.jobTitle;
-    if(this.profileData.Profile.profilePicture){
+    if (this.profileData.Profile.profilePicture) {
       this.imageUrl = this.profileData.Profile.profilePicture;
-    }else{
+    } else {
       this.imageUrl = '';
     }
   }
 
-  saveProfilePicture(){
+  saveProfilePicture() {
     let formData = new FormData();
     if (this.isProfilePicChanging) {
       formData.append('profilePictureUrl', this.fileData);
     }
-    this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture',formData,this.dataService.getAuthHeader()).subscribe(res=>{
+    this.dataService.httpPostMethod('/api/profiles/public/editProfilePicture', formData, this.dataService.getAuthHeader()).subscribe(res => {
       this.isProfilePicChanging = false;
       this.profileService.nextRefreshState(true);
     });
-  } 
+  }
 
-  removeProfilePicture(){
+  removeProfilePicture() {
     this.imageUrl = '';
     this.isProfilePicChanging = true;
     this.profilePictureControl.setValue('');
@@ -99,3 +110,4 @@ export class ProfileComponent implements OnInit {
   }
 
 }
+

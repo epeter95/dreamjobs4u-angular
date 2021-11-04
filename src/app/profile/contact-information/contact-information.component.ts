@@ -4,6 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
+import { GeneralMessage } from 'src/app/interfaces/general-message';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { UserProfileData } from 'src/app/interfaces/user-data';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
@@ -19,9 +21,12 @@ import { SessionService } from 'src/app/services/session.service';
 export class ContactInformationComponent implements OnInit, OnDestroy {
   sendButtonText: string = '';
   contactInfoTitleText: string = '';
-  profileDataSubscription: Subscription = new Subscription();
+  languageSubscription: Subscription = new Subscription();
   profileData!: UserProfileData;
   successfulContactInfoText: string = '';
+  publicContents: PublicContent[] = new Array();
+  generalMessages: GeneralMessage[] = new Array();
+  pageLoaded!: Promise<boolean>;
 
   contactInfoFormElements: FormElement[] = [
     { key: 'profileCountry', placeholder: '', focus: false, profileDataKey: 'country' },
@@ -49,26 +54,33 @@ export class ContactInformationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.profileDataSubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
   }
 
   initData() {
-    this.profileDataSubscription = this.profileService.profileDataObservable$.subscribe(res => {
-      if (res.length > 0) {
+    forkJoin([
+      this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
+      this.dataService.getAllData('/api/generalMessages/public')
+    ]).subscribe(res => {
         this.profileData = res[0];
-        this.languageService.languageObservable$.subscribe(lang => {
-          this.contactInfoTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileContactTitle', 'PublicContentTranslations');
-          this.sendButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileSendButtonText', 'PublicContentTranslations');
-          this.contactInfoFormElements = this.contactInfoFormElements.map(element => {
-            this.contactInfoForm.controls[element.key].setValue(res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]);
-            element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
-            element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
-            return element;
-          });
-          this.successfulContactInfoText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'successfulContactChange', 'GeneralMessageTranslations');
-          console.log(this.successfulContactInfoText);
+        this.publicContents = res[1];
+        this.generalMessages = res[2];
+        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+          if(lang){
+            this.contactInfoTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileContactTitle', 'PublicContentTranslations');
+            this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
+            this.contactInfoFormElements = this.contactInfoFormElements.map(element => {
+              const attribute = element.profileDataKey ? element.profileDataKey : '';
+              this.contactInfoForm.controls[element.key].setValue(res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]);
+              element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
+              element.value = res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]
+              return element;
+            });
+            this.successfulContactInfoText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulContactChange', 'GeneralMessageTranslations');
+            this.pageLoaded = Promise.resolve(true);
+          }
         });
-      }
     });
   }
 

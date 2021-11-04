@@ -1,4 +1,4 @@
-<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container" *ngIf="categories.length > 0">
+<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{preferedCategoriesText}}</div>
     <div class="profile-categories-wrapper">
         <div class="profile-categories-container">

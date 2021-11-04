@@ -1,4 +1,4 @@
-<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container">
+<div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container" *ngIf="pageLoaded| async">
     <div class="side-menu-router-outlet-title">{{basicInfoTitleText}}</div>
     <form [formGroup]="basicInfoForm" (ngSubmit)="saveInfos()" class="form flex-form">
         <ng-container *ngFor="let element of basicInfoFormElements">

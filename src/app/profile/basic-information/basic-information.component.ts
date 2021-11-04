@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
 import { FormElement } from 'src/app/interfaces/form-element';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { UserProfileData } from 'src/app/interfaces/user-data';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
@@ -21,10 +22,13 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   basicInfoTitleText: string = '';
   sendButtonText: string = '';
   profileData!: UserProfileData;
-  profileDataSubscription: Subscription = new Subscription();
+  languageSubscription: Subscription = new Subscription();
   succesfulBasicInfoText: string = '';
+  publicContents: PublicContent[] = new Array();
+  pageLoaded!: Promise<boolean>;
   isEmployerRole: boolean = false;
   isEmployeeRole: boolean = false;
+  generalMessages: PublicContent[] = new Array();
 
   basicInfoFormElements: FormElement[] = [
     { key: 'profileFirstName', placeholder: '', focus: false, profileDataKey: 'firstName' },
@@ -56,28 +60,36 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.profileDataSubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
   }
 
   initData() {
-    this.profileDataSubscription = this.profileService.profileDataObservable$.subscribe(res => {
-      if (res.length > 0) {
+    forkJoin([
+      this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
+      this.dataService.getAllData('/api/generalMessages/public')
+    ]).subscribe(res => {
         this.profileData = res[0];
-        this.languageService.languageObservable$.subscribe(lang => {
-          this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
-          this.sendButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'profileSendButtonText', 'PublicContentTranslations');
-          this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
-            this.basicInfoForm.controls[element.key].setValue(res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]);
-            element.placeholder = this.languageService.getTranslationByKey(lang, res[1], 'title', element.key, 'PublicContentTranslations');
-            element.value = res[0][element.profileDataKey!] ? res[0][element.profileDataKey!] : res[0]['Profile'][element.profileDataKey!]
-            if(element.roleName == 'employee' && !this.isEmployeeRole){
-              element.hide = true;
-            }
-            return element;
-          });
-          this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang, res[2], 'text', 'successfulProfileChange', 'GeneralMessageTranslations');
+        this.publicContents =res[1];
+        this.generalMessages = res[2];
+        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+          if(lang){
+            this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+            this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
+            this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
+              const attribute = element.profileDataKey ? element.profileDataKey : '';
+              this.basicInfoForm.controls[element.key].setValue(res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]);
+              element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
+              element.value = res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]
+              if(element.roleName == 'employee' && !this.isEmployeeRole){
+                element.hide = true;
+              }
+              return element;
+            });
+            this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulProfileChange', 'GeneralMessageTranslations');
+            this.pageLoaded = Promise.resolve(true);
+          }
         });
-      }
     });
   }
 

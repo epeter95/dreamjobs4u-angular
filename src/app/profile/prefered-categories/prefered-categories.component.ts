@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { Category } from 'src/app/interfaces/category';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { UserProfileData } from 'src/app/interfaces/user-data';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
@@ -12,7 +13,7 @@ import { LanguageService } from 'src/app/services/language.service';
   templateUrl: './prefered-categories.component.html',
   styleUrls: ['./prefered-categories.component.scss']
 })
-export class PreferedCategoriesComponent implements OnInit {
+export class PreferedCategoriesComponent implements OnInit, OnDestroy {
   selectedCategories: Category[] = new Array();
   categories: Category[] = new Array();
   userData!: UserProfileData;
@@ -20,6 +21,9 @@ export class PreferedCategoriesComponent implements OnInit {
   selectedCategoriesText: string = '';
   preferedCategoriesText: string = '';
   saveButtonText: string = '';
+  publicContents: PublicContent[] = new Array();
+  languageSubscription: Subscription = new Subscription();
+  pageLoaded!: Promise<boolean>;
 
   constructor(private dataService: DataService,
     private languageService: LanguageService,
@@ -33,7 +37,8 @@ export class PreferedCategoriesComponent implements OnInit {
     ]).subscribe(res=>{
       this.userData = res[1];
       this.categories = res[0].filter((element: Category)=>element.key!='allCategory');
-      this.languageService.languageObservable$.subscribe(lang=>{
+      this.publicContents = res[2];
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(this.userData.Categories.length > 0){
           this.selectedCategories = this.userData.Categories.map((element: Category)=>{
             element.selectedTranslation = this.languageService.getTranslation(lang,element.CategoryTranslations);
@@ -46,12 +51,17 @@ export class PreferedCategoriesComponent implements OnInit {
           return element;
         });
         
-        this.saveButtonText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileSendButtonText', 'PublicContentTranslations');
-        this.allCategoryText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileAllCategoriesText', 'PublicContentTranslations');
-        this.selectedCategoriesText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profileSelectedCategoriesText', 'PublicContentTranslations');
-        this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, res[2], 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
+        this.saveButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
+        this.allCategoryText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileAllCategoriesText', 'PublicContentTranslations');
+        this.selectedCategoriesText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSelectedCategoriesText', 'PublicContentTranslations');
+        this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
+        this.pageLoaded = Promise.resolve(true);
       });
     });
+  }
+
+  ngOnDestroy(){
+    this.languageSubscription.unsubscribe();
   }
 
   checkCategoryIsSelected(category: Category){

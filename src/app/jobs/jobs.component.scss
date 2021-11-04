@@ -1,0 +1,16 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+.jobs-wrapper{
+    padding: 50px 0;
+}
+
+.job-container{
+    max-width: 1200px;
+    padding: 50px 10px;
+    margin: auto;
+    display: flex;
+    flex-flow: wrap;
+    gap: 20px;
+}

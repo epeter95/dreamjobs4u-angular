@@ -41,6 +41,7 @@ export class HeaderComponent implements OnInit {
   registrationText: string = '';
   profileText: string = '';
   myJobsText: string = '';
+  jobsText: string = '';
   languages: Language[] = new Array();
   isLanguagesOpen: boolean = false;
   activeLanguageKey: string = '';
@@ -114,6 +115,7 @@ export class HeaderComponent implements OnInit {
       this.languages = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(lang){
+          this.jobsText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarJobsText','PublicContentTranslations');
           this.myJobsText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarMyJobsText','PublicContentTranslations');
           this.loginText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLoginText','PublicContentTranslations');
           this.registrationText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarRegistrationText','PublicContentTranslations');

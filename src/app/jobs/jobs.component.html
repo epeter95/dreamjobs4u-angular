@@ -1,0 +1,11 @@
+<div id="sweetjobs-jobs" class="jobs-wrapper">
+    <div class="side-menu-title">Állások</div>
+    <div class="side-menu-subtitle">Nézz szét az aktuális álláshirdetések között</div>
+    <div class="job-container">
+        <a [routerLink]="'/kategoria/'+job.id" class="job" *ngFor="let job of jobs">
+            <img class="job-image" [src]="job.logoUrl">
+            <div class="job-name">{{job.selectedTranslation.title}}</div>
+            <div class="category-job-count">{{job.Category.selectedTranslation.text}}</div>
+        </a>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { Job } from '../interfaces/job';
+import { PublicContent } from '../interfaces/public-contents';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
 
@@ -22,6 +23,8 @@ export class JobComponent implements OnInit, OnDestroy {
   experienceText: string = '';
   qualificationText: string = '';
   languageText: string = '';
+  pageLoaded !: Promise<boolean>;
+  publicContents: PublicContent[] = new Array();
 
   constructor(private activatedRoute: ActivatedRoute,
     private dataService: DataService,
@@ -35,19 +38,23 @@ export class JobComponent implements OnInit, OnDestroy {
         this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public')
       ]).subscribe(res=>{
         this.job = res[0];
+        this.publicContents = res[1];
         this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-          this.job.selectedTranslation = this.languageService.getTranslation(lang,this.job.JobTranslations);
-
-          this.aboutUsText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageAboutCompanyText', 'PublicContentTranslations');
-          this.jobDescriptionText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageAboutJobText', 'PublicContentTranslations');
-          this.paymentText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPagePayment', 'PublicContentTranslations');
-          this.experienceText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageExperience', 'PublicContentTranslations');
-          this.jobTypeText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageJobType', 'PublicContentTranslations');
-          this.qualificationText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageQualification', 'PublicContentTranslations');
-          this.languageText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageLanguage', 'PublicContentTranslations');
-          this.applyJobButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
-          this.jobOverviewText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageJobOverviewText', 'PublicContentTranslations');
-          this.applyJobButtonText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
+          if(lang){
+            this.job.selectedTranslation = this.languageService.getTranslation(lang,this.job.JobTranslations);
+  
+            this.aboutUsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageAboutCompanyText', 'PublicContentTranslations');
+            this.jobDescriptionText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageAboutJobText', 'PublicContentTranslations');
+            this.paymentText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPagePayment', 'PublicContentTranslations');
+            this.experienceText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageExperience', 'PublicContentTranslations');
+            this.jobTypeText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageJobType', 'PublicContentTranslations');
+            this.qualificationText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageQualification', 'PublicContentTranslations');
+            this.languageText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageLanguage', 'PublicContentTranslations');
+            this.applyJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
+            this.jobOverviewText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageJobOverviewText', 'PublicContentTranslations');
+            this.applyJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
+            this.pageLoaded = Promise.resolve(true);
+          }
         });
       });
     })

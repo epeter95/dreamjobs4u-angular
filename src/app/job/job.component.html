@@ -1,4 +1,4 @@
-<div id="job" class="page-container-with-side-menu flex-container" *ngIf="job">
+<div id="job" class="page-container-with-side-menu flex-container" *ngIf="pageLoaded |async">
     <div class="job-left-side">
         <div class="job-header" *ngIf="job.selectedTranslation">
             <img class="job-image" [src]="job.logoUrl">

@@ -35,7 +35,7 @@ export class JobComponent implements OnInit, OnDestroy {
       let id = params.get('jobId');
       forkJoin([
         this.dataService.getOneData('/api/jobs/public/getJobById/'+id),
-        this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public')
+        this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public'),
       ]).subscribe(res=>{
         this.job = res[0];
         this.publicContents = res[1];

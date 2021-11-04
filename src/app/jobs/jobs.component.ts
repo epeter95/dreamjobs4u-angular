@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { unAccentise } from '../interfaces/accentise';
 import { Category } from '../interfaces/category';
@@ -24,6 +25,8 @@ export class JobsComponent implements OnInit {
   languageSubscription: Subscription = new Subscription();
   isCategoryDropdownOpen: boolean = false;
   pageLoaded!: Promise<boolean>;
+  onFirstLoad: boolean = true;
+  fromSearch: boolean = false;
 
   searchTermElement: FormElement = {
     key: 'jobTextSearchTerm', placeholder: '', focus: false,
@@ -39,7 +42,10 @@ export class JobsComponent implements OnInit {
   });
   
 
-  constructor(private dataService: DataService, private languageService: LanguageService) { }
+  constructor(private dataService: DataService,
+    private languageService: LanguageService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -50,6 +56,16 @@ export class JobsComponent implements OnInit {
       this.jobs = res[0];
       this.publicContents = res[1];
       this.categories = res[2];
+      this.activatedRoute.queryParamMap.subscribe(params=>{
+        if(params.get('text')){
+          this.searchForm.controls.jobTextSearchTerm.setValue(params.get('text'))
+        }
+        if(params.get('category')){
+          let selectedCategory = this.categories.find(element=>element.id == +params.get('category')!)!;
+          selectedCategory.selectedTranslation = this.languageService.getTranslation(this.languageService.getLangauge()!,selectedCategory.CategoryTranslations);
+          this.searchForm.controls.jobCategorySearchTerm.setValue(selectedCategory.selectedTranslation.text);
+        }
+      })
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         this.jobs = this.jobs.map(element=>{
           element.selectedTranslation = this.languageService.getTranslation(lang,element.JobTranslations);
@@ -66,6 +82,9 @@ export class JobsComponent implements OnInit {
           return 0;
         });
         this.filteredJobs = this.jobs;
+        if(this.searchForm.controls.jobTextSearchTerm.value || this.searchForm.controls.jobCategorySearchTerm.value){
+          this.filterJobs();
+        }
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobTextSearchTerm','PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobCategorySearchTerm','PublicContentTranslations');
         this.jobsTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','jobsPageTitle','PublicContentTranslations');
@@ -98,6 +117,7 @@ export class JobsComponent implements OnInit {
         return (JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm));
       });
     }
+    this.router.navigate(['/allasok']);
   }
 
 }

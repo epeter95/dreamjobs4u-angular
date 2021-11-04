@@ -106,6 +106,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   publicContents: PublicContent[] = new Array();
   generalMessages: GeneralMessage[] = new Array();
   errorMessages: ErrorMessage[] = new Array();
+  pageLoaded!: Promise<boolean>;
 
   constructor(private languageService: LanguageService,
     public dialog: MatDialog,
@@ -246,6 +247,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
           });
+          this.pageLoaded = Promise.resolve(true);
         }
       });
     });

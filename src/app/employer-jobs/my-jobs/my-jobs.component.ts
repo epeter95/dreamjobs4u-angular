@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Job } from 'src/app/interfaces/job';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
@@ -14,6 +15,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   myJobsTitleText: string = '';
   myJobs: Job[] = new Array();
   languageSubscription: Subscription = new Subscription();
+  publicContents: PublicContent[] = new Array();
+  pageLoaded!: Promise<boolean>;
   constructor(private dataService: DataService, private languageService: LanguageService) { }
 
   ngOnInit(): void {
@@ -22,6 +25,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.myJobs = res[0];
+      this.publicContents = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if(lang){
           this.myJobs = this.myJobs.map(element => {
@@ -30,7 +34,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
             element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
             return element;
           });
-          this.myJobsTitleText = this.languageService.getTranslationByKey(lang, res[1], 'title', 'myJobsTitleText', 'PublicContentTranslations');
+          this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');
+          this.pageLoaded = Promise.resolve(true);
         }
       });
     });

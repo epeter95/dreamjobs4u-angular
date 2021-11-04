@@ -31,6 +31,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   ];
   publicContents: PublicContent[] = new Array();
   errorMessages: ErrorMessage[] = new Array();
+  pageLoaded!: Promise<boolean>;
 
   contactForm: FormGroup = new FormGroup({
     contactFirstName: new FormControl(''),
@@ -49,16 +50,19 @@ export class ContactComponent implements OnInit, OnDestroy {
       this.publicContents = res[0];
       this.errorMessages = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        this.contactTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactTitle', 'PublicContentTranslations');
-        this.contactSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSubtitle', 'PublicContentTranslations');
-        this.contactShortDescriptionText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactShortDescription', 'PublicContentTranslations');
-        this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSendButtonText', 'PublicContentTranslations');
-        this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-        this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
-        this.contactFormElements = this.contactFormElements.map(element => {
-          element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
-          return element;
-        });
+        if(lang){
+          this.contactTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactTitle', 'PublicContentTranslations');
+          this.contactSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSubtitle', 'PublicContentTranslations');
+          this.contactShortDescriptionText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactShortDescription', 'PublicContentTranslations');
+          this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSendButtonText', 'PublicContentTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
+          this.contactFormElements = this.contactFormElements.map(element => {
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
+            return element;
+          });
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     });
   }

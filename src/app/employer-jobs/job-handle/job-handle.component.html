@@ -1,4 +1,4 @@
-<div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="hunLanguage">
+<div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">
         <ng-container *ngIf="isModify;else createTitle">{{modifyJobTitleText}}</ng-container>
         <ng-template #createTitle>{{createJobTitleText}}</ng-template>

@@ -206,7 +206,9 @@ export class HeaderComponent implements OnInit {
     });
     this.loginDialogSubscription = loginDialogRef.afterClosed().subscribe(() => {
       this.isLoginOpen = false;
-      location.reload();
+      if(loginDialogRef.componentInstance.reloadNeeded){
+        location.reload();
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-<div id="login" class="login-container">
+<div id="login" class="login-container" *ngIf="pageLoaded | async">
     <div class="close-button" (click)="closeDialog()">X</div>
     <div class="login-title">{{loginTitleText}}</div>
     <div class="login-subtitle">{{loginSubtitleText}}</div>

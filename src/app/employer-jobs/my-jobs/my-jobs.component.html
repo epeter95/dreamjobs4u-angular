@@ -1,4 +1,4 @@
-<div id="my-jobs" class="side-menu-router-outlet-container">
+<div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{myJobsTitleText}}</div>
     <div class="jobs-container">
         <a [routerLink]="'/kategoria/'+job.categoryId+'/allas/'+job.id" class="job" *ngFor="let job of myJobs">

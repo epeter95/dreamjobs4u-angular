@@ -40,17 +40,19 @@ export class FooterComponent implements OnInit, OnDestroy {
       this.twitter = this.publibContents.find(element=>element.key == 'footerCompanyTwitter')!;
       this.linkedin = this.publibContents.find(element=>element.key == 'footerCompanyLinkedIn')!;
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        this.facebook.selectedTranslation = this.languageService.getTranslation(lang,this.facebook.PublicContentTranslations);
-        this.instagram.selectedTranslation = this.languageService.getTranslation(lang,this.instagram.PublicContentTranslations);
-        this.twitter.selectedTranslation = this.languageService.getTranslation(lang,this.twitter.PublicContentTranslations);
-        this.linkedin.selectedTranslation = this.languageService.getTranslation(lang,this.linkedin.PublicContentTranslations);
-        this.companyName = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoTitle', 'PublicContentTranslations');
-        this.companyBrandText = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoSubtitle', 'PublicContentTranslations');
-        this.companyAddress = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyAddress', 'PublicContentTranslations');
-        this.companyPhone = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyPhone', 'PublicContentTranslations');
-        this.companyEmail = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyEmail', 'PublicContentTranslations');
-        this.copyRightsText = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCopyRights', 'PublicContentTranslations');
-        this.pageLoaded = Promise.resolve(true);
+        if(lang){
+          this.facebook.selectedTranslation = this.languageService.getTranslation(lang,this.facebook.PublicContentTranslations);
+          this.instagram.selectedTranslation = this.languageService.getTranslation(lang,this.instagram.PublicContentTranslations);
+          this.twitter.selectedTranslation = this.languageService.getTranslation(lang,this.twitter.PublicContentTranslations);
+          this.linkedin.selectedTranslation = this.languageService.getTranslation(lang,this.linkedin.PublicContentTranslations);
+          this.companyName = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoTitle', 'PublicContentTranslations');
+          this.companyBrandText = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoSubtitle', 'PublicContentTranslations');
+          this.companyAddress = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyAddress', 'PublicContentTranslations');
+          this.companyPhone = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyPhone', 'PublicContentTranslations');
+          this.companyEmail = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyEmail', 'PublicContentTranslations');
+          this.copyRightsText = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCopyRights', 'PublicContentTranslations');
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     })
   }

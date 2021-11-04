@@ -1,4 +1,4 @@
-<div id="sweetjobs-contact" class="contact-container">
+<div id="sweetjobs-contact" class="contact-container" *ngIf="pageLoaded |async">
     <div class="side-menu-title">{{contactTitleText}}</div>
     <div class="side-menu-subtitle custom-subtitle">{{contactSubtitleText}}</div>
     <div class="regular-text custom-subtitle highlighted-color">{{contactShortDescriptionText}}</div>

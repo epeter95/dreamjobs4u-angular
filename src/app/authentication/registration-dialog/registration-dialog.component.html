@@ -1,4 +1,4 @@
-<div id="sweetjobs-registration" class="registration-container">
+<div id="sweetjobs-registration" class="registration-container" *ngIf="pageLoaded | async">
     <div class="close-button" (click)="closeDialog()">X</div>
     <div class="registration-title">{{regTitleText}}</div>
     <div class="registration-subtitle">{{regSubtitleText}}</div>

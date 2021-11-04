@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 
@@ -15,6 +16,8 @@ export class RegistrationDoneDialog implements OnInit, OnDestroy {
   clickToLoginText: string = '';
   successfulRegistrationText: string = '';
   languageSubscription: Subscription = new Subscription();
+  publicContents: PublicContent[] = new Array();
+  pageLoaded!: Promise<boolean>;
 
   constructor(public dialogRef: MatDialogRef<RegistrationDoneDialog>,
     private dataService: DataService,
@@ -22,9 +25,13 @@ export class RegistrationDoneDialog implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public').subscribe(res=>{
+      this.publicContents = res;
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        this.clickToLoginText = this.languageService.getTranslationByKey(lang,res,'title','clickToLoginLink','PublicContentTranslations');
-        this.successfulRegistrationText = this.languageService.getTranslationByKey(lang,res,'title','successfulRegText','PublicContentTranslations');
+        if(lang){
+          this.clickToLoginText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','clickToLoginLink','PublicContentTranslations');
+          this.successfulRegistrationText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','successfulRegText','PublicContentTranslations');
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     });
   }

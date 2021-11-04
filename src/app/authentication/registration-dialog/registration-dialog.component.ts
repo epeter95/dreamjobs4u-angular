@@ -2,7 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
+import { ErrorMessage } from 'src/app/interfaces/error-message';
 import { FormElement } from 'src/app/interfaces/form-element';
+import { GeneralMessage } from 'src/app/interfaces/general-message';
+import { PublicContent } from 'src/app/interfaces/public-contents';
 import { Role } from 'src/app/interfaces/role';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -18,8 +21,12 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
   isEmployer: boolean = false;
 
   roles: Role[] = new Array();
+  publicContents: PublicContent[] = new Array();
+  generalMessages: GeneralMessage[] = new Array();
+  errorMessages: ErrorMessage[] = new Array();
   isUserClicked: boolean = false;
   selectedRole!: Role;
+  pageLoaded!: Promise<boolean>;
 
   sendButtonText: string = '';
   regTitleText: string = '';
@@ -65,23 +72,29 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/errorMessages/public')
     ]).subscribe(res=>{
       this.roles = res[0];
+      this.publicContents = res[1];
+      this.generalMessages = res[2];
+      this.errorMessages = res[3];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        this.roles = this.roles.map(element=>{
-          element.selectedTranslation = this.languageService.getTranslation(lang,element.RoleTranslations);
-          return element;
-        });
-        this.registrationFormElements = this.registrationFormElements.map(element=>{
-          element.placeholder = this.languageService.getTranslationByKey(lang,res[1],'title',element.key,'PublicContentTranslations');
-          return element;
-        });
-        this.sendButtonText = this.languageService.getTranslationByKey(lang,res[1],'title','regSubmitButton','PublicContentTranslations');
-        this.regTitleText = this.languageService.getTranslationByKey(lang,res[1],'title','regTitle','PublicContentTranslations');
-        this.regSubtitleText = this.languageService.getTranslationByKey(lang,res[1],'title','regSubtitle','PublicContentTranslations');
-        this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-        this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','wrongEmailFormat', 'ErrorMessageTranslations');
-        this.emailAlreadyExistErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','emailAddressAlreadyExist', 'ErrorMessageTranslations');
-        this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
-        this.missingRoleErrorText = this.languageService.getTranslationByKey(lang,res[3],'text','missingRole', 'ErrorMessageTranslations');
+        if(lang){
+          this.roles = this.roles.map(element=>{
+            element.selectedTranslation = this.languageService.getTranslation(lang,element.RoleTranslations);
+            return element;
+          });
+          this.registrationFormElements = this.registrationFormElements.map(element=>{
+            element.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title',element.key,'PublicContentTranslations');
+            return element;
+          });
+          this.sendButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regSubmitButton','PublicContentTranslations');
+          this.regTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regTitle','PublicContentTranslations');
+          this.regSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regSubtitle','PublicContentTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
+          this.emailAlreadyExistErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','emailAddressAlreadyExist', 'ErrorMessageTranslations');
+          this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
+          this.missingRoleErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','missingRole', 'ErrorMessageTranslations');
+          this.pageLoaded = Promise.resolve(true);
+        }
       });
     });
   }

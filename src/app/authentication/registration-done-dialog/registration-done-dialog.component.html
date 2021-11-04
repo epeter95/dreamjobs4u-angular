@@ -1,4 +1,4 @@
-<div id="registration-done-container" class="registration-done-container">
+<div id="registration-done-container" class="registration-done-container" *ngIf="pageLoaded | async">
     <div class="close-button" (click)="closeDialog()">X</div>
     <mat-icon class="dialog-icon">done</mat-icon>
     <div class="dialog-text">{{successfulRegistrationText}}</div>

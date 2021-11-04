@@ -32,6 +32,7 @@ import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './category/category.component';
 import { FooterComponent } from './footer/footer.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { FooterComponent } from './footer/footer.component';
     HomeJobsComponent,
     CategoriesComponent,
     CategoryComponent,
-    FooterComponent
+    FooterComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

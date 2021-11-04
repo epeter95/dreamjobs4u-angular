@@ -14,10 +14,12 @@ import { PreferedCategoriesComponent } from './profile/prefered-categories/prefe
 import { EmployerRoleGuard } from './authentication/employer-role.guard';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './category/category.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'kategoriak', component: CategoriesComponent, pathMatch: 'full' },
+  { path: 'kapcsolat', component: ContactComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId', component: CategoryComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId/allas/:jobId', component: JobComponent, pathMatch: 'full' },
   {

@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit {
   pageLoaded!: Promise<boolean>;
   publicContents: PublicContent[] = new Array();
   categoryText: string = '';
+  contactText: string = '';
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
@@ -119,6 +120,7 @@ export class HeaderComponent implements OnInit {
           this.profileText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarProfileText','PublicContentTranslations');
           this.logoutText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLogoutText','PublicContentTranslations');
           this.categoryText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title','navbarCategoryText', 'PublicContentTranslations');
+          this.contactText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title','navbarContactText', 'PublicContentTranslations');
           this.languages = this.languages.map((element: Language)=>{
             if(element.key=='hu'){
               element.flag = '/assets/images/hun-flag.png';

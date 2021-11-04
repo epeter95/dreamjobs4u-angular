@@ -1,0 +1,29 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.contact-container{
+    max-width: 1220px;
+    box-sizing: border-box;
+    padding: 30px 10px;
+    background-color: white;
+    border: 2px solid rgba($medium-color, 0.4);
+    border-radius: 8px;
+    margin: 50px auto;
+}
+
+.custom-subtitle{
+    max-width: 600px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.highlighted-color{
+    color: $highlighted-color;
+}
+
+.contact-form{
+    max-width: 840px;
+    margin: auto;
+}

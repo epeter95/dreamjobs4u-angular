@@ -6,13 +6,16 @@
         <div class="navigation-container">
             <div class="main-navigation-container">
                 <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
-                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/kategoriak">{{categoryText}}</a>
-                <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">{{myJobsText}}</a>
+                <a class="navigation-link" routerLinkActive="active-navigation-link"
+                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/kategoriak">{{categoryText}}</a>
+                <a class="navigation-link" routerLinkActive="active-navigation-link"
+                    [routerLinkActiveOptions]="{ exact: true }" routerLink="/kapcsolat">{{contactText}}</a>
             </div>
             <div class="auth-navigation-container">
                 <div class="languages-container">
-                    <img #languageButton (click)="openLanguges()" class="language-image" src="/assets/images/language.jpg">
+                    <img #languageButton (click)="openLanguges()" class="language-image"
+                        src="/assets/images/language.jpg">
                     <div #languageContainer class="languages-menu" *ngIf="isLanguagesOpen">
                         <div [ngClass]="language.key == activeLanguageKey ? 'active-navigation-link' : 'navigation-link'"
                             class="navigation-link" (click)="setLanguage(language)" *ngFor="let language of languages">

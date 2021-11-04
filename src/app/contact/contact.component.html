@@ -1,0 +1,32 @@
+<div id="sweetjobs-contact" class="contact-container">
+    <div class="side-menu-title">{{contactTitleText}}</div>
+    <div class="side-menu-subtitle custom-subtitle">{{contactSubtitleText}}</div>
+    <div class="regular-text custom-subtitle highlighted-color">{{contactShortDescriptionText}}</div>
+    <form [formGroup]="contactForm" (ngSubmit)="submitMessage()" class="form flex-form contact-form">
+        <ng-container *ngFor="let element of contactFormElements">
+        <div class="form-field-wrapper" *ngIf="!element.hide">
+                <div [ngClass]="element.focus ? 'form-field-label-focused': 'form-field-label'">
+                    {{element.placeholder}}
+                </div>
+                <ng-container [ngSwitch]="element.fieldType">
+                    <div *ngSwitchCase="'textarea'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                        class="form-field-full-width">
+                        <textarea [id]="element.key" (focus)="element.focus = true" (focusout)="element.focus = false"
+                            [formControlName]="element.key" [value]="element.value"
+                            [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
+                            *ngSwitchCase="'textarea'"></textarea>
+                    </div>
+                    <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
+                        class="form-field-width">
+                        <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"
+                            (focus)="element.focus = true" (focusout)="element.focus = false"
+                            [formControlName]="element.key" [ngClass]="element.focus ? 'form-input-focused': 'form-input'">
+                    </div>
+                </ng-container>
+                <div class="required-error-message" *ngIf="isUserClicked && contactForm.controls[element.key].hasError('required')">{{element.placeholder}} {{requiredFieldErrorText}}</div>
+                <div class="required-error-message" *ngIf="isUserClicked && contactForm.controls[element.key].hasError('email')">{{wrongEmailFormatErrorText}}</div>
+            </div>
+        </ng-container>
+        <button class="submit-button profile-submit-button">{{sendButtonText}}</button>
+    </form>
+</div>

@@ -27,7 +27,7 @@
         <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.jobDescription}}</div>
     </div>
     <div class="job-right-side" *ngIf="job.selectedTranslation">
-        <button class="submit-button custom-margin">{{applyJobButtonText}}</button>
+        <button (click)="applyToJob()" class="submit-button custom-margin" *ngIf="isEmployeeRole">{{applyJobButtonText}}</button>
         <div class="job-right-side-info-container">
             <div class="job-title side-menu-title custom-padding">{{jobOverviewText}}</div>
             <div class="job-right-side-info-element">

@@ -41,7 +41,7 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
     { key: 'profileAge', placeholder: '', focus: false, profileDataKey: 'age' },
     { key: 'profileCurrentSalary', placeholder: '', focus: false, profileDataKey: 'currentSalary', roleName: 'employee' },
     { key: 'profileExpectedSalary', placeholder: '', focus: false, profileDataKey: 'expectedSalary', roleName: 'employee' },
-    { key: 'profileCv', placeholder: '', focus: false, profileDataKey: 'cvPath', fieldType: 'file' },
+    { key: 'profileCv', placeholder: '', focus: false, profileDataKey: 'cvPath', fieldType: 'file', roleName: 'employee' },
     { key: 'profileDescription', placeholder: '', focus: false, fieldType: 'textarea', profileDataKey: 'description' }
   ];
 

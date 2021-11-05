@@ -6,6 +6,8 @@ import { PublicContent } from '../interfaces/public-contents';
 import { ErrorMessage } from '../interfaces/error-message';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-contact',
@@ -40,7 +42,8 @@ export class ContactComponent implements OnInit, OnDestroy {
     contactSubject: new FormControl('', Validators.required),
     contactMessage: new FormControl('', Validators.required),
   });
-  constructor(private dataService: DataService, private languageService: LanguageService) { }
+  constructor(private dataService: DataService,
+    private languageService: LanguageService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -74,7 +77,24 @@ export class ContactComponent implements OnInit, OnDestroy {
   submitMessage() {
     this.isUserClicked = true;
     if(this.contactForm.valid){
-      console.log(this.contactForm.value);
+      const result = {
+        firstName: this.contactForm.controls.contactFirstName.value,
+        lastName: this.contactForm.controls.contactLastName.value,
+        email: this.contactForm.controls.contactEmail.value,
+        subject: this.contactForm.controls.contactSubject.value,
+        message: this.contactForm.controls.contactMessage.value,
+      }
+
+      this.dataService.httpPostMethod('/api/contacts/sendMailFromContact', result).subscribe(res=>{
+        console.log(res);
+        if(res.ok){
+          this.dialog.open(MessageDialogComponent,{
+            data: {icon: 'done', text: 'Észrevételét továbbítottuk!'},
+            backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+            disableClose: true
+          });
+        }
+      });
     }
   }
 

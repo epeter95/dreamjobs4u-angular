@@ -14,6 +14,13 @@
                             [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
                             *ngSwitchCase="'textarea'"></textarea>
                     </div>
+                    <div *ngSwitchCase="'file'" class="form-field-width flex-form cv-file-form-field">
+                        <a target="_blank" [href]="cvUploadUrl ? '' : profileData.Profile.cvPath ? profileData.Profile.cvPath : ''" *ngIf="cvUrl" class="file-input-text">{{cvUrl}}</a>
+                        <a (click)="cvUpload.click()"
+                            class="submit-button little-button">{{element.placeholder}}</a>
+                        <input (change)="handleCVPdf($event)" #cvUpload type="file" name="upload"
+                            accept=".pdf" class="change-picture-input">
+                    </div>
                     <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'"
                         class="form-field-width">
                         <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"

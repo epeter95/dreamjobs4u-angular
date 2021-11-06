@@ -1,14 +1,38 @@
 <div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{myJobsTitleText}}</div>
     <div class="jobs-container">
-        <a [routerLink]="'/kategoria/'+job.jobData.categoryId+'/allas/'+job.jobData.id" class="job" *ngFor="let job of myJobs">
-            <img class="job-image" [src]="job.jobData.logoUrl">
-            <div class="job-company side-menu-regular-text">{{job.jobData.companyName}}</div>
-            <div class="job-category side-menu-regular-text">{{job.jobData.Category.selectedTranslation.text}}</div>
-            <div class="location-container">
-                <img class="location-image" src="/assets/images/location-icon.PNG">
-                <div class="location-text side-menu-regular-text">{{job.jobData.jobLocation}}</div>
+        <div *ngFor="let job of myJobs" class="job-wrapper">
+            <div class="job">
+                <a class="link-to-job-container" [routerLink]="'/kategoria/'+job.jobData.categoryId+'/allas/'+job.jobData.id">
+                    <img class="job-image" [src]="job.jobData.logoUrl">
+                    <div>
+                        <div class="job-company side-menu-regular-text">{{job.jobData.companyName}}</div>
+                        <div class="job-category side-menu-regular-text">{{job.jobData.Category.selectedTranslation.text}}</div>
+                    </div>
+                </a>
+                <div class="location-container">
+                    <img class="location-image" src="/assets/images/location-icon.PNG">
+                    <div class="location-text side-menu-regular-text">{{job.jobData.jobLocation}}</div>
+                </div>
+                <div class="applied-users-text regular-text"  (click)="openAppliedUsers(job)">
+                    {{job.appliedUsers.length}} felhasználó jelentkezett az állásra
+                </div>
             </div>
-        </a>
+            <div class="applied-users-container" *ngIf="job.isAppliedUsersOpen">
+                <div class="applied-user" *ngFor="let appliedUser of job.appliedUsers">
+                    <div class="applied-user-info">
+                        <img class="picture-img no-image" *ngIf="appliedUser.User.Profile.profilePicture;else noProfilePicture" [src]="appliedUser.User.Profile.profilePicture">
+                        <ng-template #noProfilePicture>
+                            <div class="picture-img">{{appliedUser.User.firstName[0]}}{{appliedUser.User.lastName[0]}}</div>
+                        </ng-template>
+                        <div class="applied-user-name">{{appliedUser.User.firstName}} {{appliedUser.User.lastName}}</div>
+                    </div>
+                    <div class="applied-user-actions">
+                        <div class="answer-text">Válasz küldése</div>
+                        <div class="answer-text">Profil megtekintése</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

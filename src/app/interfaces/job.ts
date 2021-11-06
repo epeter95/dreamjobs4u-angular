@@ -1,5 +1,5 @@
 import { Category } from "./category";
-import { UserData, UserProfileData } from "./user-data";
+import { UserProfileData } from "./user-data";
 
 export interface Job{
     id: number;
@@ -16,13 +16,14 @@ export interface Job{
 
 export interface MyJob{
     jobData: Job;
+    isAppliedUsersOpen: boolean;
     appliedUsers: AppliedUser[];
 }
 
 export interface AppliedUser{
     userId: number;
     jobId: number;
-    User: UserData;
+    User: UserProfileData;
 }
 
 export interface JobTranslation{

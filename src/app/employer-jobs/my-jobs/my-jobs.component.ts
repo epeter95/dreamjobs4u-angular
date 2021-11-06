@@ -45,4 +45,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
     this.languageSubscription.unsubscribe();
   }
 
+  openAppliedUsers(job: MyJob){
+    job.isAppliedUsersOpen = !job.isAppliedUsersOpen
+  }
+
 }

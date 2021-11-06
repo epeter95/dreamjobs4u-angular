@@ -1,13 +1,13 @@
 <div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{myJobsTitleText}}</div>
     <div class="jobs-container">
-        <a [routerLink]="'/kategoria/'+job.categoryId+'/allas/'+job.id" class="job" *ngFor="let job of myJobs">
-            <img class="job-image" [src]="job.logoUrl">
-            <div class="job-company side-menu-regular-text">{{job.companyName}}</div>
-            <div class="job-category side-menu-regular-text">{{job.Category.selectedTranslation.text}}</div>
+        <a [routerLink]="'/kategoria/'+job.jobData.categoryId+'/allas/'+job.jobData.id" class="job" *ngFor="let job of myJobs">
+            <img class="job-image" [src]="job.jobData.logoUrl">
+            <div class="job-company side-menu-regular-text">{{job.jobData.companyName}}</div>
+            <div class="job-category side-menu-regular-text">{{job.jobData.Category.selectedTranslation.text}}</div>
             <div class="location-container">
                 <img class="location-image" src="/assets/images/location-icon.PNG">
-                <div class="location-text side-menu-regular-text">{{job.jobLocation}}</div>
+                <div class="location-text side-menu-regular-text">{{job.jobData.jobLocation}}</div>
             </div>
         </a>
     </div>

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
-import { Job } from 'src/app/interfaces/job';
+import { Job, MyJob } from 'src/app/interfaces/job';
 import { PublicContent } from 'src/app/interfaces/public-contents';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class MyJobsComponent implements OnInit, OnDestroy {
   myJobsTitleText: string = '';
-  myJobs: Job[] = new Array();
+  myJobs: MyJob[] = new Array();
   languageSubscription: Subscription = new Subscription();
   publicContents: PublicContent[] = new Array();
   pageLoaded!: Promise<boolean>;
@@ -21,7 +21,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     forkJoin([
-      this.dataService.getAllData('/api/jobs/public/getJobsByToken', this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/jobs/public/getJobsByTokenWithAppliedUsers', this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.myJobs = res[0];
@@ -29,9 +29,9 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if(lang){
           this.myJobs = this.myJobs.map(element => {
-            element.logoUrl = element.logoUrl;
-            element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
-            element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
+            element.jobData.logoUrl = element.jobData.logoUrl;
+            element.jobData.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.JobTranslations);
+            element.jobData.Category.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.Category.CategoryTranslations);
             return element;
           });
           this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');

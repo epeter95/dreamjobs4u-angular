@@ -8,6 +8,7 @@ import { ProfileDialogComponent } from 'src/app/profile-dialog/profile-dialog.co
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
+import { AnswerToAppliedUserDialogComponent } from './answer-to-applied-user-dialog/answer-to-applied-user-dialog.component';
 
 @Component({
   selector: 'app-my-jobs',
@@ -62,7 +63,11 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   }
 
   openAnswerDialog(appliedUser: AppliedUser){
-
+    this.dialog.open(AnswerToAppliedUserDialogComponent,{
+      data: appliedUser.User,
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      disableClose: true
+    });
   }
 
 }

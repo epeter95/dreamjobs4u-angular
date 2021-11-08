@@ -35,6 +35,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
+import { AnswerToAppliedUserDialogComponent } from './employer-jobs/my-jobs/answer-to-applied-user-dialog/answer-to-applied-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ProfileDialogComponent } from './profile-dialog/profile-dialog.componen
     FooterComponent,
     ContactComponent,
     JobsComponent,
-    ProfileDialogComponent
+    ProfileDialogComponent,
+    AnswerToAppliedUserDialogComponent
   ],
   imports: [
     BrowserModule,

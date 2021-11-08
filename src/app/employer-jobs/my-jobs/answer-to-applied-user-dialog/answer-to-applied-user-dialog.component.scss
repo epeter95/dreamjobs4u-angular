@@ -1,0 +1,9 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.dialog-container{
+    position: relative;
+    padding: 16px 36px;
+}

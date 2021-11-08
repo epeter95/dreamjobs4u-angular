@@ -34,6 +34,7 @@ import { CategoryComponent } from './category/category.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
+import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { JobsComponent } from './jobs/jobs.component';
     CategoryComponent,
     FooterComponent,
     ContactComponent,
-    JobsComponent
+    JobsComponent,
+    ProfileDialogComponent
   ],
   imports: [
     BrowserModule,

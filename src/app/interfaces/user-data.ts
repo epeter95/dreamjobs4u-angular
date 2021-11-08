@@ -34,4 +34,5 @@ export interface Profile{
     address: string;
     expectedSalary: string;
     currentSalary: string;
+    description: string;
 }

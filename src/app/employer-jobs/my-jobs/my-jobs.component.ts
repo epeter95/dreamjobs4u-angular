@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
-import { Job, MyJob } from 'src/app/interfaces/job';
+import { AppliedUser, Job, MyJob } from 'src/app/interfaces/job';
 import { PublicContent } from 'src/app/interfaces/public-contents';
+import { UserProfileData } from 'src/app/interfaces/user-data';
+import { ProfileDialogComponent } from 'src/app/profile-dialog/profile-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
@@ -17,7 +20,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   languageSubscription: Subscription = new Subscription();
   publicContents: PublicContent[] = new Array();
   pageLoaded!: Promise<boolean>;
-  constructor(private dataService: DataService, private languageService: LanguageService) { }
+  constructor(private dataService: DataService, private languageService: LanguageService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     forkJoin([
@@ -47,6 +51,18 @@ export class MyJobsComponent implements OnInit, OnDestroy {
 
   openAppliedUsers(job: MyJob){
     job.isAppliedUsersOpen = !job.isAppliedUsersOpen
+  }
+
+  openProfileDialog(appliedUser: AppliedUser){
+    this.dialog.open(ProfileDialogComponent,{
+      data: appliedUser.User,
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      disableClose: true
+    });
+  }
+
+  openAnswerDialog(appliedUser: AppliedUser){
+
   }
 
 }

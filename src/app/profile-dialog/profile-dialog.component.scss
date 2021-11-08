@@ -1,0 +1,48 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+
+.dialog-container{
+    padding: 16px 36px;
+    position: relative;
+}
+
+.profile-container{
+    display: grid;
+    row-gap: 15px;
+}
+
+.picture-container{
+    width: 120px;
+    height: 120px;
+    margin: auto;
+    object-fit: contain;
+}
+
+.user-name{
+    margin: 0 auto 30px auto;
+}
+
+.info-container{
+    display: flex;
+    column-gap: 30px;
+    justify-content: space-between;
+    flex-flow: wrap;
+}
+
+.description-container{
+    max-width: 600px;
+    margin-top: 30px;
+}
+
+.description-info-value{
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.cv-name{
+    text-decoration: none;
+    color: $hover-button-color;
+    max-width: 600px;
+}

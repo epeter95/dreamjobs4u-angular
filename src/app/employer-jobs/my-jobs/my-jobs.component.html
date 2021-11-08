@@ -28,8 +28,8 @@
                         <div class="applied-user-name">{{appliedUser.User.firstName}} {{appliedUser.User.lastName}}</div>
                     </div>
                     <div class="applied-user-actions">
-                        <div class="answer-text">Válasz küldése</div>
-                        <div class="answer-text">Profil megtekintése</div>
+                        <div class="answer-text" (click)="openAnswerDialog(appliedUser)">Válasz küldése</div>
+                        <div class="answer-text" (click)="openProfileDialog(appliedUser)">Profil megtekintése</div>
                     </div>
                 </div>
             </div>

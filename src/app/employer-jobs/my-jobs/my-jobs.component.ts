@@ -18,6 +18,7 @@ import { AnswerToAppliedUserDialogComponent } from './answer-to-applied-user-dia
 export class MyJobsComponent implements OnInit, OnDestroy {
   myJobsTitleText: string = '';
   myJobs: MyJob[] = new Array();
+  lang: string = '';
   languageSubscription: Subscription = new Subscription();
   publicContents: PublicContent[] = new Array();
   checkProfileText: string = '';
@@ -33,10 +34,10 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.myJobs = res[0];
-      console.log(res[0]);
       this.publicContents = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if(lang){
+          this.lang = lang;
           this.myJobs = this.myJobs.map(element => {
             element.jobData.logoUrl = element.jobData.logoUrl;
             element.jobData.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.JobTranslations);
@@ -75,7 +76,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
 
   openAnswerDialog(appliedUser: AppliedUser){
     this.dialog.open(AnswerToAppliedUserDialogComponent,{
-      data: appliedUser.User,
+      data: {profile: appliedUser.User, status: appliedUser.AppliedUserStatus.id ,lang: this.lang},
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });

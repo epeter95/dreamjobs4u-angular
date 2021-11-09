@@ -7,3 +7,47 @@
     position: relative;
     padding: 16px 36px;
 }
+
+.user-statuses{
+    display: flex;
+    column-gap: 30px;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 10px 25px 10px;
+}
+
+.user-status-active, .user-status{
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.user-status-active{
+    border: 2px solid $hover-button-color;
+    color: white;
+    background-color: $hover-button-color;
+    font-family: $bold-font;
+}
+
+.user-status{
+    border: 2px solid $highlighted-color;
+    color: $highlighted-color;
+    font-family: $regular-font;
+}
+
+.little-button{
+    max-width: 170px;
+    margin: 20px auto;
+}
+
+.file-text{
+    text-align: center;
+    color: $highlighted-color;
+}
+
+.error-text{
+    color: red;
+    margin-top: 5px;
+}

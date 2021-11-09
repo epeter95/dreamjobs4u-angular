@@ -1,4 +1,25 @@
 <div id="answer-dialog" class="dialog-container">
     <div class="close-button" (click)="closeDialog()">X</div>
-    <div class="side-menu-title">Válasz küldése {{data.firstName}} {{data.lastName}} felhasználónak</div>
+    <div class="side-menu-title">{{answerTitleText}} {{data.profile.firstName}} {{data.profile.lastName}}
+    </div>
+    <div class="user-statuses">
+        <div (click)="setActiveId(status)" [ngClass]="status.id == activeStatusId ? 'user-status-active' : 'user-status'"
+            *ngFor="let status of userStatuses">{{status.selectedTranslation.text}}</div>
+    </div>
+    <div class="form-field-wrapper">
+        <div [ngClass]="messageIsFocused ? 'form-field-label-focused': 'form-field-label'">
+            {{messageTitleText}}
+        </div>
+        <div [ngClass]="messageIsFocused ? 'form-field-focused': 'form-field'">
+            <textarea (focus)="messageIsFocused = true" (focusout)="messageIsFocused = false"
+                [formControl]="messageControl"
+                [ngClass]="messageIsFocused ? 'form-textarea-focused': 'form-textarea'"></textarea>
+        </div>
+        <div class="error-text side-menu-regular-text" *ngIf="messageIsMissing">{{missingMessageText}}</div>
+    </div>
+    <input (change)="handleFileUpload($event)" #fileUpload
+                type="file" name="upload" accept="pdf" class="change-picture-input">
+    <div class="side-menu-regular-text file-text">{{fileUrl}}</div>
+    <button class="submit-button little-button" (click)="fileUpload.click()">{{fileUploadText}}</button>
+    <button class="submit-button" (click)="sendAnswer()">{{sendButtonText}}</button>
 </div>

@@ -28,7 +28,7 @@
                         <div class="applied-user-name">{{appliedUser.User.firstName}} {{appliedUser.User.lastName}}</div>
                     </div>
                     <div class="applied-user-actions">
-                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">{{statusText}}: {{appliedUser.AppliedUserStatus.selectedTranslation.text}}</button>
+                        <div class="answer-text">{{statusText}}: {{appliedUser.AppliedUserStatus.selectedTranslation.text}}</div>
                         <button class="answer-button" (click)="openAnswerDialog(appliedUser)">{{sendAnswerText}}</button>
                         <button class="answer-button" (click)="openProfileDialog(appliedUser)">{{checkProfileText}}</button>
                     </div>

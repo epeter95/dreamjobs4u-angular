@@ -116,8 +116,9 @@
     background-color: $highlighted-color;
 }
 
-.answer-button{
+.answer-button, .answer-text{
     background-color: transparent;
+    text-align: right;
     border: none;
     outline: none;
     color: $hover-button-color;
@@ -127,6 +128,9 @@
     box-sizing: border-box;
     font-size: 14px;
     margin: 10px 0 10px auto;
+}
+
+.answer-button{
     cursor: pointer;
 }
 

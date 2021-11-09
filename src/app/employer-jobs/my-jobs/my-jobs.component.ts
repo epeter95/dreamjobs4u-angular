@@ -30,6 +30,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.myJobs = res[0];
+      console.log(res[0]);
       this.publicContents = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if(lang){
@@ -37,6 +38,10 @@ export class MyJobsComponent implements OnInit, OnDestroy {
             element.jobData.logoUrl = element.jobData.logoUrl;
             element.jobData.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.JobTranslations);
             element.jobData.Category.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.Category.CategoryTranslations);
+            element.appliedUsers = element.appliedUsers.map(user=>{
+              user.AppliedUserStatus.selectedTranslation = this.languageService.getTranslation(lang, user.AppliedUserStatus.AppliedUserStatusTranslations);
+              return user;
+            })
             return element;
           });
           this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');

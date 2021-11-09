@@ -116,10 +116,20 @@
     background-color: $highlighted-color;
 }
 
-.answer-text{
+.answer-button{
+    background-color: transparent;
+    border: none;
+    outline: none;
     color: $hover-button-color;
     font-family: $regular-font;
+    display: block;
+    padding: 0;
+    box-sizing: border-box;
     font-size: 14px;
-    margin: 10px auto;
+    margin: 10px 0 10px auto;
     cursor: pointer;
+}
+
+.answer-button:hover{
+    text-decoration: underline;
 }

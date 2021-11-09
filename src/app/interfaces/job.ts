@@ -1,3 +1,4 @@
+import { AppliedUserStatus } from "./applied-user-status";
 import { Category } from "./category";
 import { UserProfileData } from "./user-data";
 
@@ -23,6 +24,7 @@ export interface MyJob{
 export interface AppliedUser{
     userId: number;
     jobId: number;
+    AppliedUserStatus: AppliedUserStatus;
     User: UserProfileData;
 }
 

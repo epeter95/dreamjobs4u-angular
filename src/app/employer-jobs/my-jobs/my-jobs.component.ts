@@ -20,6 +20,9 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   myJobs: MyJob[] = new Array();
   languageSubscription: Subscription = new Subscription();
   publicContents: PublicContent[] = new Array();
+  checkProfileText: string = '';
+  sendAnswerText: string = '';
+  statusText: string = '';
   pageLoaded!: Promise<boolean>;
   constructor(private dataService: DataService, private languageService: LanguageService,
     public dialog: MatDialog) { }
@@ -45,6 +48,9 @@ export class MyJobsComponent implements OnInit, OnDestroy {
             return element;
           });
           this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');
+          this.sendAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsAnswerText', 'PublicContentTranslations');
+          this.statusText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsStatusText', 'PublicContentTranslations');
+          this.checkProfileText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsCheckProfileText', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });

@@ -28,9 +28,9 @@
                         <div class="applied-user-name">{{appliedUser.User.firstName}} {{appliedUser.User.lastName}}</div>
                     </div>
                     <div class="applied-user-actions">
-                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">Státusz: {{appliedUser.AppliedUserStatus.selectedTranslation.text}}</button>
-                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">Válasz küldése</button>
-                        <button class="answer-button" (click)="openProfileDialog(appliedUser)">Profil megtekintése</button>
+                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">{{statusText}}: {{appliedUser.AppliedUserStatus.selectedTranslation.text}}</button>
+                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">{{sendAnswerText}}</button>
+                        <button class="answer-button" (click)="openProfileDialog(appliedUser)">{{checkProfileText}}</button>
                     </div>
                 </div>
             </div>

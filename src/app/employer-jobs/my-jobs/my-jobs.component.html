@@ -15,7 +15,7 @@
                     <div class="location-text side-menu-regular-text">{{job.jobData.jobLocation}}</div>
                 </div>
                 <div class="applied-users-text regular-text"  (click)="openAppliedUsers(job)">
-                    {{job.appliedUsers.length}} felhasználó jelentkezett az állásra
+                    {{job.appliedUsers.length}} {{userAppliedToJobText}}
                 </div>
             </div>
             <div class="applied-users-container" *ngIf="job.isAppliedUsersOpen">

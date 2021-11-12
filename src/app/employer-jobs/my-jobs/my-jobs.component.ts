@@ -26,6 +26,9 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   sendAnswerText: string = '';
   statusText: string = '';
   pageLoaded!: Promise<boolean>;
+  messageDialogSubscription: Subscription = new Subscription();
+  succesfulAnswerText: string = '';
+  userAppliedToJobText: string = '';
   constructor(private dataService: DataService, private languageService: LanguageService,
     public dialog: MatDialog) { }
 
@@ -56,6 +59,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
           this.sendAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsAnswerText', 'PublicContentTranslations');
           this.statusText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsStatusText', 'PublicContentTranslations');
           this.checkProfileText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsCheckProfileText', 'PublicContentTranslations');
+          this.succesfulAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsSuccessfulAnswerText','PublicContentTranslations');
+          this.userAppliedToJobText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsUserAppliedToJobText','PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
@@ -64,10 +69,13 @@ export class MyJobsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
+    this.messageDialogSubscription.unsubscribe();
   }
 
   openAppliedUsers(job: MyJob){
-    job.isAppliedUsersOpen = !job.isAppliedUsersOpen
+    if(job.appliedUsers.length > 0){
+      job.isAppliedUsersOpen = !job.isAppliedUsersOpen
+    }
   }
 
   openProfileDialog(appliedUser: AppliedUser){
@@ -88,10 +96,10 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    ref.afterClosed().subscribe(()=>{
+    this.messageDialogSubscription = ref.afterClosed().subscribe(()=>{
       this.initData();
       this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'done', text: 'Sikeres válasz küldése'},
+        data: {icon: 'done', text: this.succesfulAnswerText},
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });

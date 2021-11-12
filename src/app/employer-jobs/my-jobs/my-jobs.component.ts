@@ -28,6 +28,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   pageLoaded!: Promise<boolean>;
   messageDialogSubscription: Subscription = new Subscription();
   succesfulAnswerText: string = '';
+  deleteJobWarningText: string = '';
   userAppliedToJobText: string = '';
   constructor(private dataService: DataService, private languageService: LanguageService,
     public dialog: MatDialog) { }
@@ -61,6 +62,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
           this.checkProfileText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsCheckProfileText', 'PublicContentTranslations');
           this.succesfulAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsSuccessfulAnswerText','PublicContentTranslations');
           this.userAppliedToJobText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsUserAppliedToJobText','PublicContentTranslations');
+          this.deleteJobWarningText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsDeleteWarrningText','PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
@@ -76,6 +78,23 @@ export class MyJobsComponent implements OnInit, OnDestroy {
     if(job.appliedUsers.length > 0){
       job.isAppliedUsersOpen = !job.isAppliedUsersOpen
     }
+  }
+
+  deleteJob(id: number){
+    const ref = this.dialog.open(MessageDialogComponent,{
+      data: {id: 'warning', text: this.deleteJobWarningText, cancel: true},
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      disableClose: true
+    });
+    ref.afterClosed().subscribe(()=>{
+      if(ref.componentInstance.actionNeeded){
+        this.dataService.httpDeleteMethod('/api/jobs/public/deleteJob',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
+          if(!res['error']){
+            this.initData();
+          }
+        })
+      }
+    })
   }
 
   openProfileDialog(appliedUser: AppliedUser){

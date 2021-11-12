@@ -1,6 +1,9 @@
 <div id="message-dialog-container" class="message-dialog-container">
-    <div class="close-button" (click)="closeDialog()">X</div>
+    <div class="close-button" (click)="closeDialog(false)">X</div>
     <mat-icon class="dialog-icon">{{data.icon}}</mat-icon>
     <div class="dialog-text">{{data.text}}</div>
-    <button class="submit-button" (click)="closeDialog()">Ok</button>
+    <div class="buttons-container">
+        <button class="submit-button" (click)="closeDialog(true)">Ok</button>
+        <button *ngIf="data.cancel" class="submit-button" (click)="closeDialog(false)">Vissza</button>
+    </div>
 </div>

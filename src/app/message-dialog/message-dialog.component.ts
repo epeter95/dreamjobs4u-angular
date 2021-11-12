@@ -8,14 +8,15 @@ import { DialogData } from '../interfaces/dialog-data';
   styleUrls: ['./message-dialog.component.scss']
 })
 export class MessageDialogComponent implements OnInit {
-
+  actionNeeded: boolean = false;;
   constructor(public dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnInit(): void {
   }
 
-  closeDialog(){
+  closeDialog(actionNeeded: boolean){
+    this.actionNeeded = actionNeeded;
     this.dialogRef.close();
   }
 

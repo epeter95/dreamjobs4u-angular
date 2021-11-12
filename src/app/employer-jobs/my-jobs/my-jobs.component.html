@@ -2,6 +2,7 @@
     <div class="side-menu-router-outlet-title">{{myJobsTitleText}}</div>
     <div class="jobs-container">
         <div *ngFor="let job of myJobs" class="job-wrapper">
+            <div class="close-button delete-job-button" (click)="deleteJob(job.jobData.id)">X</div>
             <div class="job">
                 <a class="link-to-job-container" [routerLink]="'/kategoria/'+job.jobData.categoryId+'/allas/'+job.jobData.id">
                     <img class="job-image" [src]="job.jobData.logoUrl">

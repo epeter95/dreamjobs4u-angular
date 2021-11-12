@@ -10,6 +10,7 @@ export interface Job{
     logoUrl: string;
     categoryId: number;
     User: UserProfileData;
+    showOnMainPage: boolean;
     JobTranslations: JobTranslation[];
     selectedTranslation: JobTranslation;
     Category: Category;

@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ]).subscribe(res=>{
       this.categories = res[0];
       this.publicContents = res[1];
-      this.jobs = res[2];
+      this.jobs = (res[2] as Job[]).filter(element=>element.showOnMainPage);
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(lang){
           this.categories = this.categories.map((element: Category)=>{

@@ -21,6 +21,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   languageSubscription: Subscription = new Subscription();
   isUserLoggedIn: boolean = false;
   pageLoaded!: Promise<boolean>;
+  preferredCategoriesTitleText: string = '';
+  preferredCategoriesSubtitleText: string = '';
   constructor( 
     private languageService: LanguageService,
     private dataService: DataService,
@@ -53,7 +55,9 @@ export class CategoriesComponent implements OnInit, OnDestroy {
             });
           }
           this.pageTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPageTitle','PublicContentTranslations');
-          this.pageSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPageSubtitle','PublicContentTranslations');
+          this.pageSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPageTitle','PublicContentTranslations');
+          this.preferredCategoriesTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPagePreferredCategoriesTitleText','PublicContentTranslations');
+          this.preferredCategoriesSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPagePreferredCategoriesSubtitleText','PublicContentTranslations');
           this.jobCountTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','categoriesPageJobCountText','PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }

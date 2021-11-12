@@ -1,7 +1,7 @@
 <div class="categories-wrapper" *ngIf="pageLoaded | async">
-    <ng-container *ngIf="isUserLoggedIn">
-        <div class="side-menu-title">Preferált Kategóriáid</div>
-        <div class="side-menu-subtitle">{{pageSubtitleText}}</div>
+    <ng-container *ngIf="isUserLoggedIn && preferredCategories.length > 0">
+        <div class="side-menu-title">{{preferredCategoriesTitleText}}</div>
+        <div class="side-menu-subtitle">{{preferredCategoriesSubtitleText}}</div>
         <div class="category-container">
             <a [routerLink]="'/kategoria/'+category.id" class="category" *ngFor="let category of preferredCategories">
                 <img class="category-image" src="/assets/images/test-icon.png">

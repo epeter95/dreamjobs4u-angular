@@ -27,7 +27,12 @@
         <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.jobDescription}}</div>
     </div>
     <div class="job-right-side" *ngIf="job.selectedTranslation">
-        <button (click)="applyToJob()" class="submit-button custom-margin" *ngIf="isEmployeeRole">{{applyJobButtonText}}</button>
+        <ng-container *ngIf="isUserAlreadyAppliedToJob && isEmployeeRole">
+            <button *ngIf="isUserAlreadyAppliedToJob == 'notExist'; else alreadyApplied" (click)="applyToJob()" class="submit-button custom-margin">{{applyJobButtonText}}</button>
+            <ng-template #alreadyApplied>
+                <button (click)="removeFromJob()" class="submit-button remove-button custom-margin">Jelentkezés visszavonása</button>
+            </ng-template>
+        </ng-container>
         <div class="job-right-side-info-container">
             <div class="job-title side-menu-title custom-padding">{{jobOverviewText}}</div>
             <div class="job-right-side-info-element">

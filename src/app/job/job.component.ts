@@ -34,8 +34,9 @@ export class JobComponent implements OnInit, OnDestroy {
   isEmployerRole: boolean = false;
   errorMessages: ErrorMessage[] = new Array();
   generalMessages: GeneralMessage[] = new Array();
-  userAlreadyAppliedToJobErrorText: string = '';
+  userSuccessfullyRemovedFromJobText: string = '';
   successfulApplyToJobText: string = '';
+  isUserAlreadyAppliedToJob: string = '';
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -53,12 +54,14 @@ export class JobComponent implements OnInit, OnDestroy {
         this.dataService.getOneData('/api/jobs/public/getJobById/'+id),
         this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public'),
         this.dataService.getAllData('/api/generalMessages/public'),
-        this.dataService.getAllData('/api/errorMessages/public')
+        this.dataService.getAllData('/api/errorMessages/public'),
+        this.dataService.getOneData('/api/jobs/public/isUserAppliedToJob/'+id,this.dataService.getAuthHeader())
       ]).subscribe(res=>{
         this.job = res[0];
         this.publicContents = res[1];
         this.generalMessages = res[2];
         this.errorMessages = res[3];
+        this.isUserAlreadyAppliedToJob = res[4].exist ? 'exist' : 'notExist';
         this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
           if(lang){
             this.job.selectedTranslation = this.languageService.getTranslation(lang,this.job.JobTranslations);
@@ -76,7 +79,7 @@ export class JobComponent implements OnInit, OnDestroy {
             
             this.successfulApplyToJobText = this.languageService.getTranslationByKey(lang,this.generalMessages,'text','successfulApplyToJobText', 'GeneralMessageTranslations');
 
-            this.userAlreadyAppliedToJobErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','userAlreadyAppliedToJobErrorText', 'ErrorMessageTranslations');
+            this.userSuccessfullyRemovedFromJobText = this.languageService.getTranslationByKey(lang,this.generalMessages,'text','userSuccessfullyRemovedFromJobText', 'GeneralMessageTranslations');
             
             this.pageLoaded = Promise.resolve(true);
           }
@@ -91,19 +94,23 @@ export class JobComponent implements OnInit, OnDestroy {
 
   applyToJob(){
     this.dataService.httpPostMethod('/api/jobs/public/userApplyToJob', {jobId: this.job.id}, this.dataService.getAuthHeader()).subscribe(res=>{
-      if(res.error){
-        this.dialog.open(MessageDialogComponent, {
-          data: {icon: 'warning', text: this.userAlreadyAppliedToJobErrorText},
-          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-          disableClose: true
-        });
-        return;
-      }
       this.dialog.open(MessageDialogComponent, {
         data: {icon: 'done', text: this.successfulApplyToJobText},
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });
+      this.isUserAlreadyAppliedToJob = 'exist';
+    });
+  }
+
+  removeFromJob(){
+    this.dataService.httpPostMethod('/api/jobs/public/userRemoveFromJob', {jobId: this.job.id}, this.dataService.getAuthHeader()).subscribe(res=>{
+      this.dialog.open(MessageDialogComponent, {
+        data: {icon: 'done', text: this.userSuccessfullyRemovedFromJobText},
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
+      this.isUserAlreadyAppliedToJob = 'notExist';
     });
   }
 

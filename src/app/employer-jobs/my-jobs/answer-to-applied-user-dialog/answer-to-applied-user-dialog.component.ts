@@ -11,6 +11,10 @@ export interface AnswerDialogData{
   profile: UserProfileData,
   status: number;
   lang: string;
+  jobName: string;
+  jobCompany: string;
+  jobId: number;
+  userId: number;
 }
 @Component({
   selector: 'app-answer-to-applied-user-dialog',
@@ -21,7 +25,7 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
   messageIsFocused: boolean = false;
   messageControl: FormControl = new FormControl('', Validators.required);
   userStatuses: AppliedUserStatus[] = new Array();
-  activeStatusId: number = 0;
+  activeStatusId: string = '';
   fileData!: File | string;
   fileUrl: string = '';
   messageIsMissing: boolean = false;
@@ -38,7 +42,8 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
     private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.activeStatusId = this.data.status;
+    this.activeStatusId = this.data.status.toString();
+    console.log(this.data);
     forkJoin([
       this.dataService.getAllData('/api/appliedUserStatuses/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
@@ -62,7 +67,7 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
   }
 
   setActiveId(status: AppliedUserStatus){
-    this.activeStatusId = status.id;
+    this.activeStatusId = status.id.toString();
   }
 
   closeDialog(){
@@ -73,10 +78,16 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
     if(this.messageControl.valid){
       let formData = new FormData();
       formData.append('message',this.messageControl.value);
+      formData.append('toEmail', this.data.profile.email);
+      formData.append('jobName', this.data.jobName);
+      formData.append('jobCompany', this.data.jobCompany);
+      formData.append('appliedUserStatusId', this.activeStatusId);
+      formData.append('jobId', this.data.jobId.toString());
+      formData.append('userId', this.data.userId.toString());
       if(this.fileData){
         formData.append('fileData', this.fileData);
       }
-      this.dataService.httpPostMethod('/api/users/sendAnswerToAppliedUser',formData, this.dataService.getAuthHeader()).subscribe(res=>{
+      this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser',formData, this.dataService.getAuthHeader()).subscribe(res=>{
         console.log(res);
       });
     }else{

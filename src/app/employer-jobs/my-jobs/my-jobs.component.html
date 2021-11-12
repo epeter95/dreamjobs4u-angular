@@ -29,7 +29,7 @@
                     </div>
                     <div class="applied-user-actions">
                         <div class="answer-text">{{statusText}}: {{appliedUser.AppliedUserStatus.selectedTranslation.text}}</div>
-                        <button class="answer-button" (click)="openAnswerDialog(appliedUser)">{{sendAnswerText}}</button>
+                        <button class="answer-button" (click)="openAnswerDialog(appliedUser, job)">{{sendAnswerText}}</button>
                         <button class="answer-button" (click)="openProfileDialog(appliedUser)">{{checkProfileText}}</button>
                     </div>
                 </div>

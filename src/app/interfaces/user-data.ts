@@ -7,6 +7,7 @@ export interface UserData{
 }
 
 export interface UserProfileData{
+    id: number;
     firstName: string;
     lastName: string;
     email: string;

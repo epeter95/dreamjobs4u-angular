@@ -3,7 +3,7 @@
     <div class="side-menu-title">{{answerTitleText}} {{data.profile.firstName}} {{data.profile.lastName}}
     </div>
     <div class="user-statuses">
-        <div (click)="setActiveId(status)" [ngClass]="status.id == activeStatusId ? 'user-status-active' : 'user-status'"
+        <div (click)="setActiveId(status)" [ngClass]="status.id == +activeStatusId ? 'user-status-active' : 'user-status'"
             *ngFor="let status of userStatuses">{{status.selectedTranslation.text}}</div>
     </div>
     <div class="form-field-wrapper">

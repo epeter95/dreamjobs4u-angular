@@ -74,9 +74,13 @@ export class MyJobsComponent implements OnInit, OnDestroy {
     });
   }
 
-  openAnswerDialog(appliedUser: AppliedUser){
+  openAnswerDialog(appliedUser: AppliedUser, job: MyJob){
     this.dialog.open(AnswerToAppliedUserDialogComponent,{
-      data: {profile: appliedUser.User, status: appliedUser.AppliedUserStatus.id ,lang: this.lang},
+      data: {
+        profile: appliedUser.User, status: appliedUser.AppliedUserStatus.id,
+        lang: this.lang, jobName: job.jobData.selectedTranslation.title, jobCompany: job.jobData.companyName,
+        jobId: job.jobData.id, userId: appliedUser.User.id
+      },
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });

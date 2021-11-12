@@ -4,6 +4,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { AppliedUser, Job, MyJob } from 'src/app/interfaces/job';
 import { PublicContent } from 'src/app/interfaces/public-contents';
 import { UserProfileData } from 'src/app/interfaces/user-data';
+import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { ProfileDialogComponent } from 'src/app/profile-dialog/profile-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -29,6 +30,9 @@ export class MyJobsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.initData();
+  }
+  private initData(){
     forkJoin([
       this.dataService.getAllData('/api/jobs/public/getJobsByTokenWithAppliedUsers', this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
@@ -75,7 +79,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   }
 
   openAnswerDialog(appliedUser: AppliedUser, job: MyJob){
-    this.dialog.open(AnswerToAppliedUserDialogComponent,{
+    const ref = this.dialog.open(AnswerToAppliedUserDialogComponent,{
       data: {
         profile: appliedUser.User, status: appliedUser.AppliedUserStatus.id,
         lang: this.lang, jobName: job.jobData.selectedTranslation.title, jobCompany: job.jobData.companyName,
@@ -84,6 +88,14 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
+    ref.afterClosed().subscribe(()=>{
+      this.initData();
+      this.dialog.open(MessageDialogComponent,{
+        data: {icon: 'done', text: 'Sikeres válasz küldése'},
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
+    })
   }
 
 }

@@ -89,6 +89,9 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
       }
       this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser',formData, this.dataService.getAuthHeader()).subscribe(res=>{
         console.log(res);
+        if(!res.error){
+          this.dialogRef.close();
+        }
       });
     }else{
       this.messageIsMissing = true;

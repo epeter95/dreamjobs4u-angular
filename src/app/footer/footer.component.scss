@@ -13,7 +13,7 @@
 
 .footer-wrapper{
     width: 100%;
-    padding: 50px 10px 0 10px;
+    padding: 50px 0 0 0;
     box-sizing: border-box;
     background-color: #24324a;
     box-shadow: $light-box-shadow;
@@ -33,6 +33,7 @@
     max-width: 1200px;
     margin: 0 auto 50px auto;
     display: flex;
+    padding: 0 10px;
     align-items: center;
     justify-content: space-between;
     flex-flow: wrap;

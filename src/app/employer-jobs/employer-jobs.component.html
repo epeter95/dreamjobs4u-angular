@@ -1,14 +1,14 @@
-<div id="employer-jobs" class="page-container-with-side-menu">
+<div id="employer-jobs" class="page-container-with-side-menu" *ngIf="pageLoaded | async">
     <div class="side-menu-container">
         <img src="/assets/images/suitcase.jpg" class="side-menu-logo">
-        <div class="side-menu-title">Álláshirdetéseim</div>
+        <div class="side-menu-title">{{myJobsTitleText}}</div>
         <div class="job-menu-routes">
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
-            [routerLinkActiveOptions]="{ exact: true }" routerLink=".">Hirdetéseim</a>
+            [routerLinkActiveOptions]="{ exact: true }" routerLink=".">{{myJobsTitleText}}</a>
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="letrehozas">Állás létrehozása</a>
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="letrehozas">{{creatingJobTitleText}}</a>
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
-                [routerLinkActiveOptions]="{ exact: true }" routerLink="modositas">Állás módosítása</a>
+                [routerLinkActiveOptions]="{ exact: true }" routerLink="modositas">{{modifyJobTitleText}}</a>
         </div>
     </div>
     <router-outlet></router-outlet>

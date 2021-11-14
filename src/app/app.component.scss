@@ -8,3 +8,9 @@
     position: relative;
     padding-bottom: 300px;
 }
+
+@media screen and (max-width: $mobile-width) {
+    div.site-layout-container{
+        padding-top: 70px;
+    }
+}

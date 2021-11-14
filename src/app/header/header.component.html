@@ -1,10 +1,10 @@
 <div id="sweetjobs-header" class="header-wrapper" *ngIf="pageLoaded | async">
     <div class="header-container">
-        <a routerLink="/" class="header-logo">
+        <a (click)="isMobileMenuOpen=false" routerLink="/" class="header-logo">
             <img src="/assets/images/logo.jpg">
         </a>
         <div class="navigation-container">
-            <div class="main-navigation-container">
+            <div class="main-navigation-container" *ngIf="!isMobile">
                 <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">{{myJobsText}}</a>
                 <a class="navigation-link" routerLinkActive="active-navigation-link"
@@ -14,17 +14,19 @@
                 <a class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/kapcsolat">{{contactText}}</a>
             </div>
-            <div class="auth-navigation-container">
-                <div class="languages-container">
-                    <img #languageButton (click)="openLanguges()" class="language-image"
-                        src="/assets/images/language.jpg">
-                    <div #languageContainer class="languages-menu" *ngIf="isLanguagesOpen">
-                        <div [ngClass]="language.key == activeLanguageKey ? 'active-navigation-link' : 'navigation-link'"
-                            class="navigation-link" (click)="setLanguage(language)" *ngFor="let language of languages">
-                            <img class="flag-image" [src]="language.flag">{{language.selectedTranslation.name}}
-                        </div>
+        </div>
+        <div class="auth-navigation-container">
+            <div class="languages-container">
+                <img #languageButton (click)="openLanguges()" class="language-image" src="/assets/images/language.jpg">
+                <div #languageContainer class="languages-menu" *ngIf="isLanguagesOpen">
+                    <div [ngClass]="language.key == activeLanguageKey ? 'active-navigation-link' : 'navigation-link'"
+                        class="navigation-link" (click)="setLanguage(language)" *ngFor="let language of languages">
+                        <img class="flag-image" [src]="language.flag">{{language.selectedTranslation.name}}
                     </div>
                 </div>
+            </div>
+            <ng-container *ngIf="!isMobile">
+
                 <ng-container *ngIf="userLoggedIn; else loggedOut">
                     <div class="profile-container">
                         <div *ngIf="userData" class="no-profile-picture-image">
@@ -63,6 +65,66 @@
                         </div>
                     </div>
                 </ng-template>
+            </ng-container>
+            <div class="mobile-menu-wrapper" *ngIf="isMobile">
+                <img (click)="openMobileMenu()" class="mobile-menu-trigger"
+                    src="/assets/images/hamburger-menu-open.svg">
+                <div *ngIf="isMobileMenuOpen" class="mobile-menu-container">
+                    <div class="mobile-submenu-container">
+                        <a (click)="openMyJobsMenu()" *ngIf="isEmployer"
+                            class="navigation-link disabled-routerlink">{{myJobsText}}<span
+                                [ngClass]="isMyJobsMobileMenuOpen ? 'menu-arrow-up' : 'menu-arrow-down'"></span></a>
+                        <div class="mobile-submenu" *ngIf="isMyJobsMobileMenuOpen">
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link"
+                                [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">Hirdetéseim</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/hirdeteseim/letrehozas">Állás létrehozása</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/hirdeteseim/modositas">Állás módosítása</a>
+                        </div>
+                    </div>
+                    <a (click)="isMobileMenuOpen=false" class="navigation-link"
+                        routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/allasok">{{jobsText}}</a>
+                    <a (click)="isMobileMenuOpen=false" class="navigation-link"
+                        routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/kategoriak">{{categoryText}}</a>
+                    <a (click)="isMobileMenuOpen=false" class="navigation-link"
+                        routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/kapcsolat">{{contactText}}</a>
+                    <div class="mobile-submenu-container">
+                        <a (click)="openMobileProfileMenu()" *ngIf="userLoggedIn"
+                            class="navigation-link">{{profileText}}<span class="menu-arrow-down"></span></a>
+                        <div class="mobile-submenu" *ngIf="isProfileMobileMenuOpen">
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link"
+                                [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil">Általános
+                                információk</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/profil/elerhetoseg">Elérhetőségi információk</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/profil/jelszo-valtoztatas">Jelszó változtatás</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/profil/jelszo-valtoztatas">Preferált kategóriák</a>
+                            <a *ngIf="isEmployee" (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/profil/jelentkezett-allasok">Jelentkezett állások</a>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="userLoggedIn;else mobileNotLoggedIn">
+                        <button class="logout-button navigation-link" (click)="logout()">{{logoutText}}</button>
+                    </ng-container>
+                    <ng-template #mobileNotLoggedIn>
+                        <a class="navigation-link" (click)="openLoginDialog()">{{loginText}}</a>
+                        <a class="navigation-link" (click)="openRegistrationDialog()">{{registrationText}}</a>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>

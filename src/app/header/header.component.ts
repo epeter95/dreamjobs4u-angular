@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -49,6 +49,10 @@ export class HeaderComponent implements OnInit {
   publicContents: PublicContent[] = new Array();
   categoryText: string = '';
   contactText: string = '';
+  isMobile: boolean = false;
+  isMobileMenuOpen: boolean = false;
+  isMyJobsMobileMenuOpen: boolean = false;
+  isProfileMobileMenuOpen: boolean = false;
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
@@ -68,6 +72,7 @@ export class HeaderComponent implements OnInit {
   ) {
     this.isEmployee = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
     this.isEmployer = this.roleService.checkEmployerRole(this.roleService.getRole()!);
+    this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.profileButton && this.profileContainer) {
         if (e.target !== this.profileButton.nativeElement && e.target !== this.profileContainer.nativeElement) {
@@ -89,20 +94,25 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
+  }
+
   ngOnInit(): void {
     this.userLoggedInSubscription = this.sessionService.userLoggedInObservable$.subscribe(state => {
       this.userLoggedIn = state;
     });
     this.userDataSubscription = this.sessionService.userDataObservable$.subscribe(data => {
       this.userData = data;
-      if(this.userData.profilePicture){
+      if (this.userData.profilePicture) {
         this.userData.profilePicture = this.userData.profilePicture;
       }
     });
     if (this.sessionService.getSession()) {
       this.profileDataSubscription = this.profileService.refreshProfileDataObservable$.subscribe(refresh => {
         if (refresh) {
-         this.getUserData();
+          this.getUserData();
         }
       });
       this.getUserData();
@@ -110,26 +120,26 @@ export class HeaderComponent implements OnInit {
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public'),
       this.dataService.getAllData('/api/languages/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.publicContents = res[0];
       this.languages = res[1];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.jobsText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarJobsText','PublicContentTranslations');
-          this.myJobsText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarMyJobsText','PublicContentTranslations');
-          this.loginText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLoginText','PublicContentTranslations');
-          this.registrationText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarRegistrationText','PublicContentTranslations');
-          this.profileText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarProfileText','PublicContentTranslations');
-          this.logoutText = this.languageService.getTranslationByKey(lang,this.publicContents ,'title','navbarLogoutText','PublicContentTranslations');
-          this.categoryText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title','navbarCategoryText', 'PublicContentTranslations');
-          this.contactText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title','navbarContactText', 'PublicContentTranslations');
-          this.languages = this.languages.map((element: Language)=>{
-            if(element.key=='hu'){
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.jobsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarJobsText', 'PublicContentTranslations');
+          this.myJobsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarMyJobsText', 'PublicContentTranslations');
+          this.loginText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarLoginText', 'PublicContentTranslations');
+          this.registrationText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarRegistrationText', 'PublicContentTranslations');
+          this.profileText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarProfileText', 'PublicContentTranslations');
+          this.logoutText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarLogoutText', 'PublicContentTranslations');
+          this.categoryText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarCategoryText', 'PublicContentTranslations');
+          this.contactText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarContactText', 'PublicContentTranslations');
+          this.languages = this.languages.map((element: Language) => {
+            if (element.key == 'hu') {
               element.flag = '/assets/images/hun-flag.png';
-            }else if(element.key == 'en'){
+            } else if (element.key == 'en') {
               element.flag = '/assets/images/eng-flag.png';
             }
-            element.selectedTranslation = this.languageService.getTranslation(lang,element.LanguageTranslations);
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.LanguageTranslations);
             return element;
           });
           this.activeLanguageKey = this.languageService.getLangauge()!;
@@ -139,21 +149,21 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  setLanguage(language: Language){
+  setLanguage(language: Language) {
     this.languageService.nextLanguage(language.key);
     this.isLanguagesOpen = false;
   }
 
-  getUserData(){
+  getUserData() {
     this.dataService.getOneData('/api/users/getDataForPublic', this.dataService.getAuthHeader()).subscribe(data => {
       this.userData = data;
-      if(this.userData.profilePicture){
+      if (this.userData.profilePicture) {
         this.userData.profilePicture = this.userData.profilePicture;
       }
     });
   }
 
-  openLanguges(){
+  openLanguges() {
     this.isLanguagesOpen = !this.isLanguagesOpen;
   }
 
@@ -177,6 +187,7 @@ export class HeaderComponent implements OnInit {
   openRegistrationDialog() {
     this.isRegistrationOpen = true;
     this.isUserMenuOpen = false;
+    this.isMobileMenuOpen=false;
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -200,13 +211,14 @@ export class HeaderComponent implements OnInit {
   openLoginDialog() {
     this.isLoginOpen = true;
     this.isUserMenuOpen = false;
+    this.isMobileMenuOpen=false;
     const loginDialogRef = this.dialog.open(LoginComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
     this.loginDialogSubscription = loginDialogRef.afterClosed().subscribe(() => {
       this.isLoginOpen = false;
-      if(loginDialogRef.componentInstance.reloadNeeded){
+      if (loginDialogRef.componentInstance.reloadNeeded) {
         location.reload();
       }
     });
@@ -217,5 +229,17 @@ export class HeaderComponent implements OnInit {
     this.roleService.clearRole();
     this.sessionService.clearSession();
     location.reload();
+  }
+
+  openMobileMenu(){
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  openMyJobsMenu(){
+    this.isMyJobsMobileMenuOpen = !this.isMyJobsMobileMenuOpen;
+  }
+
+  openMobileProfileMenu(){
+    this.isProfileMobileMenuOpen = !this.isProfileMobileMenuOpen;
   }
 }

@@ -1,5 +1,6 @@
 @import 'variables.scss';
 @import 'mixins.scss';
+@import './header-mobile.component.scss';
 
 .header-wrapper {
     @include default-container(100%, 90px);
@@ -42,7 +43,7 @@
     cursor: pointer;
     font-family: $regular-font;
     transition: color 0.2s ease-in-out;
-    @include flex-container('center','center',20px)
+    @include flex-container(flex-start,center,20px)
 }
 
 .navigation-link:hover{
@@ -87,6 +88,8 @@
     top: 45px;
     right: 0;
     background-color: white;
+    display: grid;
+    row-gap: 10px;
     padding: 20px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
 }
@@ -128,7 +131,6 @@
     background-image: url('/assets/images/user-icon.jpg');
     cursor: pointer;
 }
-
 
 .logout-button{
     border: none;

@@ -8,6 +8,7 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class DataService {
+  mobileWidth: number = 1220;
   constructor(private http: HttpClient, private sessionService: SessionService) { }
   getAllData(url: string, headers?: HttpHeaders): Observable<any[]> {
     return this.http.get<any[]>(environment.apiDomain + url,{headers: headers? headers: new HttpHeaders});

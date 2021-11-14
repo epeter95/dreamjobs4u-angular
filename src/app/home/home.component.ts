@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   categories: Category[] = new Array();
   publicContents: PublicContent[] = new Array();
   languageSubscription: Subscription = new Subscription();
+  homeCategories: Category[] = new Array();
 
   constructor(private dataService: DataService,
     private languageService: LanguageService) { }
@@ -58,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/jobs/public')
     ]).subscribe(res=>{
       this.categories = res[0];
+      this.homeCategories = res[0];
       this.publicContents = res[1];
       this.jobs = (res[2] as Job[]).filter(element=>element.showOnMainPage);
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
@@ -66,6 +68,12 @@ export class HomeComponent implements OnInit, OnDestroy {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
           });
+          this.homeCategories = this.homeCategories.map(element=>{
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
+            return element;
+          }).sort((a,b)=>{
+            return b.Jobs.length - a.Jobs.length;
+          })
           this.jobs = this.jobs.map(element=>{
             element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
             element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);

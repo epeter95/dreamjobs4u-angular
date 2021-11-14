@@ -60,6 +60,10 @@ export class HeaderComponent implements OnInit {
   @ViewChild('languageContainer') languageContainer!: ElementRef;
   @ViewChild('profileButton') profileButton!: ElementRef;
   @ViewChild('profileContainer') profileContainer!: ElementRef;
+  @ViewChild('mobileMenuButton') mobileMenuButton!: ElementRef;
+  @ViewChild('mobileMenuContainer') mobileMenuContainer!: ElementRef;
+  @ViewChild('myJobsSubmenuContainer') myJobsSubmenuContainer!: ElementRef;
+  @ViewChild('profileSubmenuContainer') profileSubmenuContainer!: ElementRef;
 
   constructor(
     public dialog: MatDialog,
@@ -89,6 +93,16 @@ export class HeaderComponent implements OnInit {
       if (this.languageButton && this.languageContainer) {
         if (e.target !== this.languageButton.nativeElement && e.target !== this.languageContainer.nativeElement) {
           this.isLanguagesOpen = !this.isLanguagesOpen;
+        }
+      }
+
+      if (this.mobileMenuButton && this.mobileMenuContainer) {
+        if (e.target !== this.mobileMenuButton.nativeElement && e.target !== this.mobileMenuContainer.nativeElement) {
+          if(e.target !== this.profileSubmenuContainer.nativeElement && e.target !== this.myJobsSubmenuContainer.nativeElement){
+            this.isMobileMenuOpen = false;
+            this.isProfileMobileMenuOpen = false;
+            this.isMyJobsMobileMenuOpen = false;
+          }
         }
       }
     });

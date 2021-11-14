@@ -67,11 +67,11 @@
                 </ng-template>
             </ng-container>
             <div class="mobile-menu-wrapper" *ngIf="isMobile">
-                <img (click)="openMobileMenu()" class="mobile-menu-trigger"
+                <img #mobileMenuButton (click)="openMobileMenu()" class="mobile-menu-trigger"
                     src="/assets/images/hamburger-menu-open.svg">
-                <div *ngIf="isMobileMenuOpen" class="mobile-menu-container">
+                <div #mobileMenuContainer *ngIf="isMobileMenuOpen" class="mobile-menu-container">
                     <div class="mobile-submenu-container">
-                        <a (click)="openMyJobsMenu()" *ngIf="isEmployer"
+                        <a #myJobsSubmenuContainer (click)="openMyJobsMenu()" *ngIf="isEmployer"
                             class="navigation-link disabled-routerlink">{{myJobsText}}<span
                                 [ngClass]="isMyJobsMobileMenuOpen ? 'menu-arrow-up' : 'menu-arrow-down'"></span></a>
                         <div class="mobile-submenu" *ngIf="isMyJobsMobileMenuOpen">
@@ -96,7 +96,7 @@
                         routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
                         routerLink="/kapcsolat">{{contactText}}</a>
                     <div class="mobile-submenu-container">
-                        <a (click)="openMobileProfileMenu()" *ngIf="userLoggedIn"
+                        <a #profileSubmenuContainer (click)="openMobileProfileMenu()" *ngIf="userLoggedIn"
                             class="navigation-link">{{profileText}}<span class="menu-arrow-down"></span></a>
                         <div class="mobile-submenu" *ngIf="isProfileMobileMenuOpen">
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"

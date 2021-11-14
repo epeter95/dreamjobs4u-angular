@@ -22,6 +22,7 @@
     height: 30px;
     right: -15px;
     top: -15px;
+    z-index: 5;
 }
 
 .job{
@@ -53,8 +54,13 @@
     object-fit: contain;
 }
 
-.job-company, .job-category{
-    margin: 10px 0;
+.job-company, .job-category, .job-title{
+    margin: 2px 0;
+}
+
+.job-company{
+    font-size: 14px;
+    color: $highlighted-color;
 }
 
 .job-category{

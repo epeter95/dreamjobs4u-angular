@@ -7,6 +7,7 @@
                 <a class="link-to-job-container" [routerLink]="'/kategoria/'+job.jobData.categoryId+'/allas/'+job.jobData.id">
                     <img class="job-image" [src]="job.jobData.logoUrl">
                     <div>
+                        <div class="job-title side-menu-regular-text">{{job.jobData.selectedTranslation.title}}</div>
                         <div class="job-company side-menu-regular-text">{{job.jobData.companyName}}</div>
                         <div class="job-category side-menu-regular-text">{{job.jobData.Category.selectedTranslation.text}}</div>
                     </div>

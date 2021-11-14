@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="job-right-side">
-                    <div class="job-location side-menu-regular-text">{{job.jobLocation}}</div>
+                    <div *ngIf="!isMobile" class="job-location side-menu-regular-text">{{job.jobLocation}}</div>
                     <div class="job-type">{{job.selectedTranslation.jobType}}</div>
                 </div>
             </a>

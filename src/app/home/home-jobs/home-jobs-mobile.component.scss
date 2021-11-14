@@ -1,0 +1,22 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    a.home-job{
+        flex-flow: wrap;
+        row-gap: 20px;
+    }
+    div.job-right-side{
+        margin: 0 0 0 auto;
+    }
+
+    div.job-type{
+        background-color: $highlighted-color;
+        color: white;
+    }
+
+    a.home-job:hover{
+        transform: none;
+        box-shadow: none;
+        background-color: none;
+    }
+}

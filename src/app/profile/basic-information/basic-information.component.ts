@@ -78,7 +78,6 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
         this.profileData = res[0];
         this.publicContents =res[1];
         this.generalMessages = res[2];
-        console.log(this.profileData.Profile.cvPath.substr(this.profileData.Profile.cvPath.lastIndexOf("/") + 1));
         this.cvUrl = this.profileData.Profile.cvPath.substr(this.profileData.Profile.cvPath.lastIndexOf("/") + 1);
         this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
           if(lang){

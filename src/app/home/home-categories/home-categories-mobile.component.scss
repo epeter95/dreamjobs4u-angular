@@ -1,0 +1,36 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.categories-container{
+        max-width: 900px;
+        margin: 50px auto;
+    }
+
+    div.category:hover{
+        transform: none;
+        box-shadow: none;
+        position:relative;
+        z-index: 0;
+        background-color: none;
+        img.category-image{
+            background-color: $highlighted-color;
+        }
+    }
+
+    img.category-image{
+        background-color: $highlighted-color;
+        border-radius: 50%;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    div.categories-container{
+        max-width: 600px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    div.categories-container{
+        max-width: 299.25px;
+    }
+}

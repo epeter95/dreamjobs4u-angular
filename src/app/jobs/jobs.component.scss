@@ -3,14 +3,18 @@
 @import 'page-with-side-menu.scss';
 @import 'form.scss';
 @import 'search-form.scss';
+@import './jobs-mobile.component.scss';
+
 .jobs-wrapper{
     padding: 50px 0;
 }
 
 .job-container{
-    max-width: 1200px;
+    max-width: 1220px;
     padding: 50px 10px;
     margin: auto;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-flow: wrap;
     gap: 20px;
@@ -29,15 +33,15 @@
     text-decoration: none;
 }
 
+.inputs-container{
+    @include flex-container(flex-start,center,20px);
+}
+
 .job:hover{
     transform: scale(1.05);
-    background-color: white;
     box-shadow: $light-box-shadow;
     border: 1px solid $highlighted-color;
     background-color: rgba($highlighted-color, 0.2);
-    .category-image{
-        background-color: $hover-button-color;
-    }
 }
 
 .job-image{

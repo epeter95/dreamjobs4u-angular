@@ -1,0 +1,42 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.inputs-container{
+        flex-direction: column;
+        width: 100%;
+        row-gap: 20px;
+        align-items: flex-start;
+    }
+
+    div.job-container{
+        max-width: 915px;
+    }
+
+    input.input-width{
+        flex: 1;
+        width: 100%;
+    }
+
+    button.little-button{
+        margin: 20px 0 0 auto;
+    }
+
+    a.job:hover{
+        transform: none;
+        box-shadow: none;
+        border: 1px solid rgba($medium-color,0.2);
+        background-color: transparent;
+    }
+}
+
+@media screen and (max-width: 915px) {
+    div.job-container{
+        max-width: 610px;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    div.job-container{
+        max-width: 285px;
+    }
+}

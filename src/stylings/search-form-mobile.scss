@@ -1,0 +1,18 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    input.search-input:hover{
+        border: 2px solid rgba($medium-color,0.5);
+        font-family: $regular-font;
+        color: $medium-color;
+    }
+
+    form.search-form{
+        max-width: 750px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 30px auto;
+        flex-flow: wrap;
+    }
+}

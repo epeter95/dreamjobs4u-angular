@@ -1,12 +1,20 @@
 @import 'variables.scss';
 
 @media screen and (max-width: $mobile-width) {
+    form.form{
+        min-width: 0;
+    }
+
     div.form-field-width{
         width: 100%;
     }
 
     div.form-field-full-width{
         width: 100%;
+    }
+
+    div.form-field, div.form-field-focused{
+        padding: 15px;
     }
 
     form.flex-form{

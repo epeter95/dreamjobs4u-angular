@@ -1,0 +1,13 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.get-job-data-dropdown{
+        flex-flow: wrap;
+        row-gap: 15px;
+        max-width: 440px;
+    }
+
+    button.little-button{
+        margin: 0 0 0 auto;
+    }
+}

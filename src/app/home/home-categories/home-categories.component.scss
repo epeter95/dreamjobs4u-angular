@@ -11,6 +11,7 @@
 .home-categories-container{
     max-width: 1220px;
     padding: 0 10px;
+    box-sizing: border-box;
     margin: auto;
 }
 
@@ -24,7 +25,7 @@
 }
 
 .category{
-    width: 304.25px;
+    width: 299.25px;
     padding: 20px;
     box-sizing: border-box;
     cursor: pointer;

@@ -6,6 +6,7 @@ import { UserProfileData } from '../interfaces/user-data';
 import { DataService } from '../services/data.service';
 import { LanguageService } from '../services/language.service';
 import { ProfileService } from '../services/profile.service';
+import { RoleService } from '../services/role.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,13 +28,20 @@ export class ProfileComponent implements OnInit {
   contactInfoMenuText: string = '';
   changePasswordMenuText: string = '';
   preferedCategoriesText: string = '';
+  appliedJobsText: string = '';
   imageUrl: any;
   pageLoaded!: Promise<boolean>;
   publicContents: PublicContent[] = new Array();
+  isEmployeeRole: boolean = false;
+  isEmployerRole: boolean = false;
 
   constructor(private languageService: LanguageService,
     private dataService: DataService,
-    private profileService: ProfileService) { }
+    private profileService: ProfileService,
+    private roleService: RoleService) {
+      this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
+      this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
+    }
 
   ngOnInit(): void {
     forkJoin([
@@ -48,6 +56,7 @@ export class ProfileComponent implements OnInit {
           this.contactInfoMenuText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileContactTitle', 'PublicContentTranslations');
           this.preferedCategoriesText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
           this.changePasswordMenuText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
+          this.appliedJobsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileAppliedJobsTitle', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });

@@ -16,6 +16,8 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './category/category.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
+import { EmployeeRoleGuard } from './authentication/employee-role.guard';
+import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -40,6 +42,7 @@ const routes: Routes = [
       { path: 'preferalt-kategoriak', component: PreferedCategoriesComponent, pathMatch: 'full' },
       { path: 'jelszo-valtoztatas', component: ChangePasswordComponent, pathMatch: 'full' },
       { path: 'elerhetoseg', component: ContactInformationComponent, pathMatch: 'full' },
+      { path: 'jelentkezett-allasok', component: AppliedJobsComponent, pathMatch: 'full', canActivate: [EmployeeRoleGuard] },
       { path: '', component: BasicInformationComponent, pathMatch: 'full' },
     ]
   },

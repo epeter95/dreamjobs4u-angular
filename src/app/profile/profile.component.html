@@ -28,6 +28,9 @@
             <a class="side-menu-item" routerLinkActive="active-side-menu-item"
                 [routerLinkActiveOptions]="{ exact: true }"
                 routerLink="preferalt-kategoriak">{{preferedCategoriesText}}</a>
+            <a *ngIf="isEmployeeRole" class="side-menu-item" routerLinkActive="active-side-menu-item"
+                [routerLinkActiveOptions]="{ exact: true }"
+                routerLink="jelentkezett-allasok">{{appliedJobsText}}</a>
         </div>
     </div>
     <router-outlet></router-outlet>

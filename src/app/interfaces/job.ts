@@ -42,3 +42,12 @@ export interface JobTranslation{
     qualification: string;
     language: string;
 }
+
+export interface AppliedUserJob{
+    id: number;
+    userId: number;
+    jobId: number;
+    Job: Job;
+    createdAt: Date;
+    updatedAt: Date;
+}

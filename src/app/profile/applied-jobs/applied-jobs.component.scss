@@ -1,0 +1,73 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+
+.job-wrapper{
+    width: 100%;
+    border-bottom: 2px solid #e8e8e8;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+}
+
+.job{
+    display: flex;
+    padding: 10px 20px;
+    position: relative;
+    align-items: center;
+}
+
+.link-to-job-container{
+    display: flex;
+    column-gap: 20px;
+    text-decoration: none;
+    align-items: center;
+}
+
+.applied-jobs-title{
+    border-bottom: none;
+}
+
+.applied-jobs-subtitle{
+    border-bottom: 2px solid #e8e8e8;
+    padding-bottom: 20px;
+    text-align: left;
+}
+
+.job-image{
+    display: block;
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+}
+
+.job-company, .job-category, .job-title{
+    margin: 2px 0;
+}
+
+.job-company{
+    color: $highlighted-color;
+}
+
+.job-category{
+    color: $hover-button-color;
+}
+
+.job-wrapper:hover{
+    background-color: rgba($highlighted-color,0.2);
+    object-fit: contain;
+    transform: scale(1.02);
+}
+
+.location-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5px;
+    margin: 0 0 0 auto;
+}
+
+.location-text{
+    font-size: 13px;
+}

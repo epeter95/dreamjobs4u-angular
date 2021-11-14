@@ -1,0 +1,39 @@
+@import 'variables.scss';
+@media screen and (max-width: $mobile-width) {
+    div.footer-wrapper{
+        padding-top: 20px;
+    }
+    div.footer-info{
+        display: grid;
+        row-gap: 20px;
+        justify-content: center;
+    }
+
+    div.footer-container{
+        margin-bottom: 20px;
+    }
+
+    div.company-title{
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    div.company-subtitle, div.company-info-element{
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+    div.company-socials{
+        margin-top: 15px;
+        column-gap: 10px;
+    }
+
+    a.social-icon{
+        width: 20px;
+        height: 20px;
+    }
+
+    div.company-info-element{
+        
+    }
+}

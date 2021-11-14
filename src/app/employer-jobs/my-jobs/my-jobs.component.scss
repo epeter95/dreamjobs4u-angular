@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
+@import './my-jobs-mobile.component.scss';
 
 .jobs-container{
     display: grid;
@@ -27,7 +28,7 @@
 
 .job{
     display: flex;
-    padding: 20px 30px 40px 30px;
+    padding: 20px 30px 50px 30px;
     position: relative;
     align-items: center;
 }

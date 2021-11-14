@@ -1,0 +1,23 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.job-wrapper:hover{
+        transform: none;
+        background: none;
+        border: 2px solid rgba($medium-color,0.2);
+    }
+
+    div.jobs-container{
+        padding: 20px 10px
+    }
+
+    div.job{
+        flex-flow: wrap;
+        row-gap: 10px;
+        padding: 15px 15px 60px 15px;
+    }
+
+    div.applied-users-text{
+        right: 15px;
+    }
+}

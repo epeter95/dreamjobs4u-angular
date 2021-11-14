@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.search-container{
+        padding: 50px 10px;
+    }
+
+    form.search-form{
+        margin: 20px 0 0 0;
+        justify-content: flex-start;
+        flex-flow: wrap;
+        row-gap: 15px;
+        max-width: 750px;
+    }
+
+    input.input-width{
+        flex: 1;
+        width: 100%;
+        padding: 15px 30px 15px 15px;
+    }
+
+
+    button.little-button{
+        margin: 20px 0 0 auto;
+        padding: 10px 15px;
+    }
+
+    div.search-inputs-container{
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        column-gap: 0;
+        row-gap: 15px;
+    }
+
+    span.search-arrow-down, span.search-arrow-up{
+        right: 7px;
+    }
+}

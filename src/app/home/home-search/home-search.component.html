@@ -4,20 +4,22 @@
         <div class="search-sub-title">{{subtitleText}}
         </div>
         <form [formGroup]="searchForm" class="search-form" (ngSubmit)="search()">
-            <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
-                (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
-                [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
-                [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'" class="input-width">
-            <div class="search-select-dropdown">
-                <input #categoryButton readonly [id]="categoriesDropDown.key" (click)="openCategory()"
-                    [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
-                    [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
-                    <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
-                <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
-                    <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
-                        <ng-container *ngIf="category.selectedTranslation">
-                            {{category.selectedTranslation.text}}
-                        </ng-container>
+            <div class="search-inputs-container">
+                <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
+                    (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
+                    [placeholder]="searchTermElement.placeholder" [formControlName]="searchTermElement.key"
+                    [ngClass]="searchTermElement.focus ? 'search-input-focused': 'search-input'" class="input-width">
+                <div class="search-select-dropdown">
+                    <input #categoryButton readonly [id]="categoriesDropDown.key" (click)="openCategory()"
+                        [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
+                        [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
+                        <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                    <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
+                        <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
+                            <ng-container *ngIf="category.selectedTranslation">
+                                {{category.selectedTranslation.text}}
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
             </div>

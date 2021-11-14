@@ -2,6 +2,7 @@
 @import 'mixins.scss';
 @import 'form.scss';
 @import 'search-form.scss';
+@import './home-search-mobile.component.scss';
 
 
 .search-wrapper{
@@ -37,6 +38,11 @@
 .search-form{
     margin: 50px 0;
     @include flex-container(space-between,center,20px);
+}
+
+.search-inputs-container{
+    @include flex-container(space-between,center,20px);
+    flex-flow: wrap;
 }
 
 

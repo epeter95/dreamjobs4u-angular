@@ -1,0 +1,44 @@
+@import 'variables.scss';
+@media screen and (max-width: $mobile-width) {
+    div.job-left-side{
+        margin: auto;
+    }
+
+    button.submit-button{
+        max-width: 850px;
+        margin: 20px auto;
+        width: 100%;
+    }
+
+    div.job-right-side{
+        max-width: 850px;
+        margin: auto;
+        width: 100%;
+    }
+
+    div.job-right-side-info-container{
+        border-bottom: 0;
+    }
+
+    div.job-header{
+        flex-flow: wrap;
+        row-gap: 10px;
+    }
+
+    div.job-location{
+        margin-top: 10px;
+    }
+
+    div.job-right-side-info-element{
+        border-bottom: 2px solid rgba($medium-color,0.2);
+        margin: 0;
+        padding: 10px;
+    }
+
+    div.job-right-side-info-element:hover{
+        border: 2px solid transparent;
+        border-bottom: 2px solid rgba($medium-color,0.2);
+        background-color: transparent;
+        border-radius: 0;
+    }
+}

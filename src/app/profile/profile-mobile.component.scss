@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.no-profile-picture{
+        width: 80px;
+        height: 80px;
+    }
+
+    div.mobile-title, div.mobile-subtitle{
+        margin: 0 0 5px 0;
+    }
+
+    mat-icon.update-profile-pic, mat-icon.delete-profile-pic{
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+    }
+
+    button.save-profilepic-button{
+        margin: 10px auto;
+    }
+
+    div.profile-menus{
+        margin-top: 35px;
+    }
+}

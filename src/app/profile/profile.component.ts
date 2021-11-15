@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { forkJoin, Subscription } from 'rxjs';
 import { PublicContent } from '../interfaces/public-contents';
@@ -34,14 +34,21 @@ export class ProfileComponent implements OnInit {
   publicContents: PublicContent[] = new Array();
   isEmployeeRole: boolean = false;
   isEmployerRole: boolean = false;
+  isMobile: boolean = false;
 
   constructor(private languageService: LanguageService,
     private dataService: DataService,
     private profileService: ProfileService,
     private roleService: RoleService) {
-      this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
-      this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
-    }
+    this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
+    this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
+    this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
+  }
 
   ngOnInit(): void {
     forkJoin([

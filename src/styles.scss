@@ -23,4 +23,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .general-dialog-panel{
     position:relative;
+    max-height: 80vh;
+    overflow: auto;
+    max-width: 90vw!important;
 }

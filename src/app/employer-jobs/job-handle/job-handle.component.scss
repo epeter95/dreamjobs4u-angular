@@ -18,6 +18,8 @@
 .languages-container{
     margin: auto;
     @include flex-container(center, center, 50px);
+    flex-flow: wrap;
+    row-gap: 10px;
 }
 
 .normal-language{

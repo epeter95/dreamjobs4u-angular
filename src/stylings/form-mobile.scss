@@ -13,8 +13,21 @@
         width: 100%;
     }
 
+    button.submit-button{
+        margin: 20px auto 0 auto;
+    }
+
+    div.form-field-label, div.form-field-label-focused{
+        font-size: 16px;
+        line-height: 19px;
+        margin-left: 0;
+    }
+
     div.form-field, div.form-field-focused{
-        padding: 15px;
+        padding: 10px 15px;
+        span{
+            top: 18px;
+        }
     }
 
     form.flex-form{

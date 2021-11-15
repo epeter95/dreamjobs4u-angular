@@ -10,4 +10,14 @@
     button.little-button{
         margin: 0 0 0 auto;
     }
+
+    div.languages-container{
+        gap: 20px;
+    }
+
+    div.normal-language, div.active-language{
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 17px;
+    }
 }

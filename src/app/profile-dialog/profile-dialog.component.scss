@@ -2,11 +2,6 @@
 @import 'mixins.scss';
 @import 'page-with-side-menu.scss';
 
-.dialog-container{
-    padding: 16px 36px;
-    position: relative;
-}
-
 .profile-container{
     display: grid;
     row-gap: 15px;
@@ -26,8 +21,10 @@
 .info-container{
     display: flex;
     column-gap: 30px;
+    row-gap: 5px;
     justify-content: space-between;
     flex-flow: wrap;
+    word-wrap: anywhere;
 }
 
 .description-container{
@@ -45,4 +42,8 @@
     text-decoration: none;
     color: $hover-button-color;
     max-width: 600px;
+}
+
+@media screen and (max-width: $mobile-width) {
+
 }

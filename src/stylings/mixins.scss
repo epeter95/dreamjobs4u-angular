@@ -22,6 +22,24 @@
     cursor: pointer;
 }
 
+.dialog-container{
+    padding: 16px 36px;
+    position: relative;
+}
+
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.dialog-container{
+        padding: 15px 0 0 0;
+    }
+
+    div.close-button{
+        right: -24px;
+        top: -24px;
+    }
+}
+
 @mixin default-container($max-width,$height: auto, $padding: 0, $margin: 0) {
     max-width: $max-width;
     width: 100%;

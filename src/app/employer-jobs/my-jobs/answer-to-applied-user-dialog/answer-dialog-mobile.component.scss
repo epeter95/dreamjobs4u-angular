@@ -1,0 +1,14 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.user-statuses{
+        padding: 10px 0;
+        gap: 10px 20px;
+    }
+
+    div.user-status, div.user-status-active{
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 17px;
+    }
+}

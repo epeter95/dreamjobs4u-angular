@@ -1,3 +1,4 @@
+@import 'variables.scss';
 @font-face{
     font-family: 'MonsterRat';
     src: url('/assets/fonts/Montserrat-Regular.ttf');
@@ -27,3 +28,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     overflow: auto;
     max-width: 90vw!important;
 }
+
+// @media screen and (max-width: $mobile-width) {
+//     div.general-dialog-panel{
+//         .mat-dialog-container{
+//             padding: 16px;
+//         }
+//     }
+// }

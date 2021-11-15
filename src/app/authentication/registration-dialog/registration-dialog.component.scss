@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'mixins.scss';
 @import 'form.scss';
+@import './registration-dialog-mobile.component.scss';
 
 .registration-container{
     padding: 16px 36px;
@@ -10,6 +11,8 @@
 .role-selection-container{
     margin-top: 20px;
     @include flex-container(center,center,20px);
+    flex-flow: wrap;
+    row-gap: 10px;
 }
 
 .role-element{

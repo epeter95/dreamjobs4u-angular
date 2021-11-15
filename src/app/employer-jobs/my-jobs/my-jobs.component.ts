@@ -116,13 +116,15 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       disableClose: true
     });
     this.messageDialogSubscription = ref.afterClosed().subscribe(()=>{
-      this.initData();
-      this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'done', text: this.succesfulAnswerText},
-        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-        disableClose: true
-      });
-    })
+      if(ref.componentInstance.reactionNeeded){
+        this.initData();
+        this.dialog.open(MessageDialogComponent,{
+          data: {icon: 'done', text: this.succesfulAnswerText},
+          backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+          disableClose: true
+        });
+      }
+    });
   }
 
 }

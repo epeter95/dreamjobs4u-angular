@@ -35,6 +35,7 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
   answerTitleText: string = '';
   messageTitleText: string = '';
   missingMessageText: string = '';
+  reactionNeeded: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<AnswerToAppliedUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AnswerDialogData,
@@ -90,6 +91,7 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
       this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser',formData, this.dataService.getAuthHeader()).subscribe(res=>{
         console.log(res);
         if(!res.error){
+          this.reactionNeeded = true;
           this.dialogRef.close();
         }
       });

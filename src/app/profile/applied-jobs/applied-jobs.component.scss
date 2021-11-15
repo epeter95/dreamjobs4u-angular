@@ -16,13 +16,16 @@
     padding: 10px 20px;
     position: relative;
     align-items: center;
+    flex-flow: wrap;
+    row-gap: 20px;
 }
 
 .link-to-job-container{
     display: flex;
-    column-gap: 20px;
+    gap: 20px;
     text-decoration: none;
     align-items: center;
+    flex-flow: wrap;
 }
 
 .applied-jobs-title{
@@ -70,4 +73,12 @@
 
 .location-text{
     font-size: 13px;
+}
+
+@media screen and (max-width: $mobile-width) {
+
+    div.job-wrapper:hover{
+        background-color: transparent;
+        transform: none;
+    }
 }

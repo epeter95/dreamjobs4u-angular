@@ -3,7 +3,8 @@
 @media screen and (max-width: $mobile-width) {
     div.page-container-with-side-menu{
         display: block;
-        padding: 30px 10px;
+        padding: 50px 10px;
+        margin: auto;
     }
     div.side-menu-container{
         display: none;
@@ -12,7 +13,7 @@
     div.side-menu-router-outlet-container{
         max-width: 700px;
         width: 100%;
-        margin: 30px auto;
+        margin: auto;
         padding: 20px 10px;
     }
 }

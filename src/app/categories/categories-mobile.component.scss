@@ -1,0 +1,35 @@
+@import 'variables.scss';
+@media screen and (max-width: $mobile-width) {
+    div.category-container{
+        max-width: 915px;
+        margin: auto;
+    }
+
+    img.category-image{
+        background-color: $highlighted-color;
+        border-radius: 50%;
+    }
+
+    a.category:hover{
+        box-shadow: none;
+        transform: none;
+        background-color: transparent;
+        border: 1px solid rgba($medium-color,0.2);
+        .category-image{
+            background-color: $highlighted-color;
+        }
+
+    }
+}
+
+@media screen and (max-width: 915px) {
+    div.category-container{
+        max-width: 610px;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    div.category-container{
+        max-width: 285px;
+    }
+}

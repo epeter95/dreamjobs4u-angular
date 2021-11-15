@@ -3,8 +3,8 @@
         <a (click)="isMobileMenuOpen=false" routerLink="/" class="header-logo">
             <img src="/assets/images/logo.jpg">
         </a>
-        <div class="navigation-container">
-            <div class="main-navigation-container" *ngIf="!isMobile">
+        <div *ngIf="!isMobile" class="navigation-container">
+            <div class="main-navigation-container">
                 <a *ngIf="isEmployer" class="navigation-link" routerLinkActive="active-navigation-link"
                     [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">{{myJobsText}}</a>
                 <a class="navigation-link" routerLinkActive="active-navigation-link"

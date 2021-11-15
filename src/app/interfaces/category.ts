@@ -6,6 +6,7 @@ export interface Category{
     adminName: string;
     CategoryTranslations: CategoryTranslation[];
     Jobs: Job[];
+    pictureUrl: string;
     jobCount: string;
     selectedTranslation: CategoryTranslation;
 }

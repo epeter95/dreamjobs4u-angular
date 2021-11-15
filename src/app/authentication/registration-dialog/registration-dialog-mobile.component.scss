@@ -3,6 +3,7 @@
 @media screen and (max-width: $mobile-width) {
     div.registration-container{
         padding: 25px 0 0 0;
+        min-width: 466px;
     }
 
     div.registration-title{
@@ -14,5 +15,12 @@
         padding: 8px 12px;
         font-size: 14px;
         line-height: 17px;
+    }
+}
+
+@media screen and (max-width: 574px) {
+    div.registration-container{
+        min-width: calc(100vw - 108px);
+        width: 100%;
     }
 }

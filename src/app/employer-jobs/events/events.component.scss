@@ -1,0 +1,28 @@
+@import 'variables.scss';
+@import 'mixins.scss';
+@import 'page-with-side-menu.scss';
+@import 'form.scss';
+@import 'search-form.scss';
+
+
+.custom-margin{
+    margin-top: 20px;
+}
+
+.input-width{
+    width: 300px;
+    padding: 15px 25px;
+}
+
+.custom-width{
+    width: max-content;
+}
+
+.users-input-width{
+    width: 500px;
+    padding: 15px 25px;
+}
+
+.dropdown-width{
+    max-width: 450px;
+}

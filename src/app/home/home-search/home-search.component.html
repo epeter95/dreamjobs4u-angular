@@ -14,8 +14,8 @@
                         [placeholder]="categoriesDropDown.placeholder" [formControlName]="categoriesDropDown.key"
                         [ngClass]="isCategoryDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
                         <span [ngClass]="isCategoryDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
-                    <div #categoryContainer class="categories-dropdown-container" *ngIf="isCategoryDropdownOpen">
-                        <div (click)="setSelectedCategory(category)" class="dropdown-category" *ngFor="let category of categories">
+                    <div #categoryContainer class="search-dropdown-container" *ngIf="isCategoryDropdownOpen">
+                        <div (click)="setSelectedCategory(category)" class="search-dropdown-element" *ngFor="let category of categories">
                             <ng-container *ngIf="category.selectedTranslation">
                                 {{category.selectedTranslation.text}}
                             </ng-container>

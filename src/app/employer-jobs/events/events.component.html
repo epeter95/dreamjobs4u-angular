@@ -1,1 +1,31 @@
-<p>events works!</p>
+<div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
+    <div class="side-menu-router-outlet-title">{{eventsTitleText}}</div>
+    <div class="side-menu-regular-medium-text custom-margin">Esemény létrehozása</div>
+    <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
+        <div class="search-inputs-container">
+            <div class="search-select-dropdown custom-width">
+                <input #jobsButton readonly [id]="jobsDropDown.key" (click)="openJobs()"
+                    [placeholder]="jobsDropDown.placeholder" [formControlName]="jobsDropDown.key"
+                    [ngClass]="isJobsDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
+                    <span [ngClass]="isJobsDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                <div #jobsContainer class="search-dropdown-container dropdown-width" *ngIf="isJobsDropdownOpen">
+                    <div (click)="setSelectedJob(job)" class="search-dropdown-element" *ngFor="let job of jobs">
+                        {{job.companyName}}
+                    </div>
+                </div>
+            </div>
+            <div class="search-select-dropdown custom-width" *ngIf="users.length > 0">
+                <input #appliedUserButton readonly [id]="usersDropDown.key" (click)="openUsers()"
+                    [placeholder]="usersDropDown.placeholder" [formControlName]="usersDropDown.key"
+                    [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input users-input-width">
+                    <span [ngClass]="isUsersDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                <div #appliedUserContainer class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
+                    <div (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element" [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.firstName+' '+appliedUser.User.lastName) ? 'dropdown-element-active' : ''" *ngFor="let appliedUser of users">
+                        {{appliedUser.User.firstName}} {{appliedUser.User.lastName}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="submit-button">Mentés</button>
+    </form>
+</div>

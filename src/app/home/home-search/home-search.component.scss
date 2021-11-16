@@ -40,12 +40,6 @@
     @include flex-container(space-between,center,20px);
 }
 
-.search-inputs-container{
-    @include flex-container(space-between,center,20px);
-    flex-flow: wrap;
-}
-
-
 .little-button{
     padding: 22px 20px;
 }

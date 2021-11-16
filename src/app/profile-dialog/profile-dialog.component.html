@@ -4,9 +4,9 @@
         <img class="picture-container" *ngIf="data.Profile.profilePicture;else noProfilePic"
             [src]="data.Profile.profilePicture">
         <ng-template #noProfilePic>
-            <div class="picture-container no-picture"></div>
+            <div class="picture-container no-picture">{{data.lastName[0]}}{{data.firstName[0]}}</div>
         </ng-template>
-        <div class="user-name side-menu-title">{{data.firstName}} {{data.lastName}}</div>
+        <div class="user-name side-menu-title">{{data.lastName}} {{data.firstName}}</div>
         <div class="info-container">
             <div class="info-title side-menu-regular-text bold-style">{{emailLabelText}}</div>
             <div class="info-value side-menu-regular-text">{{data.email}}</div>

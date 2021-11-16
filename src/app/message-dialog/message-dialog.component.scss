@@ -4,7 +4,7 @@
 @import 'form.scss';
 
 .message-dialog-container{
-    padding: 0 36px 16px 36px;
+    padding: 16px 36px;
     max-width: 400px;
     position: relative;
 }
@@ -31,6 +31,10 @@
     column-gap: 20px;
     justify-content: space-between;
     margin: auto;
+}
+
+.submit-button{
+    margin-top: 20px;
 }
 
 @media screen and (max-width: $mobile-width) {

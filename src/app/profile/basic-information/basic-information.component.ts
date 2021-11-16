@@ -133,6 +133,8 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
     }
     if (this.cvChanging) {
       profileFormData.append('cvPath', this.fileData);
+    }else{
+      profileFormData.append('cvPath', '');
     }
     forkJoin([
       this.dataService.httpPostMethod('/api/users/public/modifyUserData', userResult, this.dataService.getAuthHeader()),

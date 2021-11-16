@@ -1,7 +1,7 @@
 <div id="sweetjobs-profile-basic-info" class="side-menu-router-outlet-container" *ngIf="pageLoaded| async">
     <div class="side-menu-router-outlet-title applied-jobs-title">{{appliedJobsTitleText}}</div>
     <div class="side-menu-subtitle applied-jobs-subtitle">{{appliedJobsSubtitleText}}</div>
-    <div class="job-wrapper">
+    <div class="job-wrapper" *ngIf="appliedJobs.length > 0">
         <div class="job" *ngFor=" let element of appliedJobs">
             <a class="link-to-job-container" [routerLink]="'/kategoria/'+element.Job.categoryId+'/allas/'+element.Job.id">
                 <img class="job-image" [src]="element.Job.logoUrl">

@@ -26,7 +26,6 @@ export class AppliedJobsComponent implements OnInit, OnDestroy {
     ]).subscribe(res=>{
       this.publicContents = res[0];
       this.appliedJobs = res[1];
-      console.log(this.appliedJobs);
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(lang){
           this.appliedJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileAppliedJobTitleText', 'PublicContentTranslations');

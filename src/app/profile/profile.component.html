@@ -1,5 +1,5 @@
-<div id="profile-container" class="page-container-with-side-menu">
-    <div *ngIf="isMobile">
+<div id="profile-container" class="page-container-with-side-menu" *ngIf="pageLoaded| async">
+    <ng-container *ngIf="isMobile">
         <div class="no-profile-picture">
             <img class="profile-picture" *ngIf="imageUrl; else noProfilePic"
                 [src]="imageUrl | sanitizer: 'resourceUrl'">
@@ -13,15 +13,13 @@
             <mat-icon color="primary" class="delete-profile-pic" (click)="removeProfilePicture()">remove_circle_outline
             </mat-icon>
         </div>
-    </div>
-    <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()" class="save-profilepic-button">Mentés</button>
-    <div class="side-menu-title mobile-title">{{profileData.firstName}} {{profileData.lastName}}</div>
-    <div class="profile-job-title mobile-subtitle">{{profileData.Profile.jobTitle}}</div>
-    <div class="profile-menus">
-        <button *ngIf="isProfilePicChanging && !isMobile" (click)="saveProfilePicture()"
+        <button *ngIf="isProfilePicChanging" (click)="saveProfilePicture()"
             class="save-profilepic-button">Mentés</button>
-
-        <div class="side-menu-container" *ngIf="pageLoaded |async">
+        <div class="side-menu-title mobile-title">{{profileData.firstName}} {{profileData.lastName}}</div>
+        <div class="profile-job-title mobile-subtitle">{{profileData.Profile.jobTitle}}</div>
+    </ng-container>
+    <div class="page-container-with-side-menu">
+        <div class="side-menu-container">
             <div class="no-profile-picture">
                 <img class="profile-picture" *ngIf="imageUrl; else noProfilePic"
                     [src]="imageUrl | sanitizer: 'resourceUrl'">
@@ -58,3 +56,4 @@
         </div>
         <router-outlet></router-outlet>
     </div>
+</div>

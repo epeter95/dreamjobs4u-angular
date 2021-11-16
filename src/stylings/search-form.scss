@@ -21,6 +21,7 @@
 .search-inputs-container{
     @include flex-container(space-between,center,20px);
     flex-flow: wrap;
+    gap: 20px;
 }
 
 .search-input-focused, .search-input:hover{

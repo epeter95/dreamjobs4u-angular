@@ -48,7 +48,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     let name = user.User.firstName + ' ' + user.User.lastName;
     let currentValue = this.eventForm.controls.eventUsers.value.toString();
     let tmpValue = currentValue.split(', ');
-    console.log(tmpValue);
     if(currentValue.includes(name)){
       currentValue = currentValue.replace(name,'')
     }else{

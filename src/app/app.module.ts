@@ -37,6 +37,7 @@ import { JobsComponent } from './jobs/jobs.component';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { AnswerToAppliedUserDialogComponent } from './employer-jobs/my-jobs/answer-to-applied-user-dialog/answer-to-applied-user-dialog.component';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
+import { EventsComponent } from './employer-jobs/events/events.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.compon
     JobsComponent,
     ProfileDialogComponent,
     AnswerToAppliedUserDialogComponent,
-    AppliedJobsComponent
+    AppliedJobsComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,

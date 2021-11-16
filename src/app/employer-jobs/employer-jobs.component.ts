@@ -16,6 +16,7 @@ export class EmployerJobsComponent implements OnInit, OnDestroy {
   myJobsTitleText: string = '';
   creatingJobTitleText: string = '';
   modifyJobTitleText: string = '';
+  eventsTitleText: string = '';
 
   constructor(private dataService: DataService, private languageService: LanguageService) { }
 
@@ -27,6 +28,7 @@ export class EmployerJobsComponent implements OnInit, OnDestroy {
           this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');
           this.creatingJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
           this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
+          this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventsTitle', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });

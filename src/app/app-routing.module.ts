@@ -18,6 +18,7 @@ import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { EmployeeRoleGuard } from './authentication/employee-role.guard';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
+import { EventsComponent } from './employer-jobs/events/events.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -32,6 +33,7 @@ const routes: Routes = [
     children: [
       { path: 'letrehozas', component: JobHandleComponent, pathMatch: 'full' },
       { path: 'modositas', component: JobHandleComponent, pathMatch: 'full' },
+      { path: 'esemenyek', component: EventsComponent, pathMatch: 'full' },
       { path: '', component: MyJobsComponent, pathMatch: 'full' },
     ]
   },

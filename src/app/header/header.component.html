@@ -76,14 +76,17 @@
                                 [ngClass]="isMyJobsMobileMenuOpen ? 'menu-arrow-up' : 'menu-arrow-down'"></span></a>
                         <div class="mobile-submenu" *ngIf="isMyJobsMobileMenuOpen">
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
-                                routerLinkActive="active-navigation-link"
-                                [routerLinkActiveOptions]="{ exact: true }" routerLink="/hirdeteseim">Hirdetéseim</a>
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/hirdeteseim">{{myJobsTitleText}}</a>
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/hirdeteseim/letrehozas">Állás létrehozása</a>
+                                routerLink="/hirdeteseim/letrehozas">{{createJobTitleText}}</a>
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/hirdeteseim/modositas">Állás módosítása</a>
+                                routerLink="/hirdeteseim/modositas">{{modifyJobTitleText}}</a>
+                            <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/hirdeteseim/esemenyek">{{eventsTitleText}}</a>
                         </div>
                     </div>
                     <a (click)="isMobileMenuOpen=false" class="navigation-link"
@@ -100,21 +103,20 @@
                             class="navigation-link">{{profileText}}<span class="menu-arrow-down"></span></a>
                         <div class="mobile-submenu" *ngIf="isProfileMobileMenuOpen">
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
-                                routerLinkActive="active-navigation-link"
-                                [routerLinkActiveOptions]="{ exact: true }" routerLink="/profil">Általános
-                                információk</a>
+                                routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
+                                routerLink="/profil">{{generalInfoTitleText}}</a>
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/profil/elerhetoseg">Elérhetőségi információk</a>
+                                routerLink="/profil/elerhetoseg">{{contactInfoTitleText}}</a>
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/profil/jelszo-valtoztatas">Jelszó változtatás</a>
+                                routerLink="/profil/jelszo-valtoztatas">{{changePasswordTitleText}}</a>
                             <a (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/profil/preferalt-kategoriak">Preferált kategóriák</a>
+                                routerLink="/profil/preferalt-kategoriak">{{preferredCategoriesTitleText}}</a>
                             <a *ngIf="isEmployee" (click)="isMobileMenuOpen=false" class="navigation-link sub-menu-link"
                                 routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{ exact: true }"
-                                routerLink="/profil/jelentkezett-allasok">Jelentkezett állások</a>
+                                routerLink="/profil/jelentkezett-allasok">{{appliedJobsTitleText}}</a>
                         </div>
                     </div>
                     <ng-container *ngIf="userLoggedIn;else mobileNotLoggedIn">

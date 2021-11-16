@@ -47,12 +47,23 @@ export class HeaderComponent implements OnInit {
   activeLanguageKey: string = '';
   pageLoaded!: Promise<boolean>;
   publicContents: PublicContent[] = new Array();
+  employerJobsPublicContents: PublicContent[] = new Array();
+  profilesPublicContents: PublicContent[] = new Array();
   categoryText: string = '';
   contactText: string = '';
   isMobile: boolean = false;
   isMobileMenuOpen: boolean = false;
   isMyJobsMobileMenuOpen: boolean = false;
   isProfileMobileMenuOpen: boolean = false;
+  createJobTitleText: string = '';
+  modifyJobTitleText: string = '';
+  eventsTitleText: string = '';
+  myJobsTitleText: string = '';
+  generalInfoTitleText: string = '';
+  contactInfoTitleText: string = '';
+  preferredCategoriesTitleText: string = '';
+  appliedJobsTitleText: string = '';
+  changePasswordTitleText: string = '';
 
   @ViewChild('userButton') userButton!: ElementRef;
   @ViewChild('userContainer') userContainer!: ElementRef;
@@ -133,10 +144,14 @@ export class HeaderComponent implements OnInit {
     }
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/navbar/public'),
-      this.dataService.getAllData('/api/languages/public')
+      this.dataService.getAllData('/api/languages/public'),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.publicContents = res[0];
       this.languages = res[1];
+      this.profilesPublicContents = res[2];
+      this.employerJobsPublicContents = res[3];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if (lang) {
           this.jobsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarJobsText', 'PublicContentTranslations');
@@ -157,6 +172,17 @@ export class HeaderComponent implements OnInit {
             return element;
           });
           this.activeLanguageKey = this.languageService.getLangauge()!;
+          this.generalInfoTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+          this.contactInfoTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileContactTitle', 'PublicContentTranslations');
+          this.preferredCategoriesTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
+          this.changePasswordTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
+          this.appliedJobsTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileAppliedJobsTitle', 'PublicContentTranslations');
+          
+          this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');
+          this.createJobTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
+          this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
+          this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'employerJobsEventsTitle', 'PublicContentTranslations');
+          
           this.pageLoaded = Promise.resolve(true);
         }
       });

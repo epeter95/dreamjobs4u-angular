@@ -1,6 +1,6 @@
 <div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{eventsTitleText}}</div>
-    <div class="side-menu-regular-medium-text custom-margin">Esemény létrehozása</div>
+    <div class="side-menu-regular-medium-text custom-margin">{{createEventTitleText}}</div>
     <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
         <div class="search-inputs-container">
             <div class="search-select-dropdown custom-width">
@@ -19,13 +19,13 @@
                     [placeholder]="usersDropDown.placeholder" [formControlName]="usersDropDown.key"
                     [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input users-input-width">
                     <span [ngClass]="isUsersDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
-                <div #appliedUserContainer class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
-                    <div (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element" [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.firstName+' '+appliedUser.User.lastName) ? 'dropdown-element-active' : ''" *ngFor="let appliedUser of users">
-                        {{appliedUser.User.firstName}} {{appliedUser.User.lastName}}
+                <div class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
+                    <div #appliedUserContainer (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element" [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.lastName+' '+appliedUser.User.firstName) ? 'dropdown-element-active' : ''" *ngFor="let appliedUser of users">
+                        {{appliedUser.User.lastName}} {{appliedUser.User.firstName}}
                     </div>
                 </div>
             </div>
         </div>
-        <button class="submit-button">Mentés</button>
+        <button class="submit-button">{{submitButtonText}}</button>
     </form>
 </div>

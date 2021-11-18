@@ -204,7 +204,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.deleteMessageSubscription = ref.afterClosed().subscribe(()=>{
       if(ref.componentInstance.actionNeeded){
         this.dataService.httpDeleteMethod('/api/events/public/delete',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
-          console.log(res);
           if(!res.error){
             this.initData();
           }

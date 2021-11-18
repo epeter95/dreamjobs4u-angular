@@ -2,10 +2,10 @@ import { Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChi
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Subscription } from 'rxjs';
+import { VideoEvent } from 'src/app/interfaces/event';
 import { FormElement } from 'src/app/interfaces/form-element';
 import { AppliedUser, Job } from 'src/app/interfaces/job';
 import { PublicContent } from 'src/app/interfaces/public-contents';
-import { UserProfileData } from 'src/app/interfaces/user-data';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
@@ -22,23 +22,39 @@ export class EventsComponent implements OnInit, OnDestroy {
   jobsDropDown: FormElement = {
     key: 'eventJob', placeholder: '', focus: false,
   };
+  eventDateTerm: FormElement = {
+    key: 'eventStartDate', placeholder: '', focus: false,
+  };
 
   isUsersDropdownOpen: boolean = false;
   isJobsDropdownOpen: boolean = false;
   pageLoaded!: Promise<boolean>;
   languageSubscription: Subscription = new Subscription();
   messageDialogSubscription: Subscription = new Subscription();
+  deleteMessageSubscription: Subscription = new Subscription();
   publicContents: PublicContent[] =  new Array();
   eventsTitleText: string = '';
   createEventTitleText: string = '';
+  deleteEventWarningText: string = '';
   eventSuccessfullyCreatedText: string = '';
   submitButtonText: string = '';
   jobs: Job[] = new Array();
   users: AppliedUser[] = new Array();
+  date: Date = new Date();
+  mandatoryDatumtext: string = '';
+  formErrorText: string = '';
+  eventPeopleText: string = '';
+  tmpStartDateVal = this.date.getFullYear()+'.'+String(this.date.getMonth() + 1).padStart(2, '0')+ '.' + String(this.date.getDate()).padStart(2, '0') + '.-'+ String(this.date.getHours()).padStart(2, '0') + ':' + String(this.date.getMinutes()).padStart(2, '0');
   eventForm: FormGroup = new FormGroup({
     eventJob: new FormControl('', Validators.required),
-    eventUsers: new FormControl('', Validators.required)
+    eventUsers: new FormControl('', Validators.required),
+    eventStartDate: new FormControl(
+      this.tmpStartDateVal, Validators.compose([
+        Validators.required, Validators.pattern('202[0-9].[0-1][0-9].[0-3][0-9].-[0-2][0-9][:][0-5][0-9]')
+      ]))
   });
+  
+  events: VideoEvent[] = new Array();
 
   @ViewChild('appliedUserButton') appliedUserButton!:ElementRef;
   @ViewChildren('appliedUserContainer') appliedUserContainer!:QueryList<any>;
@@ -75,6 +91,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
     this.messageDialogSubscription.unsubscribe();
+    this.deleteMessageSubscription.unsubscribe();
   }
 
   initData(){
@@ -85,16 +102,24 @@ export class EventsComponent implements OnInit, OnDestroy {
     ]).subscribe(res=>{
       this.publicContents = res[0];
       this.jobs = res[1];
-      console.log(res[2]);
+      this.events = res[2];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(lang){
           this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventsPageTitle','PublicContentTranslations');
           this.createEventTitleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsCreateEventText','PublicContentTranslations');
           this.eventSuccessfullyCreatedText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsSuccesfullyCreateEventText','PublicContentTranslations');
           this.submitButtonText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventCreateButtonText','PublicContentTranslations');
+          this.mandatoryDatumtext = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsMandatoryDateFormatText','PublicContentTranslations');
+          this.deleteEventWarningText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventDeleteWarningText','PublicContentTranslations');
+          this.eventPeopleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventPeopleText','PublicContentTranslations'); 
+          this.formErrorText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventWrongFormFormatText','PublicContentTranslations'); 
+          
           this.jobsDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventJobsPlaceholderText','PublicContentTranslations');
           this.usersDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventUsersPlaceholderText','PublicContentTranslations');
-          
+          this.events = this.events.map(element=>{
+            element.Job.selectedTranslation = this.languageService.getTranslation(lang, element.Job.JobTranslations);
+            return element;
+          })
           this.pageLoaded = Promise.resolve(true);
         }
       });
@@ -132,6 +157,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   createEvent(){
+    console.log(this.eventForm.valid);
     if(this.eventForm.valid){
       const job = this.jobs.find(element=>element.companyName == this.eventForm.controls.eventJob.value);
       const userNames = this.eventForm.controls.eventUsers.value.split(', ');
@@ -144,7 +170,8 @@ export class EventsComponent implements OnInit, OnDestroy {
       }
       const result = {
         jobId: job?.id,
-        users: userIds
+        users: userIds,
+        startDate: this.eventForm.controls.eventStartDate.value
       }
       this.dataService.httpPostMethod('/api/events/public/createEvent', result, this.dataService.getAuthHeader()).subscribe(res=>{
         console.log(res);
@@ -159,7 +186,32 @@ export class EventsComponent implements OnInit, OnDestroy {
           });
         }
       });
+    }else{
+      this.dialog.open(MessageDialogComponent,{
+        data: {icon: 'warning', text: this.formErrorText},
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
     }
+  }
+
+  deleteEvent(id: number){
+    const ref = this.dialog.open(MessageDialogComponent,{
+      data: {id: 'warning', text: this.deleteEventWarningText, cancel: true},
+      backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+      disableClose: true
+    });
+    this.deleteMessageSubscription = ref.afterClosed().subscribe(()=>{
+      if(ref.componentInstance.actionNeeded){
+        this.dataService.httpDeleteMethod('/api/events/public/delete',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
+          console.log(res);
+          if(!res.error){
+            this.initData();
+          }
+        });
+      }
+    })
+   
   }
 
   openJobs(){

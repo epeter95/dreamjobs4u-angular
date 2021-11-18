@@ -1,26 +1,36 @@
 <div id="my-jobs" class="side-menu-router-outlet-container" *ngIf="pageLoaded | async">
     <div class="side-menu-router-outlet-title">{{eventsTitleText}}</div>
-    <div class="side-menu-regular-medium-text custom-margin">{{createEventTitleText}}</div>
+    <div class="side-menu-regular-medium-text custom-margin">{{createEventTitleText}}
+        <div class="start-date-title regular-text">{{mandatoryDatumtext}}</div>
+    </div>
     <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
         <div class="search-inputs-container">
             <div class="search-select-dropdown custom-width">
                 <input #jobsButton readonly [id]="jobsDropDown.key" (click)="openJobs()"
                     [placeholder]="jobsDropDown.placeholder" [formControlName]="jobsDropDown.key"
-                    [ngClass]="isJobsDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input input-width">
-                    <span [ngClass]="isJobsDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                    [ngClass]="isJobsDropdownOpen ? 'search-input-focused': 'search-input'"
+                    class="dropdown-input input-width">
+                <span [ngClass]="isJobsDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
                 <div #jobsContainer class="search-dropdown-container dropdown-width" *ngIf="isJobsDropdownOpen">
                     <div (click)="setSelectedJob(job)" class="search-dropdown-element" *ngFor="let job of jobs">
                         {{job.companyName}}
                     </div>
                 </div>
             </div>
+            <input [id]="eventDateTerm.key" [type]="eventDateTerm.type!" (focus)="eventDateTerm.focus = true"
+                (focusout)="eventDateTerm.focus = false" [placeholder]="eventDateTerm.placeholder"
+                [formControlName]="eventDateTerm.key"
+                [ngClass]="eventDateTerm.focus ? 'search-input-focused': 'search-input'" class="search-input-width">
             <div class="search-select-dropdown custom-width" *ngIf="users.length > 0">
                 <input #appliedUserButton readonly [id]="usersDropDown.key" (click)="openUsers()"
                     [placeholder]="usersDropDown.placeholder" [formControlName]="usersDropDown.key"
-                    [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'" class="dropdown-input users-input-width">
-                    <span [ngClass]="isUsersDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
+                    [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'"
+                    class="dropdown-input users-input-width">
+                <span [ngClass]="isUsersDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
                 <div class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
-                    <div #appliedUserContainer (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element" [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.lastName+' '+appliedUser.User.firstName) ? 'dropdown-element-active' : ''" *ngFor="let appliedUser of users">
+                    <div #appliedUserContainer (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element"
+                        [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.lastName+' '+appliedUser.User.firstName) ? 'dropdown-element-active' : ''"
+                        *ngFor="let appliedUser of users">
                         {{appliedUser.User.lastName}} {{appliedUser.User.firstName}}
                     </div>
                 </div>
@@ -28,4 +38,22 @@
         </div>
         <button class="submit-button">{{submitButtonText}}</button>
     </form>
+    <div *ngFor="let event of events" class="event" >
+        <div class="close-button delete-event-button" (click)="deleteEvent(event.id)">X</div>
+        <a [routerLink]="'/esemeny/'+event.link" class="side-menu-regular-text bold-style event-title">{{event.Job.selectedTranslation.title}}</a>
+        <div class="regular-text">Résztvevők:</div>
+        <div class="applied-users-container">
+            <div class="applied-user" *ngFor="let user of event.Users">
+                <div class="applied-user-info">
+                    <img class="picture-img no-image" *ngIf="user.Profile.profilePicture;else noProfilePicture"
+                        [src]="user.Profile.profilePicture">
+                    <ng-template #noProfilePicture>
+                        <div class="picture-img">{{user.lastName[0]}}{{user.firstName[0]}}</div>
+                    </ng-template>
+                    <div class="side-menu-regular-text">{{user.firstName}} {{user.lastName}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="event-date">{{event.startDate | date: 'YYYY.MM.dd. HH:mm'}}</div>
+    </div>
 </div>

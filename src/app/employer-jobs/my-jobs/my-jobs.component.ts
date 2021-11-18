@@ -30,6 +30,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   succesfulAnswerText: string = '';
   deleteJobWarningText: string = '';
   userAppliedToJobText: string = '';
+  deleteMessageSubscription: Subscription = new Subscription();
   constructor(private dataService: DataService, private languageService: LanguageService,
     public dialog: MatDialog) { }
 
@@ -72,6 +73,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
     this.messageDialogSubscription.unsubscribe();
+    this.deleteMessageSubscription.unsubscribe();
   }
 
   openAppliedUsers(job: MyJob){
@@ -86,7 +88,7 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    ref.afterClosed().subscribe(()=>{
+    this.deleteMessageSubscription = ref.afterClosed().subscribe(()=>{
       if(ref.componentInstance.actionNeeded){
         this.dataService.httpDeleteMethod('/api/jobs/public/deleteJob',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
           if(!res['error']){

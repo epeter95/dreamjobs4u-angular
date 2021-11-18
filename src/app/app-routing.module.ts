@@ -19,6 +19,7 @@ import { JobsComponent } from './jobs/jobs.component';
 import { EmployeeRoleGuard } from './authentication/employee-role.guard';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
 import { EventsComponent } from './employer-jobs/events/events.component';
+import { VideoEventComponent } from './video-event/video-event.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'kapcsolat', component: ContactComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId', component: CategoryComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId/allas/:jobId', component: JobComponent, pathMatch: 'full' },
+  { path: 'video-esemeny/:id', component: VideoEventComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {
     path: 'hirdeteseim', component: EmployerJobsComponent,
     canActivate: [AuthGuard, EmployerRoleGuard], canActivateChild: [AuthGuard, EmployerRoleGuard],

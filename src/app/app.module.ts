@@ -34,10 +34,16 @@ import { CategoryComponent } from './category/category.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { AnswerToAppliedUserDialogComponent } from './employer-jobs/my-jobs/answer-to-applied-user-dialog/answer-to-applied-user-dialog.component';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
 import { EventsComponent } from './employer-jobs/events/events.component';
+import { VideoEventComponent } from './video-event/video-event.component';
+import { CallInfoDialogComponent } from './video-event/call-info-dialog/call-info-dialog.component';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -70,7 +76,9 @@ import { EventsComponent } from './employer-jobs/events/events.component';
     ProfileDialogComponent,
     AnswerToAppliedUserDialogComponent,
     AppliedJobsComponent,
-    EventsComponent
+    EventsComponent,
+    VideoEventComponent,
+    CallInfoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +89,11 @@ import { EventsComponent } from './employer-jobs/events/events.component';
     HttpClientModule,
 
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    ClipboardModule,
+    MatSnackBarModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

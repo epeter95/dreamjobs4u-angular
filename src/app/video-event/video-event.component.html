@@ -1,0 +1,11 @@
+<div id="video-event" class="event-wrapper" *ngIf="pageLoaded | async">
+    <div class="event-buttons">
+        <button *ngIf="isUserOwner" (click)="startVideo()" class="submit-button event-button" [ngClass]="callStarted ? 'button-disabled': ''" [disabled]="callStarted">Hívás indítása</button>
+        <button class="submit-button event-button" [ngClass]="inCall ? 'button-disabled': ''"  [disabled]="inCall">Csatlakozás a híváshoz</button>
+        <button class="submit-button event-button" [ngClass]="!inCall ? 'button-disabled': ''" [disabled]="!inCall">Kilépés a hívásból</button>
+    </div>
+    <div id="video-wrapper">
+      <video #remoteVideo id="remote-video" poster="/assets/images/video-placeholder.jpg" autoplay playsinline></video>
+      <video #localVideo id="local-video" autoplay playsinline [muted]=true></video>
+    </div>
+</div>

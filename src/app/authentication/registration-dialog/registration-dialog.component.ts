@@ -49,8 +49,8 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
     { key: 'regFirstName', placeholder: '', focus: false },
     { key: 'regLastName', placeholder: '', focus: false },
     { key: 'regEmail', placeholder: '', focus: false },
-    { key: 'regConfirmPassword', placeholder: '', focus: false, type: "password"},
-    { key: 'regPassword', placeholder: '', focus: false , type: "password"}
+    { key: 'regPassword', placeholder: '', focus: false , type: "password"},
+    { key: 'regConfirmPassword', placeholder: '', focus: false, type: "password"}
   ]
 
   registrationForm: FormGroup = new FormGroup({

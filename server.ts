@@ -1,14 +1,20 @@
 //Install express server
+
+function requireHTTPS(req: any, res: any, next: any) {
+    // The 'x-forwarded-proto' check is for Heroku
+    if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
+        return res.redirect('https://' + req.get('host') + req.url);
+    }
+    next();
+}
 const express = require('express');
-const path = require('path');
-
 const app = express();
-
+app.use(requireHTTPS);
 // Serve only the static files form the dist directory
-app.use(express.static('./dist/frontend'));
+app.use(express.static('./dist/sweetjobs-frontend-public'));
 
 app.get('/*', function(req: any, res: any) {
-  res.sendFile('index.html', {root: 'dist/sweetjobs-frontend-public/'}
+  res.sendFile('index.html', {root: './dist/sweetjobs-frontend-public/'}
   );
 });
 

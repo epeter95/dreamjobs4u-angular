@@ -52,7 +52,7 @@ export class JobComponent implements OnInit, OnDestroy {
     this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
     this.activatedRoute.paramMap.subscribe(params => {
       let id = params.get('jobId');
-      this.fbUrl = 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURIComponent(environment.apiDomain + '/api/facebook/' + id) + '&layout=button_count&size=small&width=100&height=20&appId';
+      this.fbUrl = 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURIComponent(environment.apiDomain + '/api/jobs/facebook/' + id) + '&layout=button_count&size=small&width=100&height=20&appId';
       forkJoin([
         this.dataService.getOneData('/api/jobs/public/getJobById/' + id),
         this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public'),

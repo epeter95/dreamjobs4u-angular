@@ -37,35 +37,37 @@ export class JobComponent implements OnInit, OnDestroy {
   userSuccessfullyRemovedFromJobText: string = '';
   successfulApplyToJobText: string = '';
   isUserAlreadyAppliedToJob: string = '';
+  fbUrl: string = 'https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button_count&size=small&width=95&height=20&appId';
 
 
   constructor(private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    private languageService: LanguageService, 
+    private languageService: LanguageService,
     private roleService: RoleService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
     this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
-    this.activatedRoute.paramMap.subscribe(params=>{
+    this.activatedRoute.paramMap.subscribe(params => {
       let id = params.get('jobId');
+      this.fbUrl = 'https://www.facebook.com/plugins/share_button.php?href=' + encodeURIComponent(window.location.origin + '/api/facebook/' + id) + '&layout=button_count&size=small&width=100&height=20&appId';
       forkJoin([
-        this.dataService.getOneData('/api/jobs/public/getJobById/'+id),
+        this.dataService.getOneData('/api/jobs/public/getJobById/' + id),
         this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobPage/public'),
         this.dataService.getAllData('/api/generalMessages/public'),
         this.dataService.getAllData('/api/errorMessages/public'),
-        this.dataService.getOneData('/api/jobs/public/isUserAppliedToJob/'+id,this.dataService.getAuthHeader())
-      ]).subscribe(res=>{
+        this.dataService.getOneData('/api/jobs/public/isUserAppliedToJob/' + id, this.dataService.getAuthHeader())
+      ]).subscribe(res => {
         this.job = res[0];
         this.publicContents = res[1];
         this.generalMessages = res[2];
         this.errorMessages = res[3];
         this.isUserAlreadyAppliedToJob = res[4].exist ? 'exist' : 'notExist';
-        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-          if(lang){
-            this.job.selectedTranslation = this.languageService.getTranslation(lang,this.job.JobTranslations);
-  
+        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+          if (lang) {
+            this.job.selectedTranslation = this.languageService.getTranslation(lang, this.job.JobTranslations);
+
             this.aboutUsText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageAboutCompanyText', 'PublicContentTranslations');
             this.jobDescriptionText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageAboutJobText', 'PublicContentTranslations');
             this.paymentText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPagePayment', 'PublicContentTranslations');
@@ -76,11 +78,11 @@ export class JobComponent implements OnInit, OnDestroy {
             this.applyJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
             this.jobOverviewText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageJobOverviewText', 'PublicContentTranslations');
             this.applyJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobPageApplyToJobButton', 'PublicContentTranslations');
-            
-            this.successfulApplyToJobText = this.languageService.getTranslationByKey(lang,this.generalMessages,'text','successfulApplyToJobText', 'GeneralMessageTranslations');
 
-            this.userSuccessfullyRemovedFromJobText = this.languageService.getTranslationByKey(lang,this.generalMessages,'text','userSuccessfullyRemovedFromJobText', 'GeneralMessageTranslations');
-            
+            this.successfulApplyToJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulApplyToJobText', 'GeneralMessageTranslations');
+
+            this.userSuccessfullyRemovedFromJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'userSuccessfullyRemovedFromJobText', 'GeneralMessageTranslations');
+
             this.pageLoaded = Promise.resolve(true);
           }
         });
@@ -88,14 +90,14 @@ export class JobComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
 
-  applyToJob(){
-    this.dataService.httpPostMethod('/api/jobs/public/userApplyToJob', {jobId: this.job.id}, this.dataService.getAuthHeader()).subscribe(res=>{
+  applyToJob() {
+    this.dataService.httpPostMethod('/api/jobs/public/userApplyToJob', { jobId: this.job.id }, this.dataService.getAuthHeader()).subscribe(res => {
       this.dialog.open(MessageDialogComponent, {
-        data: {icon: 'done', text: this.successfulApplyToJobText},
+        data: { icon: 'done', text: this.successfulApplyToJobText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });
@@ -103,10 +105,10 @@ export class JobComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeFromJob(){
-    this.dataService.httpPostMethod('/api/jobs/public/userRemoveFromJob', {jobId: this.job.id}, this.dataService.getAuthHeader()).subscribe(res=>{
+  removeFromJob() {
+    this.dataService.httpPostMethod('/api/jobs/public/userRemoveFromJob', { jobId: this.job.id }, this.dataService.getAuthHeader()).subscribe(res => {
       this.dialog.open(MessageDialogComponent, {
-        data: {icon: 'done', text: this.userSuccessfullyRemovedFromJobText},
+        data: { icon: 'done', text: this.userSuccessfullyRemovedFromJobText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });

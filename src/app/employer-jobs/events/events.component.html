@@ -27,8 +27,8 @@
                     [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'"
                     class="dropdown-input users-input-width">
                 <span [ngClass]="isUsersDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
-                <div class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
-                    <div #appliedUserContainer (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element"
+                <div  #appliedUserContainer class="search-dropdown-container dropdown-width" *ngIf="isUsersDropdownOpen">
+                    <div (click)="setSelectedUsers(appliedUser)" class="search-dropdown-element"
                         [ngClass]="eventForm.controls.eventUsers.value.includes(appliedUser.User.lastName+' '+appliedUser.User.firstName) ? 'dropdown-element-active' : ''"
                         *ngFor="let appliedUser of users">
                         {{appliedUser.User.lastName}} {{appliedUser.User.firstName}}

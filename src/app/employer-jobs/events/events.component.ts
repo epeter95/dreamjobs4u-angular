@@ -57,7 +57,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   events: VideoEvent[] = new Array();
 
   @ViewChild('appliedUserButton') appliedUserButton!:ElementRef;
-  @ViewChildren('appliedUserContainer') appliedUserContainer!:QueryList<any>;
+  @ViewChildren('appliedUserContainer') appliedUserContainer!:ElementRef;
   @ViewChild('jobsButton') jobsButton!:ElementRef;
   @ViewChild('jobsContainer') jobsContainer!:ElementRef;
 
@@ -66,13 +66,19 @@ export class EventsComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     public dialog: MatDialog) {
     this.renderer.listen('window', 'click', (e: Event) => {
-      if (this.appliedUserButton && this.appliedUserContainer) {
-        if (e.target !== this.appliedUserButton.nativeElement) {
-          for(let i=0;i<this.appliedUserContainer.toArray().length;++i){
-            if(e.target !== this.appliedUserContainer.toArray()[i].nativeElement){
-              this.isUsersDropdownOpen = !this.isUsersDropdownOpen;
-            }
-          }
+      // if (this.appliedUserButton && this.appliedUserContainer) {
+      //   if (e.target !== this.appliedUserButton.nativeElement) {
+      //     for(let i=0;i<this.appliedUserContainer.toArray().length;++i){
+      //       if(e.target !== this.appliedUserContainer.toArray()[i].nativeElement){
+      //         this.isUsersDropdownOpen = !this.isUsersDropdownOpen;
+      //       }
+      //     }
+      //   }
+      // }
+
+      if(this.appliedUserButton && this.appliedUserContainer){
+        if (e.target !== this.appliedUserButton.nativeElement && e.target !== this.appliedUserContainer.nativeElement) {
+          this.isUsersDropdownOpen = false;
         }
       }
 
@@ -129,6 +135,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   setSelectedJob(job: Job){
     this.eventForm.controls.eventJob.setValue(job.companyName);
     this.isJobsDropdownOpen = false;
+    this.isUsersDropdownOpen = false;
     this.eventForm.controls.eventUsers.setValue('');
     this.dataService.getAllData('/api/jobs/public/getAppliedUsersByJobId/'+job.id, this.dataService.getAuthHeader()).subscribe(res=>{
       this.users = res;
@@ -137,23 +144,24 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   setSelectedUsers(user: AppliedUser){
     let name = user.User.lastName + ' ' + user.User.firstName;
-    let currentValue = this.eventForm.controls.eventUsers.value.toString();
-    let tmpValue = currentValue.split(', ');
-    if(currentValue.includes(name)){
-      currentValue = currentValue.replace(name,'')
-    }else{
-      if(tmpValue.length[0] != ''){
-        currentValue+=', '+name
-      }else{
-        currentValue+=name;
-      }
-    }
-    if(currentValue[0] == ','){
-      currentValue = currentValue.substr(2,currentValue.length-2);
-    }else if(currentValue[currentValue.length-2] == ','){
-      currentValue = currentValue.substr(0,currentValue.length-2);
-    }
-    this.eventForm.controls.eventUsers.setValue(currentValue);
+    // let currentValue = this.eventForm.controls.eventUsers.value.toString();
+    // let tmpValue = currentValue.split(', ');
+    // if(currentValue.includes(name)){
+    //   currentValue = currentValue.replace(name,'')
+    // }else{
+    //   if(tmpValue.length[0] != ''){
+    //     currentValue+=', '+name
+    //   }else{
+    //     currentValue+=name;
+    //   }
+    // }
+    // if(currentValue[0] == ','){
+    //   currentValue = currentValue.substr(2,currentValue.length-2);
+    // }else if(currentValue[currentValue.length-2] == ','){
+    //   currentValue = currentValue.substr(0,currentValue.length-2);
+    // }
+    // this.isUsersDropdownOpen = false;
+    this.eventForm.controls.eventUsers.setValue(name);
   }
 
   createEvent(){

@@ -40,7 +40,7 @@
     </form>
     <div *ngFor="let event of events" class="event" >
         <div class="close-button delete-event-button" (click)="deleteEvent(event.id)">X</div>
-        <a [routerLink]="'/video-esemeny/'+event.id" class="side-menu-regular-text bold-style event-title">{{event.Job.selectedTranslation.title}}</a>
+        <a [routerLink]="'/video-esemeny/'+event.link" class="side-menu-regular-text bold-style event-title">{{event.Job.selectedTranslation.title}}</a>
         <div class="regular-text">Résztvevők:</div>
         <div class="applied-users-container">
             <div class="applied-user" *ngFor="let user of event.Users">

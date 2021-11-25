@@ -83,7 +83,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
   showModal(joinCall: boolean): void {
     let dialogData: CallInfoDialogData = joinCall ? ({ peerId: '', joinCall: true }) : ({ peerId: this.peerId, joinCall: false });
     if (!joinCall) {
-      this.isCallInitialized = true;
+      this.isCallStarted$.subscribe(call=>{
+        if(call){
+          this.isCallInitialized = true;
+        }
+      });
     }
     const dialogRef = this.dialog.open(CallInfoDialogComponent, {
       data: dialogData

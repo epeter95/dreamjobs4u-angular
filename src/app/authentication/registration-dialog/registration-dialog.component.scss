@@ -25,6 +25,10 @@
     transition: color, background-color 0.2s ease-in-out;
 }
 
+.required-class{
+    color: red;
+}
+
 .role-element:hover{
     border: 2px solid $hover-button-color;
 }

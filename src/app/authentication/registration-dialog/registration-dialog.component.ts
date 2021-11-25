@@ -58,7 +58,8 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
     regLastName: new FormControl('', Validators.required),
     regEmail: new FormControl('', [Validators.required, Validators.email]),
     regConfirmPassword: new FormControl('', Validators.required),
-    regPassword: new FormControl('', Validators.required)
+    regPassword: new FormControl('', Validators.required),
+    privacy: new FormControl('', Validators.requiredTrue)
   });
 
   constructor(private dialogRef: MatDialogRef<RegistrationDialogComponent>,

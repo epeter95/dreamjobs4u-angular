@@ -25,6 +25,9 @@
             <div class="required-error-message" *ngIf="isUserClicked && registrationForm.controls[element.key].hasError('required')">{{element.placeholder}} {{requiredFieldErrorText}}</div>
             <div class="required-error-message" *ngIf="isUserClicked && registrationForm.controls[element.key].hasError('email')">{{wrongEmailFormatErrorText}}</div>
         </div>
+        <div>
+            <input formControlName="privacy" type="checkbox"><span [ngClass]="isUserClicked && registrationForm.controls['privacy'].hasError('required') ? 'required-class': ''" class="regular-text">Elfogadom az <a [ngClass]="isUserClicked && registrationForm.controls['privacy'].hasError('required') ? 'required-class': ''" href="http://moveinvest.hu/media/adatvedelmi-nyilatkozat-2018.pdf">Adatkezelési tájékoztatót</a></span>
+        </div>
         <button class="submit-button">{{sendButtonText}}</button>
     </form>
 </div>

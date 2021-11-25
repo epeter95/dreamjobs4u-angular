@@ -23,6 +23,7 @@ export class VideoEventComponent implements OnInit, OnDestroy {
   peerId: string = '';
   isCallStarted$!: Observable<boolean>;
   userId: number = 0;
+  isCallInitialized: boolean = false;
 
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
@@ -79,6 +80,9 @@ export class VideoEventComponent implements OnInit, OnDestroy {
 
   showModal(joinCall: boolean): void {
     let dialogData: CallInfoDialogData = joinCall ? ({ peerId: '', joinCall: true }) : ({ peerId: this.peerId, joinCall: false });
+    if(!joinCall){
+      this.isCallInitialized = true;
+    }
     const dialogRef = this.dialog.open(CallInfoDialogComponent, {
       data: dialogData
     });
@@ -103,6 +107,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
 
   endCall() {
     this.callService.closeMediaCall();
+  }
+
+  destroyCall(){
+    this.isCallInitialized = false;
+    this.callService.destroyPeer();
   }
 
 }

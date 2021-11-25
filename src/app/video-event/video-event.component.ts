@@ -77,29 +77,28 @@ export class VideoEventComponent implements OnInit, OnDestroy {
     this.callService.destroyPeer();
   }
 
-  startVideo() {
-    this.dialog.open(CallInfoDialogComponent, {
-      data: { peerId: this.peerId }
-    })
-  }
-
   showModal(joinCall: boolean): void {
     let dialogData: CallInfoDialogData = joinCall ? ({ peerId: '', joinCall: true }) : ({ peerId: this.peerId, joinCall: false });
     const dialogRef = this.dialog.open(CallInfoDialogComponent, {
       data: dialogData
     });
-
-    dialogRef.afterClosed().subscribe(()=>{
-      if(dialogData.joinCall){
-        of(this.callService.establishMediaCall(dialogData.peerId!))
-      }else{
-        of(this.callService.enableCallAnswer());
-        const userIds = this.event.Users.map(element=>element.id);
-        this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', {eventId: this.event.id,pwdId: this.peerId, users: userIds}, this.dataService.getAuthHeader()).subscribe(res=>{
-          console.log(res);
-        });
-      }
-    })
+    dialogRef.afterClosed().pipe(
+      switchMap(peerId => 
+        joinCall ? of(this.callService.establishMediaCall(peerId)) : of(this.callService.enableCallAnswer())
+      ),
+    )
+    .subscribe(_  => { });
+    // dialogRef.afterClosed().subscribe(()=>{
+    //   if(dialogData.joinCall){
+    //     of(this.callService.establishMediaCall(dialogData.peerId!))
+    //   }else{
+    //     of(this.callService.enableCallAnswer());
+    //     const userIds = this.event.Users.map(element=>element.id);
+    //     this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', {eventId: this.event.id,pwdId: this.peerId, users: userIds}, this.dataService.getAuthHeader()).subscribe(res=>{
+    //       console.log(res);
+    //     });
+    //   }
+    // })
   }
 
   endCall() {

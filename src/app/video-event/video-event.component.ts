@@ -54,6 +54,8 @@ export class VideoEventComponent implements OnInit, OnDestroy {
             }
             if (this.event.ownerId == this.userId) {
               this.isUserOwner = true;
+            }else{
+              this.isCallInitialized = true;
             }
             this.pageLoaded = Promise.resolve(true);
           });

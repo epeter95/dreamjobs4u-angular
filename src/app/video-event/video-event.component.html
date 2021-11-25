@@ -5,7 +5,7 @@
         <button *ngIf="!isUserOwner" (click)="endCall()" class="submit-button event-button" [ngClass]="!(isCallStarted$ | async) ? 'button-disabled': ''" [disabled]="!(isCallStarted$ | async)">Kilépés a hívásból</button>
         <button *ngIf="isUserOwner" (click)="destroyCall()" class="submit-button event-button" [ngClass]="!isCallInitialized ? 'button-disabled': ''" [disabled]="!isCallInitialized">Hívás befejezése</button>
     </div>
-    <div id="video-wrapper" *ngIf="isCallInitialized">
+    <div id="video-wrapper">
       <video #remoteVideo id="remote-video" poster="/assets/images/video-placeholder.jpg" autoplay playsinline></video>
       <video #localVideo id="local-video" autoplay playsinline [muted]="true"></video>
     </div>

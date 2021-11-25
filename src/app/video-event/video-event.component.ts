@@ -34,6 +34,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
     private router: Router,
     private callService: CallService) {
     this.isCallStarted$ = this.callService.isCallStarted$;
+    this.isCallStarted$.subscribe(call=>{
+      if(call){
+        this.isCallInitialized = true;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -82,21 +87,17 @@ export class VideoEventComponent implements OnInit, OnDestroy {
 
   showModal(joinCall: boolean): void {
     let dialogData: CallInfoDialogData = joinCall ? ({ peerId: '', joinCall: true }) : ({ peerId: this.peerId, joinCall: false });
-    if (!joinCall) {
-      this.isCallStarted$.subscribe(call=>{
-        if(call){
-          this.isCallInitialized = true;
-        }
-      });
-    }
     const dialogRef = this.dialog.open(CallInfoDialogComponent, {
       data: dialogData
     });
     dialogRef.afterClosed().pipe(
       switchMap(peerId => {
+        console.log(peerId);
+        console.log(joinCall);
         if (joinCall) {
           return of(this.callService.establishMediaCall(peerId))
         } else {
+          console.log("meghivta baszki")
           const userIds = this.event.Users.map(element => element.id);
           this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', { eventId: this.event.id, pwdId: this.peerId, users: userIds }, this.dataService.getAuthHeader()).subscribe(res => {
             console.log(res);

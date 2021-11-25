@@ -93,7 +93,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
       if(dialogData.joinCall){
         of(this.callService.establishMediaCall(dialogData.peerId!))
       }else{
-        of(this.callService.enableCallAnswer())
+        of(this.callService.enableCallAnswer());
+        const userIds = this.event.Users.map(element=>element.id);
+        this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', {eventId: this.event.id,pwdId: this.peerId, users: userIds}, this.dataService.getAuthHeader()).subscribe(res=>{
+          console.log(res);
+        });
       }
     })
   }

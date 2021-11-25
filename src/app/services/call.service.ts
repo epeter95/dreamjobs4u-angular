@@ -55,13 +55,13 @@ export class CallService {
       const connection = this.peer.connect(remotePeerId);
       connection.on('error', (err: any) => {
         console.error(err);
-        this.snackBar.open(err, 'Close');
+        this.snackBar.open(err, 'Bezárás');
       });
 
       this.mediaCall = this.peer.call(remotePeerId, stream);
       if (!this.mediaCall) {
-        let errorMessage = 'Unable to connect to remote peer';
-        this.snackBar.open(errorMessage, 'Close');
+        let errorMessage = 'Nem lehet csatlakozni a híváshoz';
+        this.snackBar.open(errorMessage, 'Bezárás');
         throw new Error(errorMessage);
       }
       this.localStreamBs.next(stream);
@@ -72,7 +72,7 @@ export class CallService {
           this.remoteStreamBs.next(remoteStream);
         });
       this.mediaCall.on('error', (err: any) => {
-        this.snackBar.open(err, 'Close');
+        this.snackBar.open(err, 'Bezárás');
         console.error(err);
         this.isCallStartedBs.next(false);
       });
@@ -80,7 +80,7 @@ export class CallService {
     }
     catch (ex: any) {
       console.error(ex);
-      this.snackBar.open(ex, 'Close');
+      this.snackBar.open(ex, 'Bezárás');
       this.isCallStartedBs.next(false);
     }
   }
@@ -99,7 +99,7 @@ export class CallService {
           this.remoteStreamBs.next(remoteStream);
         });
         this.mediaCall.on('error', (err: any) => {
-          this.snackBar.open(err, 'Close');
+          this.snackBar.open(err, 'Bezárás');
           this.isCallStartedBs.next(false);
           console.error(err);
         });
@@ -108,7 +108,7 @@ export class CallService {
     }
     catch (ex: any) {
       console.error(ex);
-      this.snackBar.open(ex, 'Close');
+      this.snackBar.open(ex, 'Bezárás');
       this.isCallStartedBs.next(false);
     }
   }
@@ -120,7 +120,7 @@ export class CallService {
     this.localStreamBs?.value.getTracks().forEach(track => {
       track.stop();
     });
-    this.snackBar.open('Call Ended', 'Close');
+    this.snackBar.open('Hívás vége!', 'Bezárás');
   }
 
   public closeMediaCall() {

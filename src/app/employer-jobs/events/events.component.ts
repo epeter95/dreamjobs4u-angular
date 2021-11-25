@@ -165,7 +165,6 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   createEvent(){
-    console.log(this.eventForm.valid);
     if(this.eventForm.valid){
       const job = this.jobs.find(element=>element.companyName == this.eventForm.controls.eventJob.value);
       const userNames = this.eventForm.controls.eventUsers.value.split(', ');

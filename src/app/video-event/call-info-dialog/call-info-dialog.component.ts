@@ -23,10 +23,12 @@ export class CallInfoDialogComponent implements OnInit {
   ngOnInit(){}
 
   public showCopiedSnackBar() {
-    this._snackBar.open('Peer ID Copied!', 'Hurrah', {
-      duration: 1000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
-    });
+    if(!this.data.joinCall){
+      this._snackBar.open('Azonosító másolva!', 'Sikeres másolás', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
+    }
   }
 }

@@ -55,6 +55,19 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       defaultParagraphSeparator: '',
       defaultFontName: '',
       defaultFontSize: '',
+      toolbarHiddenButtons: [['fontName'], [
+        'fontSize',
+        'textColor',
+        'backgroundColor',
+        'customClasses',
+        'link',
+        'unlink',
+        'insertImage',
+        'insertVideo',
+        'insertHorizontalRule',
+        'removeFormat',
+        'toggleEditorMode'
+      ]]
   }
 
   jobFormElements: FormElement[] = [

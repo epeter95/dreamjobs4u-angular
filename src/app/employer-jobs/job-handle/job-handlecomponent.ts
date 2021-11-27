@@ -35,6 +35,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   enLanguage!: Language;
   languages: Language[] = new Array();
   languageSubscription: Subscription = new Subscription();
+  createDialogRefSubscription: Subscription = new Subscription();
   jobLanguageKey: string = 'hu';
   queriedJobId: string = '';
   successfulModifyJobText: string = '';
@@ -160,6 +161,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
     this.modifyDialogRefSubscription.unsubscribe();
+    this.createDialogRefSubscription.unsubscribe();
   }
 
   handleProfilePicture(event: any) {
@@ -364,16 +366,18 @@ export class JobHandleComponent implements OnInit, OnDestroy {
               disableClose: true
             });
           } else {
-            this.dialog.open(MessageDialogComponent, {
+            const ref = this.dialog.open(MessageDialogComponent, {
               data: { icon: 'done', text: this.successfulSaveJobText },
               backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
               disableClose: true
             });
-            this.isUserClicked = false;
-            this.fileData = '';
-            this.imageUrl = '';
-            this.imageChanging = false;
-            this.jobForm.reset();
+            this.createDialogRefSubscription = ref.afterClosed().subscribe(()=>{
+              this.isUserClicked = false;
+              this.fileData = '';
+              this.imageUrl = '';
+              this.imageChanging = false;
+              this.jobForm.reset();
+            });
           }
         });
       }

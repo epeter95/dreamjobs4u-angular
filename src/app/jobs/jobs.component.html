@@ -1,6 +1,7 @@
 <div id="sweetjobs-jobs" class="jobs-wrapper" *ngIf="pageLoaded | async">
     <div class="side-menu-title">{{jobsTitleText}}</div>
     <div class="side-menu-subtitle">{{jobsSubtitleText}}</div>
+    <div class="side-menu-subtitle" *ngIf="isUserLoggedIn">Preferált kategóriáiba tartozó állások szerepelnek a lista elején!</div>
     <form [formGroup]="searchForm" class="search-form" (ngSubmit)="filterJobs()">
         <div class="inputs-container">
             <input [id]="searchTermElement.key" [type]="searchTermElement.type!"

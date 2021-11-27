@@ -44,6 +44,7 @@ import { CallInfoDialogComponent } from './video-event/call-info-dialog/call-inf
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatInputModule} from '@angular/material/input';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,7 @@ import {MatInputModule} from '@angular/material/input';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-
+    AngularEditorModule,
     MatDialogModule,
     MatIconModule,
     MatFormFieldModule,

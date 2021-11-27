@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { forkJoin, Subscription } from 'rxjs';
 import { Category } from 'src/app/interfaces/category';
 import { DropdownData } from 'src/app/interfaces/dropdown';
@@ -39,6 +40,22 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   successfulModifyJobText: string = '';
   choosePictureButtonText: string = '';
   getJobDataButtonText: string = '';
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '150px',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '100%',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+  }
 
   jobFormElements: FormElement[] = [
     { key: 'jobCompanyName', placeholder: '', focus: false, fieldType: 'input' },
@@ -50,8 +67,8 @@ export class JobHandleComponent implements OnInit, OnDestroy {
 
   jobFormDetailElements: FormElement[] = [
     { key: 'jobTitle', placeholder: '', focus: false, fieldType: 'input', widthClass: 'form-field-full-width' },
-    { key: 'jobAboutUs', placeholder: '', focus: false, fieldType: 'textarea' },
-    { key: 'jobDescription', placeholder: '', focus: false, fieldType: 'textarea' },
+    { key: 'jobAboutUs', placeholder: '', focus: false, fieldType: 'wysiwyg' },
+    { key: 'jobDescription', placeholder: '', focus: false, fieldType: 'wysiwyg' },
     { key: 'jobPayment', placeholder: '', focus: false, fieldType: 'input' },
     { key: 'jobType', placeholder: '', focus: false, fieldType: 'input' },
     { key: 'jobExperience', placeholder: '', focus: false, fieldType: 'input' },

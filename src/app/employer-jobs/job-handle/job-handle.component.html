@@ -82,6 +82,9 @@
                             [ngClass]="element.focus ? 'form-textarea-focused': 'form-textarea'"
                             *ngSwitchCase="'textarea'"></textarea>
                     </div>
+                    <div *ngSwitchCase="'wysiwyg'" class="form-field-full-width">
+                        <angular-editor [formControlName]="element.key" [config]="editorConfig"></angular-editor>
+                    </div>
                     <div [ngClass]="element.widthClass ? 'form-field-full-width' : 'form-field-width'">
                         <div *ngSwitchDefault [ngClass]="element.focus ? 'form-field-focused': 'form-field'">
                             <input *ngSwitchDefault [id]="element.key" [value]="element.value" [type]="element.type!"

@@ -23,9 +23,9 @@
             </div>
         </div>
         <div class="job-big-title side-menu-title">{{aboutUsText}}</div>
-        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.aboutUs}}</div>
+        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation" [innerHTML]="job.selectedTranslation.aboutUs | sanitizer: 'html'"></div>
         <div class="job-big-title side-menu-title">{{jobDescriptionText}}</div>
-        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation">{{job.selectedTranslation.jobDescription}}</div>
+        <div class="side-menu-regular-text" *ngIf="job.selectedTranslation" [innerHTML]="job.selectedTranslation.jobDescription | sanitizer: 'html'"></div>
     </div>
     <div class="job-right-side" *ngIf="job.selectedTranslation">
         <ng-container *ngIf="isUserAlreadyAppliedToJob && isEmployeeRole">

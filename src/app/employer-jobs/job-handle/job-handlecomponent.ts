@@ -42,32 +42,32 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   getJobDataButtonText: string = '';
   editorConfig: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '150px',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '100%',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      toolbarHiddenButtons: [['fontName'], [
-        'fontSize',
-        'textColor',
-        'backgroundColor',
-        'customClasses',
-        'link',
-        'unlink',
-        'insertImage',
-        'insertVideo',
-        'insertHorizontalRule',
-        'removeFormat',
-        'toggleEditorMode'
-      ]]
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '150px',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '100%',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    toolbarHiddenButtons: [['fontName'], [
+      'fontSize',
+      'textColor',
+      'backgroundColor',
+      'customClasses',
+      'link',
+      'unlink',
+      'insertImage',
+      'insertVideo',
+      'insertHorizontalRule',
+      'removeFormat',
+      'toggleEditorMode'
+    ]]
   }
 
   jobFormElements: FormElement[] = [
@@ -239,9 +239,9 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.generalMessages = res[1];
       this.errorMessages = res[2];
       this.languages = res[3];
-      this.categories = res[4].filter(element=>element.key!='allCategory');
+      this.categories = res[4].filter(element => element.key != 'allCategory');
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-        if(lang){
+        if (lang) {
           this.createJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
           this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
           this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'saveJobButtonText', 'PublicContentTranslations');
@@ -251,28 +251,28 @@ export class JobHandleComponent implements OnInit, OnDestroy {
           this.jobSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'handleJobSubtitle', 'PublicContentTranslations');
           this.choosePictureButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'choosePictureButtonText', 'PublicContentTranslations');
           this.getJobDataButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'getJobDataButtonText', 'PublicContentTranslations');
-  
+
           this.jobFormElements = this.jobFormElements.map(element => {
             element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
-  
+
           this.jobFormDetailElements = this.jobFormDetailElements.map(element => {
             element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
-  
+
           this.successfulSaveJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulJobCreate', 'GeneralMessageTranslations');
           this.successfulModifyJobText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulModifyJob', 'GeneralMessageTranslations');
-  
+
           this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
           this.selectJobErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'selectJobNeededErrorText', 'ErrorMessageTranslations');
-  
+
           this.hunLanguage = this.languages.find(element => element.key == 'hu')!;
           this.hunLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.hunLanguage.LanguageTranslations);
           this.enLanguage = this.languages.find(element => element.key == 'en')!;
           this.enLanguage.selectedTranslation = this.languageService.getTranslation(lang, this.enLanguage.LanguageTranslations);
-  
+
           this.categories = this.categories.map((element: Category) => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
@@ -331,34 +331,50 @@ export class JobHandleComponent implements OnInit, OnDestroy {
         formData.append('logoUrl', this.fileData);
       }
       if (this.isModify) {
-        this.dataService.httpPutMethod('/api/jobs/public/modifyJob', this.queriedJobId, formData, this.dataService.getAuthHeader()).subscribe(res => {
-          const modifyDialogRef = this.dialog.open(MessageDialogComponent, {
-            data: { icon: 'done', text: this.successfulModifyJobText },
-            backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-            disableClose: true
-          });
-          this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(() => {
-            this.jobQueried = false;
+        this.dataService.httpPutMethod('/api/jobs/public/modifyJob', this.queriedJobId, formData, this.dataService.getAuthHeader()).subscribe((res: any) => {
+          if (res.error) {
+            this.dialog.open(MessageDialogComponent, {
+              data: { icon: 'warning', text: 'A mentés sikertelen! Lehetséges, hogy túl hosszú szöveg a szerkesztőkben.' },
+              backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+              disableClose: true
+            });
+          } else {
+            const modifyDialogRef = this.dialog.open(MessageDialogComponent, {
+              data: { icon: 'done', text: this.successfulModifyJobText },
+              backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+              disableClose: true
+            });
+            this.modifyDialogRefSubscription = modifyDialogRef.afterClosed().subscribe(() => {
+              this.jobQueried = false;
+              this.isUserClicked = false;
+              this.fileData = '';
+              this.imageUrl = '';
+              this.imageChanging = false;
+              this.jobForm.reset();
+            });
+          }
+        });
+      } else {
+        this.dataService.httpPostMethod('/api/jobs/public/createJob', formData, this.dataService.getAuthHeader()).subscribe((res: any) => {
+          this.isUserClicked = false;
+          if (res.error) {
+            this.dialog.open(MessageDialogComponent, {
+              data: { icon: 'warning', text: 'A mentés sikertelen! Lehetséges, hogy túl hosszú szöveg a szerkesztőkben.' },
+              backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+              disableClose: true
+            });
+          } else {
+            this.dialog.open(MessageDialogComponent, {
+              data: { icon: 'done', text: this.successfulSaveJobText },
+              backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+              disableClose: true
+            });
             this.isUserClicked = false;
             this.fileData = '';
             this.imageUrl = '';
             this.imageChanging = false;
             this.jobForm.reset();
-          });
-        });
-      } else {
-        this.dataService.httpPostMethod('/api/jobs/public/createJob', formData, this.dataService.getAuthHeader()).subscribe(res => {
-          this.isUserClicked = false;
-          this.dialog.open(MessageDialogComponent, {
-            data: { icon: 'done', text: this.successfulSaveJobText },
-            backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
-            disableClose: true
-          });
-          this.isUserClicked = false;
-          this.fileData = '';
-          this.imageUrl = '';
-          this.imageChanging = false;
-          this.jobForm.reset();
+          }
         });
       }
     }

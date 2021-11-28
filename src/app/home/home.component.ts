@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.searchSubmitButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubmitButtonText','PublicContentTranslations');
           
           this.categoryTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryTitleText','PublicContentTranslations');
-          this.categorySubtitleText = this.jobs.length +' '+ this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySubtitleText','PublicContentTranslations');
+          this.categorySubtitleText = res[2].length +' '+ this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySubtitleText','PublicContentTranslations');
           this.categoryJobCountText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryJobCountText','PublicContentTranslations');
           this.allCategoryButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeAllCategoryButtonText','PublicContentTranslations'); 
           

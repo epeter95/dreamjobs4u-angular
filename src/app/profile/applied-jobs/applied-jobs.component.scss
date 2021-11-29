@@ -63,6 +63,10 @@
     transform: scale(1.02);
 }
 
+.job-right-side{
+    margin: 0 0 0 auto;
+}
+
 .location-container{
     display: flex;
     align-items: center;
@@ -73,6 +77,9 @@
 
 .location-text{
     font-size: 13px;
+    span{
+        color: $highlighted-color;
+    }
 }
 
 @media screen and (max-width: $mobile-width) {

@@ -33,6 +33,7 @@ export class AppliedJobsComponent implements OnInit, OnDestroy {
           this.appliedJobs = this.appliedJobs.map(element=>{
             element.Job.selectedTranslation = this.languageService.getTranslation(lang, element.Job.JobTranslations);
             element.Job.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Job.Category.CategoryTranslations);
+            element.AppliedUserStatus.selectedTranslation = this.languageService.getTranslation(lang, element.AppliedUserStatus.AppliedUserStatusTranslations);
             return element;
           })
           this.pageLoaded = Promise.resolve(true);

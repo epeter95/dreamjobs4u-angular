@@ -48,6 +48,7 @@ export interface AppliedUserJob{
     userId: number;
     jobId: number;
     Job: Job;
+    AppliedUserStatus: AppliedUserStatus;
     createdAt: Date;
     updatedAt: Date;
 }

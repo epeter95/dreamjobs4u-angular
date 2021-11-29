@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { Category } from 'src/app/interfaces/category';
 import { DropdownData } from 'src/app/interfaces/dropdown';
 import { ErrorMessage } from 'src/app/interfaces/error-message';
@@ -145,16 +145,6 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    if (this.router.url.includes('modositas')) {
-      this.jobQueried = false;
-      this.isModify = true;
-      this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken', this.dataService.getAuthHeader()).subscribe(res => {
-        this.jobDropdownData = res.map(element => {
-          let newElement = { key: element.id, value: element.companyName };
-          return newElement;
-        });
-      });
-    }
     this.initData();
   }
 
@@ -230,20 +220,36 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   }
 
   initData() {
-    forkJoin([
+    let requests: Observable<any>[] = [
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public'),
       this.dataService.getAllData('/api/generalMessages/public'),
       this.dataService.getAllData('/api/errorMessages/public'),
       this.dataService.getAllData('/api/languages/public'),
       this.dataService.getAllData('/api/categories/public')
-    ]).subscribe(res => {
+    ];
+
+    if (this.router.url.includes('modositas')) {
+      this.jobQueried = false;
+      this.isModify = true;
+      requests.push(this.dataService.getAllData('/api/jobs/public/getJobDropdownDataByToken', this.dataService.getAuthHeader()));
+    }
+    forkJoin(
+      requests
+    ).subscribe(res => {
       this.publicContents = res[0];
       this.generalMessages = res[1];
       this.errorMessages = res[2];
       this.languages = res[3];
-      this.categories = res[4].filter(element => element.key != 'allCategory');
+      this.categories = res[4].filter((element: any) => element.key != 'allCategory');
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         if (lang) {
+          if(res[5]){
+            this.jobDropdownData = res[5].map((element: Job) => {
+              element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
+              let newElement = { key: element.id, value: element.selectedTranslation.title };
+              return newElement;
+            });
+          }
           this.createJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
           this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
           this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'saveJobButtonText', 'PublicContentTranslations');

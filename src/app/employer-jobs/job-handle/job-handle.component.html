@@ -10,7 +10,7 @@
             <span>{{selectedJob ? selectedJob.value : ''}} </span>
             <span [ngClass]="isDropdownOpen ? 'up-arrow' : 'down-arrow'"></span>
         </div>
-        <div class="dropdown-values" *ngIf="isDropdownOpen">
+        <div class="dropdown-values job-dropdown-values" *ngIf="isDropdownOpen">
             <div class="dropdown-element side-menu-regular-text"
                 [ngClass]="i<jobDropdownData.length -1 ? 'border-class' : ''"
                 *ngFor="let element of jobDropdownData;let i = index;" (click)="setDropdownData(element)">

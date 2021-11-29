@@ -103,7 +103,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   initData(){
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public'),
-      this.dataService.getAllData('/api/jobs/public/getJobDropdwonDataByToken',this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/jobs/public/getJobDropdownDataByToken',this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/events/public/getEventsByToken',this.dataService.getAuthHeader())
     ]).subscribe(res=>{
       this.publicContents = res[0];
@@ -119,7 +119,10 @@ export class EventsComponent implements OnInit, OnDestroy {
           this.deleteEventWarningText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventDeleteWarningText','PublicContentTranslations');
           this.eventPeopleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventPeopleText','PublicContentTranslations'); 
           this.formErrorText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventWrongFormFormatText','PublicContentTranslations'); 
-          
+          this.jobs = this.jobs.map(element=>{
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
+            return element;
+          })
           this.jobsDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventJobsPlaceholderText','PublicContentTranslations');
           this.usersDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventUsersPlaceholderText','PublicContentTranslations');
           this.events = this.events.map(element=>{
@@ -133,7 +136,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   setSelectedJob(job: Job){
-    this.eventForm.controls.eventJob.setValue(job.companyName);
+    this.eventForm.controls.eventJob.setValue(job.selectedTranslation.title);
     this.isJobsDropdownOpen = false;
     this.isUsersDropdownOpen = false;
     this.eventForm.controls.eventUsers.setValue('');

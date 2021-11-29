@@ -13,7 +13,7 @@
                 <span [ngClass]="isJobsDropdownOpen ? 'search-arrow-up' : 'search-arrow-down'"></span>
                 <div #jobsContainer class="search-dropdown-container dropdown-width" *ngIf="isJobsDropdownOpen">
                     <div (click)="setSelectedJob(job)" class="search-dropdown-element" *ngFor="let job of jobs">
-                        {{job.companyName}}
+                        {{job.selectedTranslation.title}}
                     </div>
                 </div>
             </div>

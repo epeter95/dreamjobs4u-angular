@@ -3,6 +3,7 @@
 @import 'page-with-side-menu.scss';
 @import 'form.scss';
 @import 'search-form.scss';
+@import './events-mobile.component.scss';
 
 
 .custom-margin{
@@ -10,8 +11,9 @@
 }
 
 .input-width{
-    width: 300px;
-    padding: 15px 25px;
+    width: 450px;
+    box-sizing: border-box;
+    padding: 15px;
 }
 
 .search-input-width{
@@ -19,16 +21,13 @@
     padding: 15px 50px;
 }
 
-.custom-width{
-    width: max-content;
-}
-
 .start-date-container{
     height: 100%;
 }
 
 .users-input-width{
-    width: 500px;
+    max-width: 450px;
+    width: 100%;
     padding: 15px 25px;
 }
 

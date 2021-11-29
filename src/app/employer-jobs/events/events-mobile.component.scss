@@ -1,0 +1,23 @@
+@import 'variables.scss';
+
+@media screen and (max-width: $mobile-width) {
+    div.dropdown-width, div.search-select-dropdown{
+        max-width: 450px;
+        width: 100%;
+    }
+
+    input.input-width{
+        max-width: 450px;
+        width: 100%;
+    }
+
+    div.delete-event-button{
+        right: -12px;
+        top: -12px;
+    }
+
+    div.event-date{
+        bottom: 10px;
+        top: auto;
+    }
+}

@@ -66,8 +66,6 @@ export class VideoEventComponent implements OnInit, OnDestroy {
             }
             if (this.event.ownerId == this.userId) {
               this.isUserOwner = true;
-            }else{
-              this.isCallInitialized = true;
             }
             this.pageLoaded = Promise.resolve(true);
           });
@@ -99,12 +97,9 @@ export class VideoEventComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().pipe(
       switchMap(peerId => {
-        console.log(peerId);
-        console.log(joinCall);
         if (joinCall) {
           return of(this.callService.establishMediaCall(peerId))
         } else {
-          console.log("meghivta baszki")
           const userIds = this.event.Users.map(element => element.id);
           this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', { eventId: this.event.id, pwdId: this.peerId, users: userIds }, this.dataService.getAuthHeader()).subscribe(res => {
             console.log(res);

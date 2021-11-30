@@ -1,4 +1,5 @@
 <div id="video-event" class="event-wrapper" *ngIf="pageLoaded | async">
+  <ng-container *ngIf="isEventStarted; else notStartedText">
     <div class="event-buttons">
         <button *ngIf="isUserOwner" (click)="showModal(false)" class="submit-button event-button" [ngClass]="isCallInitialized ? 'button-disabled': ''" [disabled]="isCallInitialized">Hívás indítása</button>
         <button *ngIf="!isUserOwner" (click)="showModal(true)" class="submit-button event-button" [ngClass]="(isCallStarted$ | async) ? 'button-disabled': ''"  [disabled]="isCallStarted$ | async">Csatlakozás a híváshoz</button>
@@ -9,4 +10,8 @@
       <video #remoteVideo id="remote-video" poster="/assets/images/video-placeholder.jpg" autoplay playsinline></video>
       <video #localVideo id="local-video" autoplay playsinline [muted]="true"></video>
     </div>
+  </ng-container>
+  <ng-template #notStartedText>
+    <div class="side-menu-title">Sajnáljuk, ez az esemény még nem kezdődött el.</div>
+  </ng-template>
 </div>

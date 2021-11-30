@@ -24,6 +24,7 @@ export class VideoEventComponent implements OnInit, OnDestroy {
   isCallStarted$!: Observable<boolean>;
   userId: number = 0;
   isCallInitialized: boolean = false;
+  isEventStarted: boolean = false;
 
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
@@ -56,6 +57,12 @@ export class VideoEventComponent implements OnInit, OnDestroy {
             this.peerId = this.callService.initPeer(this.event.link);
             if (!this.event.Users.find(element => element.id == this.userId) && this.userId != this.event.ownerId) {
               this.router.navigate(['/']);
+            }
+            let eventDate = new Date();
+            let actDate = new Date();
+            eventDate.setTime(+this.event.link.replace('esemeny',''));
+            if(actDate.getTime() > eventDate.getTime()){
+              this.isEventStarted = true;
             }
             if (this.event.ownerId == this.userId) {
               this.isUserOwner = true;

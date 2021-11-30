@@ -24,7 +24,10 @@
         </div>
         <button class="submit-button little-button">{{searchButtonText}}</button>
     </form>
-    <div class="side-menu-subtitle">{{jobCountInSelectedCategory}} állás tartozik ebbe a kategóriába</div>
+    <div class="side-menu-subtitle" *ngIf="jobCountInSelectedCategory > 0; else zeroCountJobText;">{{jobCountInSelectedCategory}} {{jobCountTitleText}}</div>
+    <ng-template #zeroCountJobText>
+        <div class="side-menu-subtitle">{{noCategoriesText}}</div>
+    </ng-template>
     <div class="job-container">
         <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of filteredJobs">
             <img class="job-image" [src]="job.logoUrl">

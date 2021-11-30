@@ -31,6 +31,9 @@ export class JobsComponent implements OnInit, OnDestroy {
   fromSearch: boolean = false;
   isUserLoggedIn: boolean = false;
   jobCountInSelectedCategory: number = 0;
+  categoryPublicContents: PublicContent[] = new Array();
+  noCategoriesText: string = '';
+  jobCountTitleText: string = '';
 
   searchTermElement: FormElement = {
     key: 'jobTextSearchTerm', placeholder: '', focus: false,
@@ -78,6 +81,7 @@ export class JobsComponent implements OnInit, OnDestroy {
       this.dataService.getAllData('/api/jobs/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/jobsPage/public'),
       this.dataService.getAllData('/api/categories/public'),
+      this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/categoriesPage/public')
     ];
     if (this.isUserLoggedIn) {
       sources.push(this.dataService.getOneData('/api/users/public/preferredCategories', this.dataService.getAuthHeader()))
@@ -90,9 +94,10 @@ export class JobsComponent implements OnInit, OnDestroy {
       this.categories = res[2];
       this.categories.map(element=>{
         this.jobCountInSelectedCategory+=element.Jobs.length;
-      })
-      if (res[3]) {
-        this.preferredCategories = res[3].Categories;
+      });
+      this.categoryPublicContents = res[3];
+      if (res[4]) {
+        this.preferredCategories = res[4].Categories;
         if (this.preferredCategories.length > 0) {
           this.jobs = this.jobs.sort((a, b) => {
             if (this.preferredCategories.find(element => a.Category.id == element.id)) return -1;
@@ -138,6 +143,8 @@ export class JobsComponent implements OnInit, OnDestroy {
         if (this.searchForm.controls.jobTextSearchTerm.value || this.searchForm.controls.jobCategorySearchTerm.value) {
           this.filterJobs(false);
         }
+        this.noCategoriesText = this.languageService.getTranslationByKey(lang,this.categoryPublicContents,'title','categoriesPageNoCategoriesText','PublicContentTranslations');
+        this.jobCountTitleText = this.languageService.getTranslationByKey(lang,this.categoryPublicContents,'title','categoriesPageJobCountText','PublicContentTranslations');
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobTextSearchTerm', 'PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobCategorySearchTerm', 'PublicContentTranslations');
         this.jobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageTitle', 'PublicContentTranslations');

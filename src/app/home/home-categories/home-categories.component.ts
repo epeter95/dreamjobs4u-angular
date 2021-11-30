@@ -1,4 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from 'src/app/interfaces/category';
 import { DataService } from 'src/app/services/data.service';
 
@@ -15,7 +16,7 @@ export class HomeCategoriesComponent implements OnInit {
   @Input() allCategoryButtonText: string = '';
   isMobile: boolean = false;
   sliceIndex: number = 8;
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
     this.calculateSliceIndex();
   }
 
@@ -33,6 +34,12 @@ export class HomeCategoriesComponent implements OnInit {
     } else if(windowWidth<900){
       this.sliceIndex = 4;
     }
+  }
+
+  navigateToJob(category: Category){
+    let queryParams: any = {};
+    queryParams['category'] = category.id;
+    this.router.navigate(['/allasok'], {queryParams: queryParams ? queryParams: null});
   }
 
   ngOnInit(): void {

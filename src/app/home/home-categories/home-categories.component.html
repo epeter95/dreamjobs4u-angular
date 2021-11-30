@@ -3,7 +3,7 @@
         <div class="side-menu-title">{{categoryTitle}}k</div>
         <div class="side-menu-subtitle">{{categorySubtitle}}</div>
         <div class="categories-container">
-            <div class="category" *ngFor="let category of categories |slice:0:sliceIndex;let i=index;">
+            <div (click)="navigateToJob(category)" class="category" *ngFor="let category of categories |slice:0:sliceIndex;let i=index;">
                 <img [src]="category.pictureUrl" class="category-image">
                 <div class="side-menu-subtitle">{{category.selectedTranslation.text}}</div>
                 <div class="category-job-count">{{category.Jobs.length}} {{categoryJobCountText}}</div>

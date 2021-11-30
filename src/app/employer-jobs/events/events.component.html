@@ -21,7 +21,7 @@
                 (focusout)="eventDateTerm.focus = false" [placeholder]="eventDateTerm.placeholder"
                 [formControlName]="eventDateTerm.key"
                 [ngClass]="eventDateTerm.focus ? 'search-input-focused': 'search-input'" class="search-input-width">
-            <div class="search-select-dropdown custom-width" *ngIf="users.length > 0">
+            <div class="search-select-dropdown custom-width" *ngIf="users.length > 0;else noAppliedUser">
                 <input #appliedUserButton readonly [id]="usersDropDown.key" (click)="openUsers()"
                     [placeholder]="usersDropDown.placeholder" [formControlName]="usersDropDown.key"
                     [ngClass]="isUsersDropdownOpen ? 'search-input-focused': 'search-input'"
@@ -35,13 +35,16 @@
                     </div>
                 </div>
             </div>
+            <ng-template #noAppliedUser>
+                <div class="side-menu-regular-medium-text">Erre az állásra nincs aktív jelentkező</div>
+            </ng-template>
         </div>
         <button class="submit-button">{{submitButtonText}}</button>
     </form>
     <div *ngFor="let event of events" class="event" >
         <div class="close-button delete-event-button" (click)="deleteEvent(event.id)">X</div>
         <a [routerLink]="'/video-esemeny/'+event.link" class="side-menu-regular-text bold-style event-title">{{event.Job.selectedTranslation.title}}</a>
-        <div class="regular-text">Résztvevők:</div>
+        <div class="regular-text">{{eventPeopleText}}:</div>
         <div class="applied-users-container">
             <div class="applied-user" *ngFor="let user of event.Users">
                 <div class="applied-user-info">

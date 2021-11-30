@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { Category } from '../interfaces/category';
 import { PublicContent } from '../interfaces/public-contents';
@@ -26,7 +27,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   constructor( 
     private languageService: LanguageService,
     private dataService: DataService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private router: Router
   ) {
     this.isUserLoggedIn = this.sessionService.getSession() ? true : false;
   }
@@ -67,6 +69,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
+  }
+
+  navigateToCategory(category: Category){
+    let queryParams: any = {};
+    queryParams['category'] = category.id;
+    this.router.navigate(['/allasok'], {queryParams: queryParams ? queryParams: null});
   }
 
 }

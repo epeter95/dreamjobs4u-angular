@@ -3,7 +3,7 @@
         <div class="side-menu-title">{{preferredCategoriesTitleText}}</div>
         <div class="side-menu-subtitle">{{preferredCategoriesSubtitleText}}</div>
         <div class="category-container">
-            <a [routerLink]="'/kategoria/'+category.id" class="category" *ngFor="let category of preferredCategories">
+            <a (click)="navigateToCategory(category)" class="category" *ngFor="let category of preferredCategories">
                 <img class="category-image" [src]="category.pictureUrl">
                 <div class="category-name">{{category.selectedTranslation.text}}</div>
                 <div class="category-job-count">{{category.Jobs.length}} {{jobCountTitleText}}</div>
@@ -13,7 +13,7 @@
     <div class="side-menu-title">{{pageTitleText}}</div>
     <div class="side-menu-subtitle">{{pageSubtitleText}}</div>
     <div class="category-container">
-        <a [routerLink]="'/kategoria/'+category.id" class="category" *ngFor="let category of categories">
+        <a (click)="navigateToCategory(category)" class="category" *ngFor="let category of categories">
             <img class="category-image" [src]="category.pictureUrl">
             <div class="category-name">{{category.selectedTranslation.text}}</div>
             <div class="category-job-count">{{category.Jobs.length}} {{jobCountTitleText}}</div>

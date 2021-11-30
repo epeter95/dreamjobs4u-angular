@@ -13,7 +13,6 @@ import { JobComponent } from './job/job.component';
 import { PreferedCategoriesComponent } from './profile/prefered-categories/prefered-categories.component';
 import { EmployerRoleGuard } from './authentication/employer-role.guard';
 import { CategoriesComponent } from './categories/categories.component';
-import { CategoryComponent } from './category/category.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { EmployeeRoleGuard } from './authentication/employee-role.guard';
@@ -26,7 +25,6 @@ const routes: Routes = [
   { path: 'kategoriak', component: CategoriesComponent, pathMatch: 'full' },
   { path: 'allasok', component: JobsComponent, pathMatch: 'full' },
   { path: 'kapcsolat', component: ContactComponent, pathMatch: 'full' },
-  { path: 'kategoria/:categoryId', component: CategoryComponent, pathMatch: 'full' },
   { path: 'kategoria/:categoryId/allas/:jobId', component: JobComponent, pathMatch: 'full' },
   { path: 'video-esemeny/:id', component: VideoEventComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {

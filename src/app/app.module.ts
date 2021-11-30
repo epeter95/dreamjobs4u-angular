@@ -30,20 +30,19 @@ import { HomeCategoriesComponent } from './home/home-categories/home-categories.
 import { HomeRegisterComponent } from './home/home-register/home-register.component';
 import { HomeJobsComponent } from './home/home-jobs/home-jobs.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { CategoryComponent } from './category/category.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContactComponent } from './contact/contact.component';
 import { JobsComponent } from './jobs/jobs.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { AnswerToAppliedUserDialogComponent } from './employer-jobs/my-jobs/answer-to-applied-user-dialog/answer-to-applied-user-dialog.component';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
 import { EventsComponent } from './employer-jobs/events/events.component';
 import { VideoEventComponent } from './video-event/video-event.component';
 import { CallInfoDialogComponent } from './video-event/call-info-dialog/call-info-dialog.component';
-import {ClipboardModule} from '@angular/cdk/clipboard';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatInputModule} from '@angular/material/input';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
@@ -70,7 +69,6 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     HomeRegisterComponent,
     HomeJobsComponent,
     CategoriesComponent,
-    CategoryComponent,
     FooterComponent,
     ContactComponent,
     JobsComponent,

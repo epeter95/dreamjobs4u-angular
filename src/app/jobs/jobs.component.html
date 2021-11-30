@@ -2,7 +2,7 @@
     <div class="side-menu-title">{{jobsTitleText}}</div>
     <div class="side-menu-subtitle">{{jobsSubtitleText}}</div>
     <div class="side-menu-subtitle" *ngIf="isUserLoggedIn">Preferált kategóriáiba tartozó állások szerepelnek a lista elején!</div>
-    <form [formGroup]="searchForm" class="search-form" (ngSubmit)="filterJobs()">
+    <form [formGroup]="searchForm" class="search-form" (ngSubmit)="filterJobs(true)">
         <div class="inputs-container">
             <input [id]="searchTermElement.key" [type]="searchTermElement.type!"
                 (focus)="searchTermElement.focus = true" (focusout)="searchTermElement.focus = false"
@@ -24,6 +24,7 @@
         </div>
         <button class="submit-button little-button">{{searchButtonText}}</button>
     </form>
+    <div class="side-menu-subtitle">{{jobCountInSelectedCategory}} állás tartozik ebbe a kategóriába</div>
     <div class="job-container">
         <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of filteredJobs">
             <img class="job-image" [src]="job.logoUrl">

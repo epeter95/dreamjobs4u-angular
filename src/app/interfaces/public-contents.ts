@@ -3,7 +3,6 @@ export interface PublicContent{
     key: string;
     adminName: string;
     pagePlaceId: number;
-    link: string;
     createdAt: Date;
     updatedAt: Date;
     PublicContentTranslations: PublicContentTranslation[];

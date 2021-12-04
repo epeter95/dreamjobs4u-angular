@@ -6,10 +6,10 @@
                 <div class="company-title">{{companyName}}</div>
                 <div class="company-subtitle">{{companyBrandText}}</div>
                 <div class="company-socials">
-                    <a target="_blank" class="social-icon" [href]="facebook.link"><img src="/assets/images/facebook-icon.svg"></a>
-                    <a target="_blank" class="social-icon" [href]="instagram.link"><img src="/assets/images/instagram-icon.svg"></a>
-                    <a target="_blank" class="social-icon" [href]="twitter.link"><img src="/assets/images/twitter-icon.svg"></a>
-                    <a target="_blank" class="social-icon" [href]="linkedin.link"><img src="/assets/images/linkedin-icon.svg"></a>
+                    <a target="_blank" class="social-icon" *ngIf="facebook.selectedTranslation" [href]="facebook.selectedTranslation.title"><img src="/assets/images/facebook-icon.svg"></a>
+                    <a target="_blank" class="social-icon" *ngIf="instagram.selectedTranslation" [href]="instagram.selectedTranslation.title"><img src="/assets/images/instagram-icon.svg"></a>
+                    <a target="_blank" class="social-icon" *ngIf="twitter.selectedTranslation" [href]="twitter.selectedTranslation.title"><img src="/assets/images/twitter-icon.svg"></a>
+                    <a target="_blank" class="social-icon" *ngIf="linkedin.selectedTranslation" [href]="linkedin.selectedTranslation.title"><img src="/assets/images/linkedin-icon.svg"></a>
                 </div>
             </div>
             <div class="company-info">

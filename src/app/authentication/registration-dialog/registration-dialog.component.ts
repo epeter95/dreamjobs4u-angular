@@ -22,7 +22,6 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
 
   roles: Role[] = new Array();
   publicContents: PublicContent[] = new Array();
-  generalMessages: GeneralMessage[] = new Array();
   errorMessages: ErrorMessage[] = new Array();
   isUserClicked: boolean = false;
   selectedRole!: Role;
@@ -69,13 +68,11 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
     forkJoin([
       this.dataService.getAllData('/api/roles/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public'),
-      this.dataService.getAllData('/api/generalMessages/public'),
       this.dataService.getAllData('/api/errorMessages/public')
     ]).subscribe(res=>{
       this.roles = res[0];
       this.publicContents = res[1];
-      this.generalMessages = res[2];
-      this.errorMessages = res[3];
+      this.errorMessages = res[2];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
         if(lang){
           this.roles = this.roles.map(element=>{

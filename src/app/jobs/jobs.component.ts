@@ -178,6 +178,7 @@ export class JobsComponent implements OnInit, OnDestroy {
         queryParams['category'] = category!.id;
       }
       if(category!.key == 'allCategory'){
+        this.jobCountInSelectedCategory = 0;
         this.categories.map(element=>{
           this.jobCountInSelectedCategory+=element.Jobs.length;
         })

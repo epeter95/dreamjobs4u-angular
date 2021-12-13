@@ -32,7 +32,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   ) {
     this.isUserLoggedIn = this.sessionService.getSession() ? true : false;
   }
-
+  //kategória adatok, publikus tartalmak, preferált kategóriák lekérdezése ha be van jelentekzve a felhasználó, fordítások beállítása
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/categories/public'),
@@ -70,7 +70,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
   }
-
+  //allasok oldalra navigálás megfelelő query paraméterekkel a szűrő beállítására
   navigateToCategory(category: Category){
     let queryParams: any = {};
     queryParams['category'] = category.id;

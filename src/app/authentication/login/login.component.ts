@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   passwordDoesntMatchtext: string = '';
   loginFormElements: FormElement[] = [
     { key: 'loginEmail', placeholder: '', focus: false },
-    { key: 'loginPassword', placeholder: '', focus: false , type: "password"}
+    { key: 'loginPassword', placeholder: '', focus: false, type: "password" }
   ];
   pageLoaded!: Promise<boolean>;
   reloadNeeded: boolean = false;
@@ -47,65 +47,65 @@ export class LoginComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private sessionService: SessionService,
     private roleService: RoleService) { }
-
+  //publikus tartalmak, hibaüzenetek meghívása
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/login/public'),
       this.dataService.getAllData('/api/errorMessages/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.publicContents = res[0];
       this.errorMessages = res[1];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.loginFormElements = this.loginFormElements.map(element=>{
-            element.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title',element.key,'PublicContentTranslations');
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.loginFormElements = this.loginFormElements.map(element => {
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
-  
-          this.loginTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','loginTitle','PublicContentTranslations');
-          this.loginSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','loginSubtitle','PublicContentTranslations');
-          this.loginButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','loginButton','PublicContentTranslations');
-          
-          this.passwordDoesntMatchtext = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','passwordDoesntMatch', 'ErrorMessageTranslations');
-          this.missingUserText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','missingUser', 'ErrorMessageTranslations');
-          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
+
+          this.loginTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'loginTitle', 'PublicContentTranslations');
+          this.loginSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'loginSubtitle', 'PublicContentTranslations');
+          this.loginButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'loginButton', 'PublicContentTranslations');
+
+          this.passwordDoesntMatchtext = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'passwordDoesntMatch', 'ErrorMessageTranslations');
+          this.missingUserText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'missingUser', 'ErrorMessageTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'wrongEmailFormat', 'ErrorMessageTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
-  closeErrorMessage(){
+  //hibaüzenetek eltüntetése
+  closeErrorMessage() {
     this.isUserMissing = false;
     this.passwordDoesntMatch = false;
   }
-
+  //ablak bezárása
   closeDialog() {
     this.dialogRef.close();
   }
-
-  login(){
+  //bejelentkezés adatok elküldése ellenőrzés után
+  login() {
     this.isUserClicked = true;
     this.isUserMissing = false;
     this.passwordDoesntMatch = false;
-    if(this.loginForm.valid){
-      this.dataService.httpPostMethod('/api/auth/login/public',this.loginForm.value).subscribe(res=>{
-        if(res.error == 'userNotExist'){
+    if (this.loginForm.valid) {
+      this.dataService.httpPostMethod('/api/auth/login/public', this.loginForm.value).subscribe(res => {
+        if (res.error == 'userNotExist') {
           this.isUserMissing = true;
           return;
         }
         this.sessionService.setSession(res.token);
         this.reloadNeeded = true;
         this.roleService.nextRole(res.role);
-        this.sessionService.nextUserData({monogram: res.monogram, profilePicture: res.profilePicture})
+        this.sessionService.nextUserData({ monogram: res.monogram, profilePicture: res.profilePicture })
         this.dialogRef.close();
-      }, error=>{
-        if(error.status==401){
+      }, error => {
+        if (error.status == 401) {
           this.passwordDoesntMatch = true;
         }
       });

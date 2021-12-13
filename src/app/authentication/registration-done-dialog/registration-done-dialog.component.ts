@@ -22,29 +22,29 @@ export class RegistrationDoneDialog implements OnInit, OnDestroy {
   constructor(public dialogRef: MatDialogRef<RegistrationDoneDialog>,
     private dataService: DataService,
     private languageService: LanguageService) { }
-
+  //publikus tartalmak lekérdezése
   ngOnInit(): void {
-    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public').subscribe(res=>{
+    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public').subscribe(res => {
       this.publicContents = res;
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.clickToLoginText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','clickToLoginLink','PublicContentTranslations');
-          this.successfulRegistrationText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','successfulRegText','PublicContentTranslations');
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.clickToLoginText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'clickToLoginLink', 'PublicContentTranslations');
+          this.successfulRegistrationText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'successfulRegText', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
-  openLogin(){
+  //bejelentkezés dialógus megnyitásához szükséges
+  openLogin() {
     this.openLoginNeeded = true;
     this.dialogRef.close();
   }
-
+  //ablak bezárása
   closeDialog() {
     this.dialogRef.close();
   }

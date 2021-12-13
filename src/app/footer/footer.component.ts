@@ -31,20 +31,20 @@ export class FooterComponent implements OnInit, OnDestroy {
     const date = new Date();
     this.dateYear = date.getFullYear();
   }
-
+  //publikus adatok lekérése, fordítások beállítása
   ngOnInit(): void {
-    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/footer/public').subscribe(res=>{
+    this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/footer/public').subscribe(res => {
       this.publibContents = res;
-      this.facebook = this.publibContents.find(element=>element.key == 'footerCompanyFacebook')!;
-      this.instagram = this.publibContents.find(element=>element.key == 'footerCompanyInstagram')!;
-      this.twitter = this.publibContents.find(element=>element.key == 'footerCompanyTwitter')!;
-      this.linkedin = this.publibContents.find(element=>element.key == 'footerCompanyLinkedIn')!;
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.facebook.selectedTranslation = this.languageService.getTranslation(lang,this.facebook.PublicContentTranslations);
-          this.instagram.selectedTranslation = this.languageService.getTranslation(lang,this.instagram.PublicContentTranslations);
-          this.twitter.selectedTranslation = this.languageService.getTranslation(lang,this.twitter.PublicContentTranslations);
-          this.linkedin.selectedTranslation = this.languageService.getTranslation(lang,this.linkedin.PublicContentTranslations);
+      this.facebook = this.publibContents.find(element => element.key == 'footerCompanyFacebook')!;
+      this.instagram = this.publibContents.find(element => element.key == 'footerCompanyInstagram')!;
+      this.twitter = this.publibContents.find(element => element.key == 'footerCompanyTwitter')!;
+      this.linkedin = this.publibContents.find(element => element.key == 'footerCompanyLinkedIn')!;
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.facebook.selectedTranslation = this.languageService.getTranslation(lang, this.facebook.PublicContentTranslations);
+          this.instagram.selectedTranslation = this.languageService.getTranslation(lang, this.instagram.PublicContentTranslations);
+          this.twitter.selectedTranslation = this.languageService.getTranslation(lang, this.twitter.PublicContentTranslations);
+          this.linkedin.selectedTranslation = this.languageService.getTranslation(lang, this.linkedin.PublicContentTranslations);
           this.companyName = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoTitle', 'PublicContentTranslations');
           this.companyBrandText = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerLogoSubtitle', 'PublicContentTranslations');
           this.companyAddress = this.languageService.getTranslationByKey(lang, this.publibContents, 'title', 'footerCompanyAddress', 'PublicContentTranslations');
@@ -56,8 +56,8 @@ export class FooterComponent implements OnInit, OnDestroy {
       });
     })
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
 

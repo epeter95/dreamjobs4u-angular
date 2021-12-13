@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class RoleService {
-
+  //szerepkörökhöz tartozó observablek, és kezelő metódusaik beállítása
   private roleSubject: Subject<string> = new BehaviorSubject<string>(this.initUserRole()!);
   roleObservable$ = this.roleSubject.asObservable();
 

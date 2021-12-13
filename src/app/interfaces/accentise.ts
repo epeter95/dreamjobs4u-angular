@@ -2,7 +2,7 @@ export interface AccentCharacters{
     accent: string;
     english: string;
 }
-
+//további nyelvek karaktereinek mapelésére szolgáló json tömb
 const latin_map =
 [
     {accent:"Á", english:"A"},

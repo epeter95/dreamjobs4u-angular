@@ -18,19 +18,19 @@ export class AppliedJobsComponent implements OnInit, OnDestroy {
   appliedJobs: AppliedUserJob[] = new Array();
   languageSubscription: Subscription = new Subscription();
   constructor(private dataService: DataService, private languageService: LanguageService,) { }
-
+  //publikus tartalmak, jelentkezett állások lekérése, fordítások beállítása
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
       this.dataService.getAllData('/api/jobs/public/getAppliedJobsByToken', this.dataService.getAuthHeader())
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.publicContents = res[0];
       this.appliedJobs = res[1];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
           this.appliedJobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileAppliedJobTitleText', 'PublicContentTranslations');
           this.appliedJobsSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileAppliedJobSubtitleText', 'PublicContentTranslations');
-          this.appliedJobs = this.appliedJobs.map(element=>{
+          this.appliedJobs = this.appliedJobs.map(element => {
             element.Job.selectedTranslation = this.languageService.getTranslation(lang, element.Job.JobTranslations);
             element.Job.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Job.Category.CategoryTranslations);
             element.AppliedUserStatus.selectedTranslation = this.languageService.getTranslation(lang, element.AppliedUserStatus.AppliedUserStatusTranslations);
@@ -41,8 +41,8 @@ export class AppliedJobsComponent implements OnInit, OnDestroy {
       })
     })
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
 

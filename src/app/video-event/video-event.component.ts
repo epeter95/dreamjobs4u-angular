@@ -41,7 +41,7 @@ export class VideoEventComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  //szükséges adatok lekérdezése, ellenőrző folyamatok implementálása
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       if (params.get('id')) {
@@ -74,7 +74,7 @@ export class VideoEventComponent implements OnInit, OnDestroy {
       }
     })
   }
-
+  //szükséges streamek beállítása a megfelelő videó ablakokhoz
   ngAfterViewInit() {
     setTimeout(() => {
       this.callService.localStream$
@@ -85,11 +85,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
         .subscribe(stream => this.remoteVideo.nativeElement.srcObject = stream)
     }, 1000)
   }
-
+  //peer megszüntetése
   ngOnDestroy() {
     this.callService.destroyPeer();
   }
-
+  //híváshoz tartozó dialógus megnyitása, kezdeményező esetén link másolás lehetőség, csatlakozó esetén link megadása lehetőség
   showModal(joinCall: boolean): void {
     let dialogData: CallInfoDialogData = joinCall ? ({ peerId: '', joinCall: true }) : ({ peerId: this.peerId, joinCall: false });
     const dialogRef = this.dialog.open(CallInfoDialogComponent, {
@@ -110,11 +110,11 @@ export class VideoEventComponent implements OnInit, OnDestroy {
       ),
     ).subscribe(_ => { });
   }
-
+  //hívás befejezése
   endCall() {
     this.callService.closeMediaCall();
   }
-
+  //peer megszüntetése
   destroyCall() {
     this.isCallInitialized = false;
     this.callService.destroyPeer();

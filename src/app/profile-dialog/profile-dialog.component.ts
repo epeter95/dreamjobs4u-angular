@@ -26,7 +26,7 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: UserProfileData,
     private languageService: LanguageService,
     private dataService: DataService) { }
-
+    //publikus tartalmak lekérdezése, adatok kezelése dialógus ablak megnyitásából származva, fordítások beállítása
   ngOnInit(): void {
     if(this.data.Profile.cvPath)
     console.log(this.data);
@@ -45,11 +45,11 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
       });
     })
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
   }
-
+  //ablak bezárása
   closeDialog(){
     this.dialogRef.close();
   }

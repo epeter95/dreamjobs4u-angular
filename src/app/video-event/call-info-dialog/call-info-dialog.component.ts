@@ -18,12 +18,12 @@ export class CallInfoDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CallInfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CallInfoDialogData,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit(){}
-
+  ngOnInit() { }
+  //snack bar mutatása kattintásra történő másolás esetén
   public showCopiedSnackBar() {
-    if(!this.data.joinCall){
+    if (!this.data.joinCall) {
       this._snackBar.open('Azonosító másolva!', 'Sikeres másolás', {
         duration: 1000,
         horizontalPosition: 'center',

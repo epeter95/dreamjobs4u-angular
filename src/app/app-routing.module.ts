@@ -19,7 +19,7 @@ import { EmployeeRoleGuard } from './authentication/employee-role.guard';
 import { AppliedJobsComponent } from './profile/applied-jobs/applied-jobs.component';
 import { EventsComponent } from './employer-jobs/events/events.component';
 import { VideoEventComponent } from './video-event/video-event.component';
-
+//az alkalmazáshoz tartozó végpontok definiálása, a megfelelő jogosultság kezelések mellett
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'kategoriak', component: CategoriesComponent, pathMatch: 'full' },

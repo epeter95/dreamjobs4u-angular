@@ -52,11 +52,11 @@ export class ContactInformationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //profil adatok, publikus tartamak, általános üzenetek lekérdezése, fordítások beállítása
   initData() {
     forkJoin([
       this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader()),
@@ -83,7 +83,7 @@ export class ContactInformationComponent implements OnInit, OnDestroy {
         });
     });
   }
-
+  //kontakt információ adatok elmentése
   saveInfos() {
     let profileResult = {
       country: this.contactInfoForm.controls.profileCountry.value,

@@ -55,11 +55,11 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //profil adatok, publikus tartalmak, általános üzenetek, hibaüzenetek lekérdezése, fordítások beállítása
   initData() {
     forkJoin([
       this.dataService.getOneData('/api/profiles/getProfileDataForPublic', this.dataService.getAuthHeader()),
@@ -72,7 +72,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       this.generalMessages = res[2];
       this.errorMessages = res[3];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-        if(lang){
+        if (lang) {
           this.changePasswordTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
           this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
           this.changePasswordFormElements = this.changePasswordFormElements.map(element => {
@@ -90,7 +90,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       });
     });
   }
-
+  //jelszó változtatás kezelése ellenőrzésekkel, majd szolgáltatás hívás
   changePassword() {
     this.isUserClicked = true;
     if (this.changePasswordForm.valid) {
@@ -119,7 +119,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       });
     }
   }
-
+  //hibaüzenetek megszüntetése
   closeErrorMessage() {
     this.passwordDoesntMatch = false;
     this.passwordMismatch = false;

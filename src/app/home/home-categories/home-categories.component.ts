@@ -9,7 +9,7 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./home-categories.component.scss']
 })
 export class HomeCategoriesComponent implements OnInit {
-  @Input() categories!:Category[];
+  @Input() categories!: Category[];
   @Input() categoryTitle: string = '';
   @Input() categorySubtitle: string = '';
   @Input() categoryJobCountText: string = '';
@@ -24,22 +24,22 @@ export class HomeCategoriesComponent implements OnInit {
   onResize(event: any) {
     this.calculateSliceIndex();
   }
-
-  calculateSliceIndex(){
+  //kategóriák számának beállítása képernyő mérettől függően
+  calculateSliceIndex() {
     let windowWidth = window.innerWidth;
-    if(window.innerWidth >= this.dataService.mobileWidth){
+    if (window.innerWidth >= this.dataService.mobileWidth) {
       this.sliceIndex = 8;
-    } else if(windowWidth<this.dataService.mobileWidth && windowWidth >= 900){
+    } else if (windowWidth < this.dataService.mobileWidth && windowWidth >= 900) {
       this.sliceIndex = 6;
-    } else if(windowWidth<900){
+    } else if (windowWidth < 900) {
       this.sliceIndex = 4;
     }
   }
-
-  navigateToJob(category: Category){
+  //állás oldalra navigálás kategória query param megadásával
+  navigateToJob(category: Category) {
     let queryParams: any = {};
     queryParams['category'] = category.id;
-    this.router.navigate(['/allasok'], {queryParams: queryParams ? queryParams: null});
+    this.router.navigate(['/allasok'], { queryParams: queryParams ? queryParams : null });
   }
 
   ngOnInit(): void {

@@ -22,7 +22,7 @@ export class CallService {
   public isCallStarted$ = this.isCallStartedBs.asObservable();
 
   constructor(private snackBar: MatSnackBar) { }
-
+  //peer-to-peer kapcsolat létrehozása
   public initPeer(id: string): string {
     if (!this.peer || this.peer.disconnected) {
       const peerJsOptions: Peer.PeerJSOption = {
@@ -47,7 +47,7 @@ export class CallService {
     }
     return ''
   }
-
+  //hívás elindítása
   public async establishMediaCall(remotePeerId: string) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -84,7 +84,7 @@ export class CallService {
       this.isCallStartedBs.next(false);
     }
   }
-
+  //kezdeményezett hívásba való csatlakozás
   public async enableCallAnswer() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -112,7 +112,7 @@ export class CallService {
       this.isCallStartedBs.next(false);
     }
   }
-
+  //callback függvény videó hívás befejezése esetén
   private onCallClose() {
     this.remoteStreamBs?.value.getTracks().forEach(track => {
       track.stop();
@@ -122,7 +122,7 @@ export class CallService {
     });
     this.snackBar.open('Hívás vége!', 'Bezárás');
   }
-
+  //videó hivás befejezése
   public closeMediaCall() {
     this.mediaCall?.close();
     if (!this.mediaCall) {

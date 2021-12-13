@@ -9,30 +9,30 @@ import { RoleService } from '../services/role.service';
 })
 export class EmployerRoleGuard implements CanActivate {
 
-  constructor(private roleService: RoleService){}
+  constructor(private roleService: RoleService) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const url: string = state.url;
     return this.checkEmployerRole(url);
   }
-
+  //munkáltatói szerepkör ellenőrzés gyermek routeoknál
   canActivateChild(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const url: string = state.url;
     return this.checkEmployerRole(url);
   }
-
-  checkEmployerRole(url: string){
-    if(this.roleService.getRole()){
+  //munkáltatói szerepkör ellenőrzés
+  checkEmployerRole(url: string) {
+    if (this.roleService.getRole()) {
       const role = this.roleService.getRole();
-      if(environment.employerRoles.includes(role!)){
+      if (environment.employerRoles.includes(role!)) {
         return true;
       }
       return false;
     }
     return false;
   }
-  
+
 }

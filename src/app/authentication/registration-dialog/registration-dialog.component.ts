@@ -43,15 +43,15 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
 
   languageSubscription: Subscription = new Subscription();
 
-
+  //regisztrációs formhoz szükséges elemek deklarálása
   registrationFormElements: FormElement[] = [
     { key: 'regFirstName', placeholder: '', focus: false },
     { key: 'regLastName', placeholder: '', focus: false },
     { key: 'regEmail', placeholder: '', focus: false },
-    { key: 'regPassword', placeholder: '', focus: false , type: "password"},
-    { key: 'regConfirmPassword', placeholder: '', focus: false, type: "password"}
+    { key: 'regPassword', placeholder: '', focus: false, type: "password" },
+    { key: 'regConfirmPassword', placeholder: '', focus: false, type: "password" }
   ]
-
+  //regisztrációs form deklarálása
   registrationForm: FormGroup = new FormGroup({
     regFirstName: new FormControl('', Validators.required),
     regLastName: new FormControl('', Validators.required),
@@ -63,73 +63,73 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
 
   constructor(private dialogRef: MatDialogRef<RegistrationDialogComponent>,
     private dataService: DataService, private languageService: LanguageService) { }
-
+  //publikus tartalmak, error messagek és szerepkörök meghívása, fordítások beállítása
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/roles/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/registration/public'),
       this.dataService.getAllData('/api/errorMessages/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.roles = res[0];
       this.publicContents = res[1];
       this.errorMessages = res[2];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.roles = this.roles.map(element=>{
-            element.selectedTranslation = this.languageService.getTranslation(lang,element.RoleTranslations);
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.roles = this.roles.map(element => {
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.RoleTranslations);
             return element;
           });
-          this.registrationFormElements = this.registrationFormElements.map(element=>{
-            element.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title',element.key,'PublicContentTranslations');
+          this.registrationFormElements = this.registrationFormElements.map(element => {
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
           });
-          this.sendButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regSubmitButton','PublicContentTranslations');
-          this.regTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regTitle','PublicContentTranslations');
-          this.regSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','regSubtitle','PublicContentTranslations');
-          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
-          this.emailAlreadyExistErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','emailAddressAlreadyExist', 'ErrorMessageTranslations');
-          this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
-          this.missingRoleErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','missingRole', 'ErrorMessageTranslations');
+          this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'regSubmitButton', 'PublicContentTranslations');
+          this.regTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'regTitle', 'PublicContentTranslations');
+          this.regSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'regSubtitle', 'PublicContentTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'wrongEmailFormat', 'ErrorMessageTranslations');
+          this.emailAlreadyExistErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'emailAddressAlreadyExist', 'ErrorMessageTranslations');
+          this.passwordMismatchErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'passwordMismatchConfirmPassword', 'ErrorMessageTranslations');
+          this.missingRoleErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'missingRole', 'ErrorMessageTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //dialógus ablak bezárása
   closeDialog() {
     this.dialogRef.close();
   }
-
-  closeErrorMessage(){
+  //hibaüzenetek eltüntetése
+  closeErrorMessage() {
     this.isRoleMissing = false;
     this.isPasswordMismatch = false;
     this.isEmailAlreadyExist = false;
   }
-
+  //active role kiválasztása
   setRoleActive(role: Role) {
     this.selectedRole = role;
-    this.roles = this.roles.map(element=>{
+    this.roles = this.roles.map(element => {
       element == role ? element.isRoleSelected = true : element.isRoleSelected = false;
       return element;
     });
   }
-
+  //regisztrációs adatok elküldése ellenőrzés után
   register() {
     this.isUserClicked = true;
-    if(this.registrationForm.valid){
+    if (this.registrationForm.valid) {
       this.isEmailAlreadyExist = false;
       this.isPasswordMismatch = false;
       this.isRoleMissing = false;
-      if(!this.selectedRole){
+      if (!this.selectedRole) {
         this.isRoleMissing = true;
         return;
       }
-      if( this.registrationForm.controls.regPassword.value != this.registrationForm.controls.regConfirmPassword.value){
+      if (this.registrationForm.controls.regPassword.value != this.registrationForm.controls.regConfirmPassword.value) {
         this.isPasswordMismatch = true;
         return;
       }
@@ -140,11 +140,11 @@ export class RegistrationDialogComponent implements OnInit, OnDestroy {
         password: this.registrationForm.controls.regPassword.value,
         roleId: this.selectedRole.id
       }
-      this.dataService.httpPostMethod('/api/auth/register',result).subscribe(res=>{
-        if(res.error == 'SequelizeUniqueConstraintError'){
+      this.dataService.httpPostMethod('/api/auth/register', result).subscribe(res => {
+        if (res.error == 'SequelizeUniqueConstraintError') {
           this.isEmailAlreadyExist = true;
           return;
-        }else if(res.error){
+        } else if (res.error) {
           this.dialogRef.close();
         }
         this.isRegistrationSuccess = true;

@@ -9,6 +9,7 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class ProfileService {
+  //profil adatok szolgáltatásához szükséges observablek, és kezelő metódusaik beállítása
   private refreshProfileDataSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
   refreshProfileDataObservable$ = this.refreshProfileDataSubject.asObservable();
 

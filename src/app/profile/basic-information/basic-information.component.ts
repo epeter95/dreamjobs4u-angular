@@ -58,49 +58,49 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
 
   constructor(private dataService: DataService, private languageService: LanguageService,
     private profileService: ProfileService, private roleService: RoleService, public dialog: MatDialog) { }
-
+  //szükséges jogosultságok lekérdezése
   ngOnInit(): void {
     this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
     this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
     this.initData();
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //profil adatok, publikus tartalmak, általános üzenetek lekérdezése, fordítások beállítása
   initData() {
     forkJoin([
-      this.dataService.getOneData('/api/profiles/getProfileDataForPublic',this.dataService.getAuthHeader()),
+      this.dataService.getOneData('/api/profiles/getProfileDataForPublic', this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public'),
       this.dataService.getAllData('/api/generalMessages/public')
     ]).subscribe(res => {
-        this.profileData = res[0];
-        this.publicContents =res[1];
-        this.generalMessages = res[2];
-        this.cvUrl = this.profileData.Profile.cvPath.substr(this.profileData.Profile.cvPath.lastIndexOf("/") + 1);
-        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-          if(lang){
-            this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
-            this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
-            this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
-              const attribute = element.profileDataKey ? element.profileDataKey : '';
-              this.basicInfoForm.controls[element.key].setValue(res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]);
-              element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
-              element.value = res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]
-              if(element.roleName == 'employee' && !this.isEmployeeRole){
-                element.hide = true;
-              }
-              return element;
-            });
-            this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulProfileChange', 'GeneralMessageTranslations');
-            this.pageLoaded = Promise.resolve(true);
-          }
-        });
+      this.profileData = res[0];
+      this.publicContents = res[1];
+      this.generalMessages = res[2];
+      this.cvUrl = this.profileData.Profile.cvPath.substr(this.profileData.Profile.cvPath.lastIndexOf("/") + 1);
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.basicInfoTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileBasicInfoTitle', 'PublicContentTranslations');
+          this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'profileSendButtonText', 'PublicContentTranslations');
+          this.basicInfoFormElements = this.basicInfoFormElements.map(element => {
+            const attribute = element.profileDataKey ? element.profileDataKey : '';
+            this.basicInfoForm.controls[element.key].setValue(res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]);
+            element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
+            element.value = res[0][attribute] ? res[0][attribute] : res[0]['Profile'][attribute]
+            if (element.roleName == 'employee' && !this.isEmployeeRole) {
+              element.hide = true;
+            }
+            return element;
+          });
+          this.succesfulBasicInfoText = this.languageService.getTranslationByKey(lang, this.generalMessages, 'text', 'successfulProfileChange', 'GeneralMessageTranslations');
+          this.pageLoaded = Promise.resolve(true);
+        }
+      });
     });
   }
-
-  handleCVPdf(event: any){
+  //önéletrajz feltöltésének kezelése
+  handleCVPdf(event: any) {
     this.fileData = event.target.files[0] as File;
     console.log(event.target.files[0].name);
     this.cvUrl = this.fileData.name;
@@ -113,7 +113,7 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
       this.cvUploadUrl = reader.result;
     }
   }
-
+  //adatok elmentése több szolgáltatás hívással, ha van pdf változás, akkor ezt a függvény lekezeli
   saveInfos() {
     let userResult = {
       firstName: this.basicInfoForm.controls.profileFirstName.value,
@@ -133,7 +133,7 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
     }
     if (this.cvChanging) {
       profileFormData.append('cvPath', this.fileData);
-    }else{
+    } else {
       profileFormData.append('cvPath', '');
     }
     forkJoin([

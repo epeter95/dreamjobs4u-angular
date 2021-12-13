@@ -77,13 +77,13 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy() {
     this.profileDataSubscription.unsubscribe();
     this.languageSubscription.unsubscribe();
     this.profileDataAndPublicContentSubscription.unsubscribe();
   }
-
+  //profilkép feltöltés kezelése
   handleProfilePicture(event: any) {
     this.fileData = event.target.files[0] as File;
     const files = event.target.files;
@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit {
       this.isProfilePicChanging = true;
     }
   }
-
+  //profil adatok inicializálása
   initProfileData(res: any) {
     this.profileData = res;
     this.monogram = this.profileData.firstName[0] + this.profileData.lastName[0];
@@ -106,7 +106,7 @@ export class ProfileComponent implements OnInit {
       this.imageUrl = '';
     }
   }
-
+  //profil kép elmentése
   saveProfilePicture() {
     let formData = new FormData();
     if (this.isProfilePicChanging) {
@@ -117,7 +117,7 @@ export class ProfileComponent implements OnInit {
       this.profileService.nextRefreshState(true);
     });
   }
-
+  //profil kép eltávolítása
   removeProfilePicture() {
     this.imageUrl = '';
     this.isProfilePicChanging = true;

@@ -24,7 +24,7 @@ export class HomeSearchComponent implements OnInit {
   });
 
   isCategoryDropdownOpen: boolean = false;
-
+  //legördülő menükről való máshova kattintás kezelése
   constructor(private renderer: Renderer2, private router: Router) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.categoryButton && this.categoryContainer) {
@@ -40,17 +40,16 @@ export class HomeSearchComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  
+  //kategória kiválasztása
   setSelectedCategory(category: Category){
     this.searchForm.controls.homeCategorySearchTerm.setValue(category.selectedTranslation.text);
     this.isCategoryDropdownOpen = false;
   }
-
+  //kategóriák legördülő menü megnyitása
   openCategory(){
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
   }
-  
+  //keresési eredmény query paraméter átadás, és állások oldalra navigálás
   search(){
     let queryParams: any = {};
     if(this.searchForm.controls.homeTextSearchTerm.value){

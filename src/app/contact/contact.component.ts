@@ -44,22 +44,22 @@ export class ContactComponent implements OnInit, OnDestroy {
   });
   constructor(private dataService: DataService,
     private languageService: LanguageService, public dialog: MatDialog) { }
-
+  //publikus tartalmak, hibaüzenetek lekérdezése, fordítások beállítása
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/contact/public'),
       this.dataService.getAllData('/api/errorMessages/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.publicContents = res[0];
       this.errorMessages = res[1];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
           this.contactTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactTitle', 'PublicContentTranslations');
           this.contactSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSubtitle', 'PublicContentTranslations');
           this.contactShortDescriptionText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactShortDescription', 'PublicContentTranslations');
           this.sendButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'contactSendButtonText', 'PublicContentTranslations');
-          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','requiredFieldErrorMessage', 'ErrorMessageTranslations');
-          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang,this.errorMessages,'text','wrongEmailFormat', 'ErrorMessageTranslations');
+          this.requiredFieldErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'requiredFieldErrorMessage', 'ErrorMessageTranslations');
+          this.wrongEmailFormatErrorText = this.languageService.getTranslationByKey(lang, this.errorMessages, 'text', 'wrongEmailFormat', 'ErrorMessageTranslations');
           this.contactFormElements = this.contactFormElements.map(element => {
             element.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', element.key, 'PublicContentTranslations');
             return element;
@@ -70,13 +70,13 @@ export class ContactComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //kapcsolat űrlap adatok elkülédse ellenőrzés után
   submitMessage() {
     this.isUserClicked = true;
-    if(this.contactForm.valid){
+    if (this.contactForm.valid) {
       const result = {
         firstName: this.contactForm.controls.contactFirstName.value,
         lastName: this.contactForm.controls.contactLastName.value,
@@ -85,11 +85,11 @@ export class ContactComponent implements OnInit, OnDestroy {
         message: this.contactForm.controls.contactMessage.value,
       }
 
-      this.dataService.httpPostMethod('/api/contacts/sendMailFromContact', result).subscribe(res=>{
+      this.dataService.httpPostMethod('/api/contacts/sendMailFromContact', result).subscribe(res => {
         console.log(res);
-        if(res.ok){
-          this.dialog.open(MessageDialogComponent,{
-            data: {icon: 'done', text: 'Észrevételét továbbítottuk!'},
+        if (res.ok) {
+          this.dialog.open(MessageDialogComponent, {
+            data: { icon: 'done', text: 'Észrevételét továbbítottuk!' },
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
             disableClose: true
           });

@@ -88,6 +88,7 @@ export class HeaderComponent implements OnInit {
     this.isEmployee = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
     this.isEmployer = this.roleService.checkEmployerRole(this.roleService.getRole()!);
     this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
+    //legördülő menük bezárásának kezelése máshova kattintás esetén
     this.renderer.listen('window', 'click', (e: Event) => {
       if (this.profileButton && this.profileContainer) {
         if (e.target !== this.profileButton.nativeElement && e.target !== this.profileContainer.nativeElement) {
@@ -109,7 +110,7 @@ export class HeaderComponent implements OnInit {
 
       if (this.mobileMenuButton && this.mobileMenuContainer) {
         if (e.target !== this.mobileMenuButton.nativeElement && e.target !== this.mobileMenuContainer.nativeElement) {
-          if(e.target !== this.profileSubmenuContainer.nativeElement && e.target !== this.myJobsSubmenuContainer.nativeElement){
+          if (e.target !== this.profileSubmenuContainer.nativeElement && e.target !== this.myJobsSubmenuContainer.nativeElement) {
             this.isMobileMenuOpen = false;
             this.isProfileMobileMenuOpen = false;
             this.isMyJobsMobileMenuOpen = false;
@@ -123,7 +124,7 @@ export class HeaderComponent implements OnInit {
   onResize(event: any) {
     this.isMobile = window.innerWidth < this.dataService.mobileWidth ? true : false;
   }
-
+  //felhasználó be van-e jelentkezve, felhasználói adatok és sessionok kezelésének feliratkozása
   ngOnInit(): void {
     this.userLoggedInSubscription = this.sessionService.userLoggedInObservable$.subscribe(state => {
       this.userLoggedIn = state;
@@ -177,23 +178,23 @@ export class HeaderComponent implements OnInit {
           this.preferredCategoriesTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profilePreferedCategoriesText', 'PublicContentTranslations');
           this.changePasswordTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileChangePasswordTitle', 'PublicContentTranslations');
           this.appliedJobsTitleText = this.languageService.getTranslationByKey(lang, this.profilesPublicContents, 'title', 'profileAppliedJobsTitle', 'PublicContentTranslations');
-          
+
           this.myJobsTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'myJobsTitleText', 'PublicContentTranslations');
           this.createJobTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'createJobTitle', 'PublicContentTranslations');
           this.modifyJobTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'modifyJobTitle', 'PublicContentTranslations');
           this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.employerJobsPublicContents, 'title', 'employerJobsEventsTitle', 'PublicContentTranslations');
-          
+
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
-
+  //aktuális nyelv beállítása
   setLanguage(language: Language) {
     this.languageService.nextLanguage(language.key);
     this.isLanguagesOpen = false;
   }
-
+  //profilkép lekérdezése
   getUserData() {
     this.dataService.getOneData('/api/users/getDataForPublic', this.dataService.getAuthHeader()).subscribe(data => {
       this.userData = data;
@@ -202,15 +203,15 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
+  //nyelvek legördülő menü kezelése
   openLanguges() {
     this.isLanguagesOpen = !this.isLanguagesOpen;
   }
-
+  //felhasználói legördülő menü kezelése
   openUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy() {
     this.registrationDialogSubscription.unsubscribe();
     this.registrationDoneDialogSubscription.unsubscribe();
@@ -219,15 +220,15 @@ export class HeaderComponent implements OnInit {
     this.profileDataSubscription.unsubscribe();
     this.languageSubscription.unsubscribe();
   }
-
+  //profile legördülő menü kezelése
   openProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
-
+  //regisztrációs dialógus megnyitása, utána bejelentkezésre irányító dialógus megnyitása, utána ha szükséges bejelentkezés dialógus megnyitása
   openRegistrationDialog() {
     this.isRegistrationOpen = true;
     this.isUserMenuOpen = false;
-    this.isMobileMenuOpen=false;
+    this.isMobileMenuOpen = false;
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -247,11 +248,11 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
+  //bejelentkezés dialógus megnyitása, bejelentkezés esetén oldal újratöltése
   openLoginDialog() {
     this.isLoginOpen = true;
     this.isUserMenuOpen = false;
-    this.isMobileMenuOpen=false;
+    this.isMobileMenuOpen = false;
     const loginDialogRef = this.dialog.open(LoginComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -263,7 +264,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
+  //kijelentkezés, sessionok megszüntetése, oldal újratöltése
   logout() {
     this.isProfileMenuOpen = false;
     this.roleService.clearRole();
@@ -271,15 +272,15 @@ export class HeaderComponent implements OnInit {
     location.reload();
   }
 
-  openMobileMenu(){
+  openMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  openMyJobsMenu(){
+  openMyJobsMenu() {
     this.isMyJobsMobileMenuOpen = !this.isMyJobsMobileMenuOpen;
   }
 
-  openMobileProfileMenu(){
+  openMobileProfileMenu() {
     this.isProfileMobileMenuOpen = !this.isProfileMobileMenuOpen;
   }
 }

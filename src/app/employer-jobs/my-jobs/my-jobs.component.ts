@@ -37,7 +37,8 @@ export class MyJobsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
   }
-  private initData(){
+  //publikus tartalmak, felhasználóhoz tartozó állások lekérdezése, fordítások beállítása
+  private initData() {
     forkJoin([
       this.dataService.getAllData('/api/jobs/public/getJobsByTokenWithAppliedUsers', this.dataService.getAuthHeader()),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
@@ -45,13 +46,13 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       this.myJobs = res[0];
       this.publicContents = res[1];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-        if(lang){
+        if (lang) {
           this.lang = lang;
           this.myJobs = this.myJobs.map(element => {
             element.jobData.logoUrl = element.jobData.logoUrl;
             element.jobData.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.JobTranslations);
             element.jobData.Category.selectedTranslation = this.languageService.getTranslation(lang, element.jobData.Category.CategoryTranslations);
-            element.appliedUsers = element.appliedUsers.map(user=>{
+            element.appliedUsers = element.appliedUsers.map(user => {
               user.AppliedUserStatus.selectedTranslation = this.languageService.getTranslation(lang, user.AppliedUserStatus.AppliedUserStatusTranslations);
               return user;
             })
@@ -61,54 +62,54 @@ export class MyJobsComponent implements OnInit, OnDestroy {
           this.sendAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsAnswerText', 'PublicContentTranslations');
           this.statusText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsStatusText', 'PublicContentTranslations');
           this.checkProfileText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsCheckProfileText', 'PublicContentTranslations');
-          this.succesfulAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsSuccessfulAnswerText','PublicContentTranslations');
-          this.userAppliedToJobText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsUserAppliedToJobText','PublicContentTranslations');
-          this.deleteJobWarningText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsDeleteWarrningText','PublicContentTranslations');
+          this.succesfulAnswerText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsSuccessfulAnswerText', 'PublicContentTranslations');
+          this.userAppliedToJobText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsUserAppliedToJobText', 'PublicContentTranslations');
+          this.deleteJobWarningText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsDeleteWarrningText', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
     this.messageDialogSubscription.unsubscribe();
     this.deleteMessageSubscription.unsubscribe();
   }
-
-  openAppliedUsers(job: MyJob){
-    if(job.appliedUsers.length > 0){
+  //állásra jelentkezett felhasználók dropdown lenyitása
+  openAppliedUsers(job: MyJob) {
+    if (job.appliedUsers.length > 0) {
       job.isAppliedUsersOpen = !job.isAppliedUsersOpen
     }
   }
-
-  deleteJob(id: number){
-    const ref = this.dialog.open(MessageDialogComponent,{
-      data: {id: 'warning', text: this.deleteJobWarningText, cancel: true},
+  //állás törlése figyelmeztető dialógus ok gombra kattintás után, egyébként nem történik semmi
+  deleteJob(id: number) {
+    const ref = this.dialog.open(MessageDialogComponent, {
+      data: { id: 'warning', text: this.deleteJobWarningText, cancel: true },
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    this.deleteMessageSubscription = ref.afterClosed().subscribe(()=>{
-      if(ref.componentInstance.actionNeeded){
-        this.dataService.httpDeleteMethod('/api/jobs/public/deleteJob',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
-          if(!res['error']){
+    this.deleteMessageSubscription = ref.afterClosed().subscribe(() => {
+      if (ref.componentInstance.actionNeeded) {
+        this.dataService.httpDeleteMethod('/api/jobs/public/deleteJob', id.toString(), this.dataService.getAuthHeader()).subscribe((res: any) => {
+          if (!res['error']) {
             this.initData();
           }
         })
       }
     })
   }
-
-  openProfileDialog(appliedUser: AppliedUser){
-    this.dialog.open(ProfileDialogComponent,{
+  //profil dialógus megnyitása megfelelő adatokkal
+  openProfileDialog(appliedUser: AppliedUser) {
+    this.dialog.open(ProfileDialogComponent, {
       data: appliedUser.User,
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
   }
-
-  openAnswerDialog(appliedUser: AppliedUser, job: MyJob){
-    const ref = this.dialog.open(AnswerToAppliedUserDialogComponent,{
+  //válaszüzenet küldése dialógus megnyitása megfelelő adatokkal
+  openAnswerDialog(appliedUser: AppliedUser, job: MyJob) {
+    const ref = this.dialog.open(AnswerToAppliedUserDialogComponent, {
       data: {
         profile: appliedUser.User, status: appliedUser.AppliedUserStatus.id,
         lang: this.lang, jobName: job.jobData.selectedTranslation.title, jobCompany: job.jobData.companyName,
@@ -117,11 +118,11 @@ export class MyJobsComponent implements OnInit, OnDestroy {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    this.messageDialogSubscription = ref.afterClosed().subscribe(()=>{
-      if(ref.componentInstance.reactionNeeded){
+    this.messageDialogSubscription = ref.afterClosed().subscribe(() => {
+      if (ref.componentInstance.reactionNeeded) {
         this.initData();
-        this.dialog.open(MessageDialogComponent,{
-          data: {icon: 'done', text: this.succesfulAnswerText},
+        this.dialog.open(MessageDialogComponent, {
+          data: { icon: 'done', text: this.succesfulAnswerText },
           backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
           disableClose: true
         });

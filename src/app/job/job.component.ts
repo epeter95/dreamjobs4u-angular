@@ -46,7 +46,8 @@ export class JobComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private roleService: RoleService,
     public dialog: MatDialog) { }
-
+  //szükséges szerepkör lekérdezése, facebook megosztás link beállítása, állás, publikus tartalmak, általános üzenetek
+  //hibaüzenetek, felhasználó jelentkezett-e az állásra lekérdezése, fordítások beállítása
   ngOnInit(): void {
     this.isEmployeeRole = this.roleService.checkEmployeeRole(this.roleService.getRole()!);
     this.isEmployerRole = this.roleService.checkEmployerRole(this.roleService.getRole()!);
@@ -94,7 +95,7 @@ export class JobComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
-
+  //felhasználó jelentkezése állásra
   applyToJob() {
     this.dataService.httpPostMethod('/api/jobs/public/userApplyToJob', { jobId: this.job.id }, this.dataService.getAuthHeader()).subscribe(res => {
       this.dialog.open(MessageDialogComponent, {
@@ -105,7 +106,7 @@ export class JobComponent implements OnInit, OnDestroy {
       this.isUserAlreadyAppliedToJob = 'exist';
     });
   }
-
+  //felhasználó jelentkezésének visszamondása állásról
   removeFromJob() {
     this.dataService.httpPostMethod('/api/jobs/public/userRemoveFromJob', { jobId: this.job.id }, this.dataService.getAuthHeader()).subscribe(res => {
       this.dialog.open(MessageDialogComponent, {

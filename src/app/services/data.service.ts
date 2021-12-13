@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SessionService } from './session.service';
-
+//http hívások kezelése
 @Injectable({
   providedIn: 'root'
 })

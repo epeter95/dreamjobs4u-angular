@@ -147,13 +147,13 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
   }
-
+  //szükséges feliratkozások megszüntetése
   ngOnDestroy() {
     this.languageSubscription.unsubscribe();
     this.modifyDialogRefSubscription.unsubscribe();
     this.createDialogRefSubscription.unsubscribe();
   }
-
+  //logó feltöltés kezelése
   handleLogo(event: any) {
     this.fileData = event.target.files[0] as File;
     const files = event.target.files;
@@ -165,13 +165,13 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.imageChanging = true;
     }
   }
-
+  //kiválasztott állás legördülő menübe való betöltése
   setDropdownData(data: DropdownData) {
     this.selectedJob = data;
     this.jobDropdownControl.setValue(data.value);
     this.isDropdownOpen = false;
   }
-
+  // módosítás esetén adatok betöltése az űrlapba
   setFormData() {
     if (!this.selectedJob && this.isModify) {
       this.dialog.open(MessageDialogComponent, {
@@ -226,7 +226,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       this.jobForm.setValue(formValue);
     });
   }
-
+  //publikus tartalmak, általános üzenetek, hibaüzenetek, nyelvek és kategóriák lekérdezése, fordítások beállítása
   initData() {
     let requests: Observable<any>[] = [
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public'),
@@ -298,11 +298,11 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       });
     });
   }
-
+  //language beállítása
   setJobLanguageKey(key: string) {
     this.jobLanguageKey = key;
   }
-
+  //adatok mentése ellenőrzés után, megfelelő szolgáltatás hívással
   saveJob() {
     if (!this.selectedJob && this.isModify) {
       this.dialog.open(MessageDialogComponent, {
@@ -397,12 +397,12 @@ export class JobHandleComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  //legördülő menü megnyitása
   openDropdown(element: FormElement) {
     element.focus = !element.focus;
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
   }
-
+  //kiválasztott kategória beállítása
   setSelectedCategory(category: Category) {
     this.selectedCategory = category;
     this.jobForm.controls.jobCategoryId.setValue(category.selectedTranslation.text);

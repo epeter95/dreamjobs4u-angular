@@ -51,62 +51,62 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private dataService: DataService,
     private languageService: LanguageService) { }
-
+  //kategóriák, publikus tartalmak, állások lekérdezése és fordításaik beállítani
   ngOnInit(): void {
     forkJoin([
       this.dataService.getAllData('/api/categories/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/home/public'),
       this.dataService.getAllData('/api/jobs/public')
-    ]).subscribe(res=>{
+    ]).subscribe(res => {
       this.categories = res[0];
       this.homeCategories = res[0];
       this.publicContents = res[1];
-      this.jobs = (res[2] as Job[]).filter(element=>element.showOnMainPage);
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.categories = this.categories.map((element: Category)=>{
+      this.jobs = (res[2] as Job[]).filter(element => element.showOnMainPage);
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.categories = this.categories.map((element: Category) => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
           });
-          this.homeCategories = this.homeCategories.map(element=>{
+          this.homeCategories = this.homeCategories.map(element => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
             return element;
-          }).sort((a,b)=>{
+          }).sort((a, b) => {
             return b.Jobs.length - a.Jobs.length;
           })
-          this.jobs = this.jobs.map(element=>{
+          this.jobs = this.jobs.map(element => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
             element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
             return element;
           });
-          this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeTextSearchTerm','PublicContentTranslations');
-          this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySearchTerm','PublicContentTranslations');
-          this.searchTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchTitle','PublicContentTranslations');
-          this.searchSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubtitle','PublicContentTranslations');
-          this.searchSubmitButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeSearchSubmitButtonText','PublicContentTranslations');
-          
-          this.categoryTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryTitleText','PublicContentTranslations');
-          this.categorySubtitleText = res[2].length +' '+ this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategorySubtitleText','PublicContentTranslations');
-          this.categoryJobCountText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeCategoryJobCountText','PublicContentTranslations');
-          this.allCategoryButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeAllCategoryButtonText','PublicContentTranslations'); 
-          
-          this.registrationTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationTitleText','PublicContentTranslations');
-          this.registrationSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationSubtitleText','PublicContentTranslations');
-          this.registrationButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeRegistrationButtonText','PublicContentTranslations');
-          this.profileTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileTitleText','PublicContentTranslations');
-          this.profileSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileSubtitleText','PublicContentTranslations');
-          this.profileButtonText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeProfileButtonText','PublicContentTranslations');
-          
-          this.jobsTitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeJobsTitleText','PublicContentTranslations');
-          this.jobsSubtitleText = this.languageService.getTranslationByKey(lang,this.publicContents,'title','homeJobsSubtitleText','PublicContentTranslations');
-          this.allJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','homeJobsAllJobButtonText', 'PublicContentTranslations');
+          this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeTextSearchTerm', 'PublicContentTranslations');
+          this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeCategorySearchTerm', 'PublicContentTranslations');
+          this.searchTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeSearchTitle', 'PublicContentTranslations');
+          this.searchSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeSearchSubtitle', 'PublicContentTranslations');
+          this.searchSubmitButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeSearchSubmitButtonText', 'PublicContentTranslations');
+
+          this.categoryTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeCategoryTitleText', 'PublicContentTranslations');
+          this.categorySubtitleText = res[2].length + ' ' + this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeCategorySubtitleText', 'PublicContentTranslations');
+          this.categoryJobCountText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeCategoryJobCountText', 'PublicContentTranslations');
+          this.allCategoryButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeAllCategoryButtonText', 'PublicContentTranslations');
+
+          this.registrationTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeRegistrationTitleText', 'PublicContentTranslations');
+          this.registrationSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeRegistrationSubtitleText', 'PublicContentTranslations');
+          this.registrationButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeRegistrationButtonText', 'PublicContentTranslations');
+          this.profileTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeProfileTitleText', 'PublicContentTranslations');
+          this.profileSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeProfileSubtitleText', 'PublicContentTranslations');
+          this.profileButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeProfileButtonText', 'PublicContentTranslations');
+
+          this.jobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeJobsTitleText', 'PublicContentTranslations');
+          this.jobsSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeJobsSubtitleText', 'PublicContentTranslations');
+          this.allJobButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'homeJobsAllJobButtonText', 'PublicContentTranslations');
           this.pageLoaded = Promise.resolve(true);
         }
       });
     });
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
   }
 

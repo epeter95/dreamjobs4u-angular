@@ -14,7 +14,7 @@ export class MessageDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  //dialógus ablak bezárása
   closeDialog(actionNeeded: boolean){
     this.actionNeeded = actionNeeded;
     this.dialogRef.close();

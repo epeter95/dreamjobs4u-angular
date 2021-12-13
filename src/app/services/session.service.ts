@@ -7,6 +7,7 @@ import { UserData } from '../interfaces/user-data';
   providedIn: 'root'
 })
 export class SessionService {
+  //session adatokhoz szükséges observablek és kezelő metódusok beállítása
   private userLoggedInSubject: Subject<boolean> = new BehaviorSubject<boolean>(this.initUserLoggedIn());
   userLoggedInObservable$ = this.userLoggedInSubject.asObservable();
 

@@ -23,19 +23,19 @@ export class HomeRegisterComponent implements OnInit, OnDestroy {
   registrationDoneDialogSubscription: Subscription = new Subscription();
   isUserLoggedIn: boolean = false;
   constructor(public dialog: MatDialog, private sessionService: SessionService) { }
-
+  //felhasználó be van-e jelentkezve feliratkozás
   ngOnInit(): void {
-    this.sessionService.userLoggedInObservable$.subscribe(state=>{
+    this.sessionService.userLoggedInObservable$.subscribe(state => {
       this.isUserLoggedIn = state;
     })
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.registrationDialogSubscription.unsubscribe();
     this.registrationDoneDialogSubscription.unsubscribe();
   }
-
-  openRegistrationDialog(){
+  //regisztrációs dialógus ablak megnyitása, további dialógusok megnyitása utána, ha szükséges
+  openRegistrationDialog() {
     const registrationDialogRef = this.dialog.open(RegistrationDialogComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
@@ -54,7 +54,7 @@ export class HomeRegisterComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  //bejelentkezés dialógus megnyitása
   openLoginDialog() {
     const loginDialogRef = this.dialog.open(LoginComponent, {
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',

@@ -9,6 +9,7 @@ import { LanguageService } from './services/language.service';
 })
 export class AppComponent {
   title = 'sweetjobs-angular';
+  //az alkalmazáshoz tartozó nyelvek importálása
   constructor(private dataService: DataService, private languageService: LanguageService){
     languageService.initLanguage();
     this.dataService.getAllData('/api/languages/public').subscribe(res => {

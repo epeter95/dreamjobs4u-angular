@@ -7,7 +7,7 @@ import { PublicContent } from 'src/app/interfaces/public-contents';
 import { UserProfileData } from 'src/app/interfaces/user-data';
 import { DataService } from 'src/app/services/data.service';
 import { LanguageService } from 'src/app/services/language.service';
-export interface AnswerDialogData{
+export interface AnswerDialogData {
   profile: UserProfileData,
   status: number;
   lang: string;
@@ -41,15 +41,15 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: AnswerDialogData,
     private languageService: LanguageService,
     private dataService: DataService) { }
-
+  //státuszok, publikus tartalmak lekérdezése fordítások beállítása
   ngOnInit(): void {
     this.activeStatusId = this.data.status.toString();
     console.log(this.data);
     forkJoin([
       this.dataService.getAllData('/api/appliedUserStatuses/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
-    ]).subscribe(res=>{
-      this.userStatuses = res[0].map((element: AppliedUserStatus)=>{
+    ]).subscribe(res => {
+      this.userStatuses = res[0].map((element: AppliedUserStatus) => {
         element.selectedTranslation = this.languageService.getTranslation(this.data.lang, element.AppliedUserStatusTranslations);
         return element;
       });
@@ -61,41 +61,41 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
       this.missingMessageText = this.languageService.getTranslationByKey(this.data.lang, this.publicContents, 'title', 'employerJobsMissingMessageText', 'PublicContentTranslations');
     });
   }
-
+  //fájfeltöltés kezelése
   handleFileUpload(event: any) {
     this.fileData = event.target.files[0] as File;
     this.fileUrl = this.fileData.name;
   }
-
-  setActiveId(status: AppliedUserStatus){
+  //aktív státusz beállítása
+  setActiveId(status: AppliedUserStatus) {
     this.activeStatusId = status.id.toString();
   }
-
-  closeDialog(){
+  //ablak bezárása
+  closeDialog() {
     this.dialogRef.close();
   }
-
-  sendAnswer(){
-    if(this.messageControl.valid){
+  //válasz elküldése esetleges fájl csatolással ellenőrzés után
+  sendAnswer() {
+    if (this.messageControl.valid) {
       let formData = new FormData();
-      formData.append('message',this.messageControl.value);
+      formData.append('message', this.messageControl.value);
       formData.append('toEmail', this.data.profile.email);
       formData.append('jobName', this.data.jobName);
       formData.append('jobCompany', this.data.jobCompany);
       formData.append('appliedUserStatusId', this.activeStatusId);
       formData.append('jobId', this.data.jobId.toString());
       formData.append('userId', this.data.userId.toString());
-      if(this.fileData){
+      if (this.fileData) {
         formData.append('fileData', this.fileData);
       }
-      this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser',formData, this.dataService.getAuthHeader()).subscribe(res=>{
+      this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser', formData, this.dataService.getAuthHeader()).subscribe(res => {
         console.log(res);
-        if(!res.error){
+        if (!res.error) {
           this.reactionNeeded = true;
           this.dialogRef.close();
         }
       });
-    }else{
+    } else {
       this.messageIsMissing = true;
     }
   }

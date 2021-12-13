@@ -19,7 +19,7 @@ export class EmployerJobsComponent implements OnInit, OnDestroy {
   eventsTitleText: string = '';
 
   constructor(private dataService: DataService, private languageService: LanguageService) { }
-
+  //publikus tartalmak lekérdezése, fordítások beállítása
   ngOnInit(): void {
     this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public').subscribe(res=>{
       this.publicContents = res;

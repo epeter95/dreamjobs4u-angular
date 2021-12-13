@@ -70,12 +70,12 @@ export class JobsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
   }
-
+  //megszünteti a szükséges feliratkozásokat
   ngOnDestroy(){
     this.languageSubscription.unsubscribe();
     this.activatedRouteSubscription.unsubscribe();
   }
-
+  //meghívja az állások, publikus tartalmak, kategóriákat és beállítja a fordításokat
   initData() {
     let sources: Observable<any>[] = [
       this.dataService.getAllData('/api/jobs/public'),
@@ -154,16 +154,16 @@ export class JobsComponent implements OnInit, OnDestroy {
       });
     });
   }
-
+  //beállítja a kiválasztott kategóriát a keresőnek
   setSelectedCategory(category: Category) {
     this.searchForm.controls.jobCategorySearchTerm.setValue(category.selectedTranslation.text);
     this.isCategoryDropdownOpen = false;
   }
-
+  //kezeli a kategória legördülő menüt
   openCategory() {
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
   }
-
+  //állás filterezése a megadott paraméterek segítségével
   filterJobs(navigationNeeded: boolean) {
     const searchTerm = this.searchForm.controls.jobTextSearchTerm.value;
     const jobCategorySearchTerm = this.searchForm.controls.jobCategorySearchTerm.value;

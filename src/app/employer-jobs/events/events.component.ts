@@ -32,7 +32,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   languageSubscription: Subscription = new Subscription();
   messageDialogSubscription: Subscription = new Subscription();
   deleteMessageSubscription: Subscription = new Subscription();
-  publicContents: PublicContent[] =  new Array();
+  publicContents: PublicContent[] = new Array();
   eventsTitleText: string = '';
   createEventTitleText: string = '';
   deleteEventWarningText: string = '';
@@ -44,7 +44,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   mandatoryDatumtext: string = '';
   formErrorText: string = '';
   eventPeopleText: string = '';
-  tmpStartDateVal = this.date.getFullYear()+'.'+String(this.date.getMonth() + 1).padStart(2, '0')+ '.' + String(this.date.getDate()).padStart(2, '0') + '.-'+ String(this.date.getHours()).padStart(2, '0') + ':' + String(this.date.getMinutes()).padStart(2, '0');
+  tmpStartDateVal = this.date.getFullYear() + '.' + String(this.date.getMonth() + 1).padStart(2, '0') + '.' + String(this.date.getDate()).padStart(2, '0') + '.-' + String(this.date.getHours()).padStart(2, '0') + ':' + String(this.date.getMinutes()).padStart(2, '0');
   eventForm: FormGroup = new FormGroup({
     eventJob: new FormControl('', Validators.required),
     eventUsers: new FormControl('', Validators.required),
@@ -53,18 +53,18 @@ export class EventsComponent implements OnInit, OnDestroy {
         Validators.required, Validators.pattern('202[0-9].[0-1][0-9].[0-3][0-9].-[0-2][0-9][:][0-5][0-9]')
       ]))
   });
-  
+
   events: VideoEvent[] = new Array();
 
-  @ViewChild('appliedUserButton') appliedUserButton!:ElementRef;
-  @ViewChildren('appliedUserContainer') appliedUserContainer!:ElementRef;
-  @ViewChild('jobsButton') jobsButton!:ElementRef;
-  @ViewChild('jobsContainer') jobsContainer!:ElementRef;
-
+  @ViewChild('appliedUserButton') appliedUserButton!: ElementRef;
+  @ViewChildren('appliedUserContainer') appliedUserContainer!: ElementRef;
+  @ViewChild('jobsButton') jobsButton!: ElementRef;
+  @ViewChild('jobsContainer') jobsContainer!: ElementRef;
   constructor(private dataService: DataService,
     private languageService: LanguageService,
     private renderer: Renderer2,
     public dialog: MatDialog) {
+    //megfelelő legördülő menük becsukása máshova kattintás esetén
     this.renderer.listen('window', 'click', (e: Event) => {
       // if (this.appliedUserButton && this.appliedUserContainer) {
       //   if (e.target !== this.appliedUserButton.nativeElement) {
@@ -76,7 +76,7 @@ export class EventsComponent implements OnInit, OnDestroy {
       //   }
       // }
 
-      if(this.appliedUserButton && this.appliedUserContainer){
+      if (this.appliedUserButton && this.appliedUserContainer) {
         if (e.target !== this.appliedUserButton.nativeElement && e.target !== this.appliedUserContainer.nativeElement) {
           this.isUsersDropdownOpen = false;
         }
@@ -91,41 +91,41 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-   this.initData();
+    this.initData();
   }
-
-  ngOnDestroy(){
+  //szükséges feliratkozások megszüntetése
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
     this.messageDialogSubscription.unsubscribe();
     this.deleteMessageSubscription.unsubscribe();
   }
-
-  initData(){
+  //publikus tartalmak, állás legördülő menü adatok, és események lekérdezése token alapján és fordításaik beállítása
+  initData() {
     forkJoin([
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public'),
-      this.dataService.getAllData('/api/jobs/public/getJobDropdownDataByToken',this.dataService.getAuthHeader()),
-      this.dataService.getAllData('/api/events/public/getEventsByToken',this.dataService.getAuthHeader())
-    ]).subscribe(res=>{
+      this.dataService.getAllData('/api/jobs/public/getJobDropdownDataByToken', this.dataService.getAuthHeader()),
+      this.dataService.getAllData('/api/events/public/getEventsByToken', this.dataService.getAuthHeader())
+    ]).subscribe(res => {
       this.publicContents = res[0];
       this.jobs = res[1];
       this.events = res[2];
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{
-        if(lang){
-          this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventsPageTitle','PublicContentTranslations');
-          this.createEventTitleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsCreateEventText','PublicContentTranslations');
-          this.eventSuccessfullyCreatedText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsSuccesfullyCreateEventText','PublicContentTranslations');
-          this.submitButtonText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventCreateButtonText','PublicContentTranslations');
-          this.mandatoryDatumtext = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsMandatoryDateFormatText','PublicContentTranslations');
-          this.deleteEventWarningText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventDeleteWarningText','PublicContentTranslations');
-          this.eventPeopleText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventPeopleText','PublicContentTranslations'); 
-          this.formErrorText = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerEventWrongFormFormatText','PublicContentTranslations'); 
-          this.jobs = this.jobs.map(element=>{
+      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
+        if (lang) {
+          this.eventsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventsPageTitle', 'PublicContentTranslations');
+          this.createEventTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsCreateEventText', 'PublicContentTranslations');
+          this.eventSuccessfullyCreatedText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsSuccesfullyCreateEventText', 'PublicContentTranslations');
+          this.submitButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventCreateButtonText', 'PublicContentTranslations');
+          this.mandatoryDatumtext = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsMandatoryDateFormatText', 'PublicContentTranslations');
+          this.deleteEventWarningText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerEventDeleteWarningText', 'PublicContentTranslations');
+          this.eventPeopleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventPeopleText', 'PublicContentTranslations');
+          this.formErrorText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerEventWrongFormFormatText', 'PublicContentTranslations');
+          this.jobs = this.jobs.map(element => {
             element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
             return element;
           })
-          this.jobsDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventJobsPlaceholderText','PublicContentTranslations');
-          this.usersDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents,'title','employerJobsEventUsersPlaceholderText','PublicContentTranslations');
-          this.events = this.events.map(element=>{
+          this.jobsDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventJobsPlaceholderText', 'PublicContentTranslations');
+          this.usersDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'employerJobsEventUsersPlaceholderText', 'PublicContentTranslations');
+          this.events = this.events.map(element => {
             element.Job.selectedTranslation = this.languageService.getTranslation(lang, element.Job.JobTranslations);
             return element;
           })
@@ -134,18 +134,18 @@ export class EventsComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-  setSelectedJob(job: Job){
+  //kiválasztott állás beállítása, majd állásra jelentkezett felhasználó legördülő menü megjelenítése ( ha van )
+  setSelectedJob(job: Job) {
     this.eventForm.controls.eventJob.setValue(job.selectedTranslation.title);
     this.isJobsDropdownOpen = false;
     this.isUsersDropdownOpen = false;
     this.eventForm.controls.eventUsers.setValue('');
-    this.dataService.getAllData('/api/jobs/public/getAppliedUsersByJobId/'+job.id, this.dataService.getAuthHeader()).subscribe(res=>{
+    this.dataService.getAllData('/api/jobs/public/getAppliedUsersByJobId/' + job.id, this.dataService.getAuthHeader()).subscribe(res => {
       this.users = res;
     });
   }
-
-  setSelectedUsers(user: AppliedUser){
+  //kiválasztott vendég beállítása
+  setSelectedUsers(user: AppliedUser) {
     let name = user.User.lastName + ' ' + user.User.firstName;
     // let currentValue = this.eventForm.controls.eventUsers.value.toString();
     // let tmpValue = currentValue.split(', ');
@@ -166,15 +166,16 @@ export class EventsComponent implements OnInit, OnDestroy {
     // this.isUsersDropdownOpen = false;
     this.eventForm.controls.eventUsers.setValue(name);
   }
-
-  createEvent(){
-    if(this.eventForm.valid){
-      const job = this.jobs.find(element=>element.selectedTranslation.title == this.eventForm.controls.eventJob.value);
+  //esemény létrehozása megfelelő ellenőrzések után
+  createEvent() {
+    if (this.eventForm.valid) {
+      const job = this.jobs.find(element => element.selectedTranslation.title == this.eventForm.controls.eventJob.value);
       const userNames = this.eventForm.controls.eventUsers.value.split(', ');
       let userIds = [];
-      for(let i=0;i<userNames.length;++i){
-        let user = this.users.find(element=>{
-          return element.User.lastName+' '+element.User.firstName == userNames[i]}
+      for (let i = 0; i < userNames.length; ++i) {
+        let user = this.users.find(element => {
+          return element.User.lastName + ' ' + element.User.firstName == userNames[i]
+        }
         );
         userIds.push(user?.User.id);
       }
@@ -183,51 +184,51 @@ export class EventsComponent implements OnInit, OnDestroy {
         users: userIds,
         startDate: this.eventForm.controls.eventStartDate.value
       }
-      this.dataService.httpPostMethod('/api/events/public/createEvent', result, this.dataService.getAuthHeader()).subscribe(res=>{
+      this.dataService.httpPostMethod('/api/events/public/createEvent', result, this.dataService.getAuthHeader()).subscribe(res => {
         console.log(res);
-        if(!res.error){
-          const ref = this.dialog.open(MessageDialogComponent,{
-            data: {icon: 'done', text: this.eventSuccessfullyCreatedText},
+        if (!res.error) {
+          const ref = this.dialog.open(MessageDialogComponent, {
+            data: { icon: 'done', text: this.eventSuccessfullyCreatedText },
             backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
             disableClose: true
           });
-          this.messageDialogSubscription = ref.afterClosed().subscribe(()=>{
+          this.messageDialogSubscription = ref.afterClosed().subscribe(() => {
             this.initData();
           });
         }
       });
-    }else{
-      this.dialog.open(MessageDialogComponent,{
-        data: {icon: 'warning', text: this.formErrorText},
+    } else {
+      this.dialog.open(MessageDialogComponent, {
+        data: { icon: 'warning', text: this.formErrorText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
         disableClose: true
       });
     }
   }
-
-  deleteEvent(id: number){
-    const ref = this.dialog.open(MessageDialogComponent,{
-      data: {id: 'warning', text: this.deleteEventWarningText, cancel: true},
+  //esemény törlése figyelmezetető ablak oké után azonosító alapján
+  deleteEvent(id: number) {
+    const ref = this.dialog.open(MessageDialogComponent, {
+      data: { id: 'warning', text: this.deleteEventWarningText, cancel: true },
       backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
       disableClose: true
     });
-    this.deleteMessageSubscription = ref.afterClosed().subscribe(()=>{
-      if(ref.componentInstance.actionNeeded){
-        this.dataService.httpDeleteMethod('/api/events/public/delete',id.toString(),this.dataService.getAuthHeader()).subscribe((res:any)=>{
-          if(!res.error){
+    this.deleteMessageSubscription = ref.afterClosed().subscribe(() => {
+      if (ref.componentInstance.actionNeeded) {
+        this.dataService.httpDeleteMethod('/api/events/public/delete', id.toString(), this.dataService.getAuthHeader()).subscribe((res: any) => {
+          if (!res.error) {
             this.initData();
           }
         });
       }
     })
-   
-  }
 
-  openJobs(){
+  }
+  //állások legördülő menü kezelése
+  openJobs() {
     this.isJobsDropdownOpen = !this.isJobsDropdownOpen;
   }
-
-  openUsers(){
+  //állásra jelentkezett felhasználó legördülő menü kezelése
+  openUsers() {
     this.isUsersDropdownOpen = !this.isUsersDropdownOpen;
   }
 

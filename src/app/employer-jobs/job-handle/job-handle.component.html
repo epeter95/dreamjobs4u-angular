@@ -34,7 +34,7 @@
                     <a (click)="pictureUpload.click()"
                         class="submit-button little-button">{{choosePictureButtonText}}</a>
                     <img *ngIf="imageUrl" [src]="imageUrl | sanitizer: 'resourceUrl'" class="file-input-image">
-                    <input (change)="handleProfilePicture($event)" #pictureUpload type="file" name="upload"
+                    <input (change)="handleLogo($event)" #pictureUpload type="file" name="upload"
                         accept="image/*" class="change-picture-input">
                 </div>
                 <div (click)="openDropdown(element)" *ngSwitchCase="'dropdown'" [ngClass]="element.focus ? 'form-field-focused': 'form-field'"

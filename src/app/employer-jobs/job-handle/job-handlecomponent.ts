@@ -154,7 +154,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
     this.createDialogRefSubscription.unsubscribe();
   }
 
-  handleProfilePicture(event: any) {
+  handleLogo(event: any) {
     this.fileData = event.target.files[0] as File;
     const files = event.target.files;
     const reader = new FileReader();
@@ -173,6 +173,14 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   }
 
   setFormData() {
+    if (!this.selectedJob && this.isModify) {
+      this.dialog.open(MessageDialogComponent, {
+        data: { icon: 'done', text: this.selectJobErrorText },
+        backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
+        disableClose: true
+      });
+      return;
+    }
     this.queriedJobId = this.selectedJob.key;
     this.jobQueried = true;
     this.dataService.getOneData('/api/jobs/public/getJobByIdAndToken/' + this.queriedJobId, this.dataService.getAuthHeader()).subscribe(res => {
@@ -296,7 +304,7 @@ export class JobHandleComponent implements OnInit, OnDestroy {
   }
 
   saveJob() {
-    if (!this.queriedJobId && this.isModify) {
+    if (!this.selectedJob && this.isModify) {
       this.dialog.open(MessageDialogComponent, {
         data: { icon: 'done', text: this.selectJobErrorText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',

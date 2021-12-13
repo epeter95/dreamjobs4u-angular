@@ -1,5 +1,4 @@
 import { Category } from "./category";
-import { Role } from "./role";
 
 export interface UserData{
     monogram: string;
@@ -21,7 +20,6 @@ export interface UserProfileData{
     address: string;
     Profile: Profile;
     Categories: Category[];
-    Role: Role;
 }
 
 export interface Profile{

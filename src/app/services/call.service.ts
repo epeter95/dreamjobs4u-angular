@@ -129,6 +129,7 @@ export class CallService {
       this.onCallClose()
     }
     this.isCallStartedBs.next(false);
+    location.reload();
   }
 
   public destroyPeer() {

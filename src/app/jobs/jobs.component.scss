@@ -57,8 +57,18 @@
     font-family: $regular-font;
     font-size: 16px;
     line-height: 24px;
-    margin: 25px auto;
+    margin: 15px auto;
     text-align: center;
+}
+
+.job-side-info{
+    color: $button-color;
+    font-family: $regular-font;
+    font-size: 12px;
+    margin-bottom: 2px;
+    line-height: 14px;
+    text-align: center;
+    text-decoration: none;
 }
 
 .job-category-name{

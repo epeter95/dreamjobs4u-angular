@@ -32,7 +32,12 @@
         <a [routerLink]="'/kategoria/'+job.Category.id+'/allas/'+job.id" class="job" *ngFor="let job of filteredJobs">
             <img class="job-image" [src]="job.logoUrl">
             <div class="job-name" *ngIf="job.selectedTranslation">{{job.selectedTranslation.title}}</div>
+            <div class="job-category-name">{{job.companyName}}</div>
             <div class="job-category-name" *ngIf="job.Category.selectedTranslation">{{job.Category.selectedTranslation.text}}</div>
+            <div style="margin-top: 10px;">
+                <div class="job-side-info" *ngIf="job.selectedTranslation">{{job.selectedTranslation.jobType}}</div>
+                <div class="job-side-info">{{job.jobLocation}}</div>
+            </div>
         </a>
     </div>
 </div>

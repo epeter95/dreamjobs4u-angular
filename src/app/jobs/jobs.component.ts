@@ -71,7 +71,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.initData();
   }
   //megszünteti a szükséges feliratkozásokat
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.languageSubscription.unsubscribe();
     this.activatedRouteSubscription.unsubscribe();
   }
@@ -92,8 +92,8 @@ export class JobsComponent implements OnInit, OnDestroy {
       this.jobs = res[0];
       this.publicContents = res[1];
       this.categories = res[2];
-      this.categories.map(element=>{
-        this.jobCountInSelectedCategory+=element.Jobs.length;
+      this.categories.map(element => {
+        this.jobCountInSelectedCategory += element.Jobs.length;
       });
       this.categoryPublicContents = res[3];
       if (res[4]) {
@@ -114,16 +114,12 @@ export class JobsComponent implements OnInit, OnDestroy {
           let selectedCategory = this.categories.find(element => element.id == +params.get('category')!)!;
           selectedCategory.selectedTranslation = this.languageService.getTranslation(this.languageService.getLangauge()!, selectedCategory.CategoryTranslations);
           this.searchForm.controls.jobCategorySearchTerm.setValue(selectedCategory.selectedTranslation.text);
-          this.jobCountInSelectedCategory = selectedCategory.Jobs.length;
-        }else{
+        } else {
           let selectedCategory = this.categories.find(element => element.key == 'allCategory')!;
           selectedCategory.selectedTranslation = this.languageService.getTranslation(this.languageService.getLangauge()!, selectedCategory.CategoryTranslations);
           this.searchForm.controls.jobCategorySearchTerm.setValue(selectedCategory.selectedTranslation.text);
-          this.categories.map(element=>{
-            this.jobCountInSelectedCategory+=element.Jobs.length;
-          });
         }
-      })
+      });
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
         this.jobs = this.jobs.map(element => {
           element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
@@ -143,8 +139,8 @@ export class JobsComponent implements OnInit, OnDestroy {
         if (this.searchForm.controls.jobTextSearchTerm.value || this.searchForm.controls.jobCategorySearchTerm.value) {
           this.filterJobs(false);
         }
-        this.noCategoriesText = this.languageService.getTranslationByKey(lang,this.categoryPublicContents,'title','categoriesPageNoCategoriesText','PublicContentTranslations');
-        this.jobCountTitleText = this.languageService.getTranslationByKey(lang,this.categoryPublicContents,'title','categoriesPageJobCountText','PublicContentTranslations');
+        this.noCategoriesText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageNoCategoriesText', 'PublicContentTranslations');
+        this.jobCountTitleText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageJobCountText', 'PublicContentTranslations');
         this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobTextSearchTerm', 'PublicContentTranslations');
         this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobCategorySearchTerm', 'PublicContentTranslations');
         this.jobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageTitle', 'PublicContentTranslations');
@@ -169,31 +165,29 @@ export class JobsComponent implements OnInit, OnDestroy {
     const jobCategorySearchTerm = this.searchForm.controls.jobCategorySearchTerm.value;
     let queryParams: any = {};
     this.filteredJobs = this.jobs;
-    if (searchTerm || jobCategorySearchTerm) {
-      if(searchTerm){
-        queryParams['text'] = searchTerm;
+    const category = this.categories.find(element => element.selectedTranslation.text == jobCategorySearchTerm);
+    queryParams['category'] = category!.id;
+    this.filteredJobs = this.filteredJobs.filter(element => {
+      if (category && category.key != 'allCategory') {
+        return (element.categoryId == category?.id && JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm.toLowerCase()));
       }
-      const category = this.categories.find(element => element.selectedTranslation.text == jobCategorySearchTerm);
-      if(jobCategorySearchTerm){
-        queryParams['category'] = category!.id;
-      }
-      if(category!.key == 'allCategory'){
-        this.jobCountInSelectedCategory = 0;
-        this.categories.map(element=>{
-          this.jobCountInSelectedCategory+=element.Jobs.length;
-        })
-      }else{
-        this.jobCountInSelectedCategory = category!.Jobs.length;
-      }
+      return true;
+    });
+    if (searchTerm) {
+      queryParams['text'] = searchTerm;
       this.filteredJobs = this.jobs.filter(element => {
-        if (category && category.key != 'allCategory') {
-          return (element.categoryId == category?.id && JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm));
-        }
-        return (JSON.stringify(element.JobTranslations).toLowerCase().includes(searchTerm));
+        console.log(element.selectedTranslation.jobType);
+        unAccentise(searchTerm.toLowerCase())
+        return (unAccentise(element.Category.selectedTranslation.text.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())) ||
+          unAccentise(element.selectedTranslation.jobType.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())) ||
+          unAccentise(element.selectedTranslation.title.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())) ||
+          unAccentise(element.companyName.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())) ||
+          unAccentise(element.jobLocation.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())));
       });
     }
-    if(navigationNeeded){
-      this.router.navigate(['/allasok'], {queryParams: queryParams ? queryParams : null});
+    this.jobCountInSelectedCategory = this.filteredJobs.length;
+    if (navigationNeeded) {
+      this.router.navigate(['/allasok'], { queryParams: queryParams ? queryParams : null });
     }
   }
 

@@ -93,7 +93,6 @@ export class ContactInformationComponent implements OnInit, OnDestroy {
       address: this.contactInfoForm.controls.profileAddress.value
     }
     this.dataService.httpPostMethod('/api/profiles/public/modifyProfileData', profileResult, this.dataService.getAuthHeader()).subscribe(res => {
-      console.log(res);
       this.dialog.open(MessageDialogComponent, {
         data: { icon: 'done', text: this.successfulContactInfoText },
         backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',

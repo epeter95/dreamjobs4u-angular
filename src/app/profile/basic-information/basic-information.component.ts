@@ -102,7 +102,6 @@ export class BasicInformationComponent implements OnInit, OnDestroy {
   //önéletrajz feltöltésének kezelése
   handleCVPdf(event: any) {
     this.fileData = event.target.files[0] as File;
-    console.log(event.target.files[0].name);
     this.cvUrl = this.fileData.name;
     this.basicInfoForm.controls.profileCv.setValue('value');
     this.cvChanging = true;

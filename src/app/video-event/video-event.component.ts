@@ -50,10 +50,8 @@ export class VideoEventComponent implements OnInit, OnDestroy {
           this.dataService.getOneData('/api/events/public/getUserIdByToken', this.dataService.getAuthHeader())
         ])
           .subscribe(res => {
-            console.log(res);
             this.event = res[0];
             this.userId = res[1].userId;
-            console.log(this.userId);
             this.peerId = this.callService.initPeer(this.event.link);
             if (!this.event.Users.find(element => element.id == this.userId) && this.userId != this.event.ownerId) {
               this.router.navigate(['/']);
@@ -102,7 +100,6 @@ export class VideoEventComponent implements OnInit, OnDestroy {
         } else {
           const userIds = this.event.Users.map(element => element.id);
           this.dataService.httpPostMethod('/api/events/public/sendLinkToUsers', { eventId: this.event.id, pwdId: this.peerId, users: userIds }, this.dataService.getAuthHeader()).subscribe(res => {
-            console.log(res);
           });
           return of(this.callService.enableCallAnswer())
         }

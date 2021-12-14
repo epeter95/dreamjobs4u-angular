@@ -44,7 +44,6 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
   //státuszok, publikus tartalmak lekérdezése fordítások beállítása
   ngOnInit(): void {
     this.activeStatusId = this.data.status.toString();
-    console.log(this.data);
     forkJoin([
       this.dataService.getAllData('/api/appliedUserStatuses/public'),
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
@@ -89,7 +88,6 @@ export class AnswerToAppliedUserDialogComponent implements OnInit {
         formData.append('fileData', this.fileData);
       }
       this.dataService.httpPostMethod('/api/users/public/sendAnswerToAppliedUser', formData, this.dataService.getAuthHeader()).subscribe(res => {
-        console.log(res);
         if (!res.error) {
           this.reactionNeeded = true;
           this.dialogRef.close();

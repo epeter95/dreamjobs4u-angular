@@ -185,7 +185,6 @@ export class EventsComponent implements OnInit, OnDestroy {
         startDate: this.eventForm.controls.eventStartDate.value
       }
       this.dataService.httpPostMethod('/api/events/public/createEvent', result, this.dataService.getAuthHeader()).subscribe(res => {
-        console.log(res);
         if (!res.error) {
           const ref = this.dialog.open(MessageDialogComponent, {
             data: { icon: 'done', text: this.eventSuccessfullyCreatedText },

@@ -86,7 +86,6 @@ export class ContactComponent implements OnInit, OnDestroy {
       }
 
       this.dataService.httpPostMethod('/api/contacts/sendMailFromContact', result).subscribe(res => {
-        console.log(res);
         if (res.ok) {
           this.dialog.open(MessageDialogComponent, {
             data: { icon: 'done', text: 'Észrevételét továbbítottuk!' },

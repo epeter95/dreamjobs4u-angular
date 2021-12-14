@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Language } from './interfaces/language';
 import { DataService } from './services/data.service';
 import { LanguageService } from './services/language.service';
 
@@ -13,7 +14,7 @@ export class AppComponent {
   constructor(private dataService: DataService, private languageService: LanguageService){
     languageService.initLanguage();
     this.dataService.getAllData('/api/languages/public').subscribe(res => {
-      this.languageService.nextLanguagesArray(res);
+      this.languageService.nextLanguagesArray(res.filter((element: Language)=>element.active));
     });
   }
 }

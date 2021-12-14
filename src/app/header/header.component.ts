@@ -150,7 +150,7 @@ export class HeaderComponent implements OnInit {
       this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/employerJobs/public')
     ]).subscribe(res => {
       this.publicContents = res[0];
-      this.languages = res[1];
+      this.languages = res[1].filter((element: Language)=>element.active);
       this.profilesPublicContents = res[2];
       this.employerJobsPublicContents = res[3];
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {

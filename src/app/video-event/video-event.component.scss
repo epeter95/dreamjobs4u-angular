@@ -33,12 +33,13 @@
 
 #video-wrapper{
     width: 100%;
+    margin-top: 30px;
     box-sizing: border-box;
     position: relative;
+    background-color: black;
 }
 
 #remote-video{
-    margin-top: 30px;
     width: 100%;
     height: auto;
     max-height: 700px;

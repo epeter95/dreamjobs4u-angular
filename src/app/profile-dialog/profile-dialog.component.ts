@@ -28,9 +28,9 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     private dataService: DataService) { }
     //publikus tartalmak lekérdezése, adatok kezelése dialógus ablak megnyitásából származva, fordítások beállítása
   ngOnInit(): void {
-    if(this.data.Profile.cvPath)
-    console.log(this.data);
-    this.cvName = this.data.Profile.cvPath.substr(this.data.Profile.cvPath.lastIndexOf('/')+1);
+    if(this.data.Profile.cvPath){
+      this.cvName = this.data.Profile.cvPath.substr(this.data.Profile.cvPath.lastIndexOf('/')+1);
+    }
     this.dataService.getAllData('/api/publicContents/getByPagePlaceKey/profile/public').subscribe(res=>{
       this.publicContents = res;
       this.languageSubscription = this.languageService.languageObservable$.subscribe(lang=>{

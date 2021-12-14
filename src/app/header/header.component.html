@@ -21,7 +21,7 @@
                 <div #languageContainer class="languages-menu" *ngIf="isLanguagesOpen">
                     <div [ngClass]="language.key == activeLanguageKey ? 'active-navigation-link' : 'navigation-link'"
                         class="navigation-link" (click)="setLanguage(language)" *ngFor="let language of languages">
-                        <img class="flag-image" [src]="language.flag">{{language.selectedTranslation.name}}
+                        <img class="flag-image" [src]="language.flagUrl">{{language.selectedTranslation.name}}
                     </div>
                 </div>
             </div>

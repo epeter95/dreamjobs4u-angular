@@ -164,11 +164,6 @@ export class HeaderComponent implements OnInit {
           this.categoryText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarCategoryText', 'PublicContentTranslations');
           this.contactText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'navbarContactText', 'PublicContentTranslations');
           this.languages = this.languages.map((element: Language) => {
-            if (element.key == 'hu') {
-              element.flag = '/assets/images/hun-flag.png';
-            } else if (element.key == 'en') {
-              element.flag = '/assets/images/eng-flag.png';
-            }
             element.selectedTranslation = this.languageService.getTranslation(lang, element.LanguageTranslations);
             return element;
           });

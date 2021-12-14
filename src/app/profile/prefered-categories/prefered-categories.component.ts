@@ -90,7 +90,7 @@ export class PreferedCategoriesComponent implements OnInit, OnDestroy {
     this.dataService.httpPostMethod('/api/users/public/addUserCategories', { categories: this.selectedCategories }, this.dataService.getAuthHeader()).subscribe(res => {
       if (!res.error) {
         this.dialog.open(MessageDialogComponent, {
-          data: { icon: 'done', text: 'Sikeres' },
+          data: { icon: 'done', text: 'Sikeres kategória módosítás!' },
           backdropClass: 'general-dialog-background', panelClass: 'general-dialog-panel',
           disableClose: true
         });

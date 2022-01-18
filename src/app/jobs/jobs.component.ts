@@ -175,7 +175,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     });
     if (searchTerm) {
       queryParams['text'] = searchTerm;
-      this.filteredJobs = this.jobs.filter(element => {
+      this.filteredJobs = this.filteredJobs.filter(element => {
         console.log(element.selectedTranslation.jobType);
         unAccentise(searchTerm.toLowerCase())
         return (unAccentise(element.Category.selectedTranslation.text.toLowerCase()).includes(unAccentise(searchTerm.toLowerCase())) ||

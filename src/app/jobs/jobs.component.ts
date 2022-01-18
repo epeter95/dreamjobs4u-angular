@@ -110,43 +110,42 @@ export class JobsComponent implements OnInit, OnDestroy {
         if (params.get('text')) {
           this.searchForm.controls.jobTextSearchTerm.setValue(params.get('text'))
         }
+        let selectedCategory: any;
         if (params.get('category')) {
-          let selectedCategory = this.categories.find(element => element.id == +params.get('category')!)!;
-          selectedCategory.selectedTranslation = this.languageService.getTranslation(this.languageService.getLangauge()!, selectedCategory.CategoryTranslations);
-          this.searchForm.controls.jobCategorySearchTerm.setValue(selectedCategory.selectedTranslation.text);
+          selectedCategory = this.categories.find(element => element.id == +params.get('category')!)!;
         } else {
-          let selectedCategory = this.categories.find(element => element.key == 'allCategory')!;
+          selectedCategory = this.categories.find(element => element.key == 'allCategory')!;
+        }
+        this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
           selectedCategory.selectedTranslation = this.languageService.getTranslation(this.languageService.getLangauge()!, selectedCategory.CategoryTranslations);
           this.searchForm.controls.jobCategorySearchTerm.setValue(selectedCategory.selectedTranslation.text);
-        }
-      });
-      this.languageSubscription = this.languageService.languageObservable$.subscribe(lang => {
-        this.jobs = this.jobs.map(element => {
-          element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
-          element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
-          return element;
+          this.jobs = this.jobs.map(element => {
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.JobTranslations);
+            element.Category.selectedTranslation = this.languageService.getTranslation(lang, element.Category.CategoryTranslations);
+            return element;
+          });
+          this.categories = this.categories.map(element => {
+            element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
+            return element;
+          });
+          this.categories = this.categories.sort((a: Category, b: Category) => {
+            if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) < unAccentise(b.selectedTranslation!.text)) { return -1 }
+            if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) > unAccentise(b.selectedTranslation!.text)) { return 1 }
+            return 0;
+          });
+          this.filteredJobs = this.jobs;
+          if (this.searchForm.controls.jobTextSearchTerm.value || this.searchForm.controls.jobCategorySearchTerm.value) {
+            this.filterJobs(false);
+          }
+          this.noCategoriesText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageNoCategoriesText', 'PublicContentTranslations');
+          this.jobCountTitleText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageJobCountText', 'PublicContentTranslations');
+          this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobTextSearchTerm', 'PublicContentTranslations');
+          this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobCategorySearchTerm', 'PublicContentTranslations');
+          this.jobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageTitle', 'PublicContentTranslations');
+          this.jobsSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageSubtitle', 'PublicContentTranslations');
+          this.searchButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsSearchButtonText', 'PublicContentTranslations');
+          this.pageLoaded = Promise.resolve(true);
         });
-        this.categories = this.categories.map(element => {
-          element.selectedTranslation = this.languageService.getTranslation(lang, element.CategoryTranslations);
-          return element;
-        });
-        this.categories = this.categories.sort((a: Category, b: Category) => {
-          if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) < unAccentise(b.selectedTranslation!.text)) { return -1 }
-          if (a.selectedTranslation && b.selectedTranslation && unAccentise(a.selectedTranslation!.text) > unAccentise(b.selectedTranslation!.text)) { return 1 }
-          return 0;
-        });
-        this.filteredJobs = this.jobs;
-        if (this.searchForm.controls.jobTextSearchTerm.value || this.searchForm.controls.jobCategorySearchTerm.value) {
-          this.filterJobs(false);
-        }
-        this.noCategoriesText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageNoCategoriesText', 'PublicContentTranslations');
-        this.jobCountTitleText = this.languageService.getTranslationByKey(lang, this.categoryPublicContents, 'title', 'categoriesPageJobCountText', 'PublicContentTranslations');
-        this.searchTermElement.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobTextSearchTerm', 'PublicContentTranslations');
-        this.categoriesDropDown.placeholder = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobCategorySearchTerm', 'PublicContentTranslations');
-        this.jobsTitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageTitle', 'PublicContentTranslations');
-        this.jobsSubtitleText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsPageSubtitle', 'PublicContentTranslations');
-        this.searchButtonText = this.languageService.getTranslationByKey(lang, this.publicContents, 'title', 'jobsSearchButtonText', 'PublicContentTranslations');
-        this.pageLoaded = Promise.resolve(true);
       });
     });
   }
